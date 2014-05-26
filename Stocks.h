@@ -1,0 +1,12 @@
+
+
+class Stocks{
+private:
+
+
+
+public:
+
+
+
+};
