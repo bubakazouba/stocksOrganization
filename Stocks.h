@@ -6,7 +6,6 @@
 const MAX_DAYS=30;
 class Stocks{
 private:
-	//Ndays wont have a setter
 int Ndays;//number of days for that company(will calculate that from the line im going to get)
 string TickerSymbol;
 string name;
