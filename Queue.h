@@ -7,6 +7,20 @@ Queue
 
 #include "Qnode.h"
 
+/*
+Notes on this Queue:
+***************************NOTICE*************************************
+****The queue does not make copies of the data, it stores a pointer to
+	the data you hare giving it because it takes a reference to the data
+	as a parameter. This means that if you change the data after inserting
+	it into the queue you will be changing that which you inserted, since
+	it is the same data!
+
+	This also allows you to enqueues like this:
+		Queue<Objects> list;
+		list.enqueue( *(new Objects(parameters)) );
+	
+*/
 
 template<class ItemType>
 class Queue{
@@ -14,7 +28,6 @@ private:
 	Qnode<ItemType>* first;	// pointer to the front of the list
 	Qnode<ItemType>* last;	// pointer to the end of the list
 	int count;
-
 
 
 public:
@@ -25,45 +38,59 @@ public:
 	bool isEmpty() const{ return (count == 0); }
 
 	bool enqueue( const ItemType& newEntry);
-	
+
+	bool getPtr(ItemType*& var) const;	
 	bool peek(ItemType& var) const;
 	bool dequeue();
 		
 };
 
-
-
-
 template<class ItemType>
-~Queue(){
+Queue<ItemType>::~Queue(){
 
-	Qnode<ItemType>* nodePtr = first;
+	Qnode<ItemType>* nodePtr = Queue::first;
 	
-	while( first != 0){
-		first = first->getNext();
+	while( Queue::first != 0){
+		Queue::first = Queue::first->getNext();
+		delete nodePtr->getData();
 		delete nodePtr;
-		nodePtr = first;
-	}	
-
+		nodePtr = Queue::first;
+	}
 }
 
 
 template<class ItemType>
-bool enqueue( const ItemType& newEntry){
+bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	
-	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(newEntry);
+	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(&newEntry);
 	
-	if(count == 0){
-		first = newNodePointer;
-		last = newNodePointer;
+	if(Queue::count == 0){
+		Queue::first = newNodePointer;
+		Queue::last = newNodePointer;
 	}else{
-		last->setNext(newNodePointer);
+		Queue::last->setNext(newNodePointer);
 	}
-	last = newNodePointer;
-	count++;	
+	Queue::last = newNodePointer;
+	Queue::count++;	
 	return true;
 
 }
+
+/*
+getPtr:
+*/
+template<class ItemType>
+bool Queue<ItemType>::getPtr(ItemType*& var) const{
+	
+	if(count != 0){
+		var = first->getData() ;
+		return true;
+	}else{
+		return false;
+	}	
+}
+
+
 
 
 /*
@@ -83,27 +110,26 @@ Dependencies: requires the Templated type to have an overloaded equal.
 
 */
 template<class ItemType>
-bool peek(ItemType& var) const{
+bool Queue<ItemType>::peek(ItemType& var) const{
 	
 	if(count != 0){
-		var = first->getData();
+		var = *(first->getData() );
 		return true;
 	}else{
 		return false;
 	}	
 }
 
-
 /*
 dequeue:	
 */
 template<class ItemType>
-bool dequeue(){
+bool Queue<ItemType>::dequeue(){
 
 	if(count == 0)
 		return false;
 
-	Node<ItemType>* toDelete = first;
+	Qnode<ItemType>* toDelete = first;
 
 	if(first == last){	//last item in the queue
 		first = 0;
@@ -116,6 +142,5 @@ bool dequeue(){
 	count--;
 	return true;
 }
-
 
 #endif

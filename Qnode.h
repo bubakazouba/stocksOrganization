@@ -14,7 +14,7 @@ private:
 
 public:
 	Qnode(){ next = 0; }
-	Qnode(ItemType* newdata){ data = newdata; next = 0;}
+	Qnode(const ItemType* newdata){ data = (ItemType*) newdata; next = 0;}
 	
 //		
 
