@@ -7,6 +7,12 @@ Queue
 
 #include "Qnode.h"
 
+/*
+Notes on this Queue:
+
+
+
+*/
 
 template<class ItemType>
 class Queue{
@@ -23,7 +29,7 @@ public:
 	int size() const{ return count;}
 	bool isEmpty() const{ return (count == 0); }
 
-	bool enqueue( const ItemType* newEntry);
+	bool enqueue( const ItemType& newEntry);
 	
 	bool peek(ItemType& var) const;
 	bool dequeue();
@@ -44,9 +50,9 @@ Queue<ItemType>::~Queue(){
 
 
 template<class ItemType>
-bool Queue<ItemType>::enqueue( const ItemType* newEntry){
+bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	
-	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(newEntry);
+	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(&newEntry);
 	
 	if(Queue::count == 0){
 		Queue::first = newNodePointer;
