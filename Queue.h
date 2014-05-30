@@ -16,7 +16,6 @@ private:
 	int count;
 
 
-
 public:
 	Queue(){ count = 0; first = 0; last = 0;}
 	~Queue();
@@ -24,43 +23,39 @@ public:
 	int size() const{ return count;}
 	bool isEmpty() const{ return (count == 0); }
 
-	bool enqueue( const ItemType& newEntry);
+	bool enqueue( const ItemType* newEntry);
 	
 	bool peek(ItemType& var) const;
 	bool dequeue();
 		
 };
 
-
-
-
 template<class ItemType>
-~Queue(){
+Queue<ItemType>::~Queue(){
 
-	Qnode<ItemType>* nodePtr = first;
+	Qnode<ItemType>* nodePtr = Queue::first;
 	
-	while( first != 0){
-		first = first->getNext();
+	while( Queue::first != 0){
+		Queue::first = Queue::first->getNext();
 		delete nodePtr;
-		nodePtr = first;
-	}	
-
+		nodePtr = Queue::first;
+	}
 }
 
 
 template<class ItemType>
-bool enqueue( const ItemType& newEntry){
+bool Queue<ItemType>::enqueue( const ItemType* newEntry){
 	
 	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(newEntry);
 	
-	if(count == 0){
-		first = newNodePointer;
-		last = newNodePointer;
+	if(Queue::count == 0){
+		Queue::first = newNodePointer;
+		Queue::last = newNodePointer;
 	}else{
-		last->setNext(newNodePointer);
+		Queue::last->setNext(newNodePointer);
 	}
-	last = newNodePointer;
-	count++;	
+	Queue::last = newNodePointer;
+	Queue::count++;	
 	return true;
 
 }
@@ -83,27 +78,26 @@ Dependencies: requires the Templated type to have an overloaded equal.
 
 */
 template<class ItemType>
-bool peek(ItemType& var) const{
+bool Queue<ItemType>::peek(ItemType& var) const{
 	
 	if(count != 0){
-		var = first->getData();
+		var = *(first->getData() );
 		return true;
 	}else{
 		return false;
 	}	
 }
 
-
 /*
 dequeue:	
 */
 template<class ItemType>
-bool dequeue(){
+bool Queue<ItemType>::dequeue(){
 
 	if(count == 0)
 		return false;
 
-	Node<ItemType>* toDelete = first;
+	Qnode<ItemType>* toDelete = first;
 
 	if(first == last){	//last item in the queue
 		first = 0;
@@ -116,6 +110,5 @@ bool dequeue(){
 	count--;
 	return true;
 }
-
 
 #endif
