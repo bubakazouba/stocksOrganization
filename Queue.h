@@ -9,9 +9,17 @@ Queue
 
 /*
 Notes on this Queue:
+***************************NOTICE*************************************
+****The queue does not make copies of the data, it stores a pointer to
+	the data you hare giving it because it takes a reference to the data
+	as a parameter. This means that if you change the data after inserting
+	it into the queue you will be changing that which you inserted, since
+	it is the same data!
 
-
-
+	This also allows you to enqueues like this:
+		Queue<Objects> list;
+		list.enqueue( *(new Objects(parameters)) );
+	
 */
 
 template<class ItemType>
@@ -30,7 +38,8 @@ public:
 	bool isEmpty() const{ return (count == 0); }
 
 	bool enqueue( const ItemType& newEntry);
-	
+
+	bool getPtr(ItemType*& var) const;	
 	bool peek(ItemType& var) const;
 	bool dequeue();
 		
@@ -43,6 +52,7 @@ Queue<ItemType>::~Queue(){
 	
 	while( Queue::first != 0){
 		Queue::first = Queue::first->getNext();
+		delete nodePtr->getData();
 		delete nodePtr;
 		nodePtr = Queue::first;
 	}
@@ -65,6 +75,22 @@ bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	return true;
 
 }
+
+/*
+getPtr:
+*/
+template<class ItemType>
+bool Queue<ItemType>::getPtr(ItemType*& var) const{
+	
+	if(count != 0){
+		var = first->getData() ;
+		return true;
+	}else{
+		return false;
+	}	
+}
+
+
 
 
 /*
