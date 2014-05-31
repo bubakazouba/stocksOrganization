@@ -9,7 +9,5 @@ do the following:
 	7.hash statisitics
 	8. quit
 
-We'll start coding by the end of this week and go over the project a few
-more times to make sure everything is clear, fits the guidelines and
-is error free.
 
+Start coding you monkeys!
