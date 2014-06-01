@@ -9,20 +9,20 @@ Qnode
 template<class ItemType>
 class Qnode{
 private:
-	ItemType* data;
+	ItemType data;
 	Qnode* next;
 
 public:
 	Qnode(){ next = 0; }
-	Qnode(const ItemType* newdata){ data = (ItemType*) newdata; next = 0;}
+	Qnode(const ItemType& newdata){ data = newdata; next = 0;}
 	
 //		
 
 	Qnode* getNext(){ return next; }
 	void setNext(Qnode* newnext){ next = newnext; }
 
-	ItemType* getData(){ return data;}
-	void setData(ItemType* newdata){ data = newdata; }
+	ItemType getData(){ return data;}
+	void setData(const ItemType& newdata){ data = newdata; }
 
 };
 

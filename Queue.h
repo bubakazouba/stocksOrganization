@@ -18,7 +18,7 @@ Notes on this Queue:
 
 	This also allows you to enqueues like this:
 		Queue<Objects> list;
-		list.enqueue( *(new Objects(parameters)) );
+		list.enqueue( new Objects(parameters) );
 	
 */
 
@@ -32,37 +32,35 @@ private:
 
 public:
 	Queue(){ count = 0; first = 0; last = 0;}
-	~Queue();
+	~Queue(){ clear(); }
 	
 	int size() const{ return count;}
 	bool isEmpty() const{ return (count == 0); }
 
 	bool enqueue( const ItemType& newEntry);
 
-	bool getPtr(ItemType*& var) const;	
 	bool peek(ItemType& var) const;
 	bool dequeue();
-		
+	bool clear();		
 };
 
 template<class ItemType>
-Queue<ItemType>::~Queue(){
+bool Queue<ItemType>::clear(){	
 
 	Qnode<ItemType>* nodePtr = Queue::first;
 	
 	while( Queue::first != 0){
 		Queue::first = Queue::first->getNext();
-		delete nodePtr->getData();
 		delete nodePtr;
 		nodePtr = Queue::first;
 	}
-}
 
+}
 
 template<class ItemType>
 bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	
-	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(&newEntry);
+	Qnode<ItemType>* newNodePointer = new Qnode<ItemType>(newEntry);
 	
 	if(Queue::count == 0){
 		Queue::first = newNodePointer;
@@ -75,22 +73,6 @@ bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	return true;
 
 }
-
-/*
-getPtr:
-*/
-template<class ItemType>
-bool Queue<ItemType>::getPtr(ItemType*& var) const{
-	
-	if(count != 0){
-		var = first->getData() ;
-		return true;
-	}else{
-		return false;
-	}	
-}
-
-
 
 
 /*
@@ -113,7 +95,7 @@ template<class ItemType>
 bool Queue<ItemType>::peek(ItemType& var) const{
 	
 	if(count != 0){
-		var = *(first->getData() );
+		var = first->getData(); 
 		return true;
 	}else{
 		return false;
