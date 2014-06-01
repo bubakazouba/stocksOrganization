@@ -13,7 +13,7 @@ double prices[MAX_DAYS];
 double high[MAX_DAYS];
 double low[MAX_DAYS];
 unsigned long long marketCap[MAX_DAYS];//why is that a long long not a double?
-doube open[MAX_DAYS];
+double open[MAX_DAYS];
 unsigned long long volume[MAX_DAYS];
 double close[MAX_DAYS];
 
