@@ -1,5 +1,6 @@
+//you need that outside the main: string Stocks::comparing= "tickerSymbol";
 //Name: Abdulrahman Sahmoud
-//make sure i need to include which libraries
+///make sure i need to include which libraries
 #ifndef _STOCKS
 #define _STOCKS
 #include<iostream>
@@ -9,6 +10,18 @@ using namespace std;
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
+bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long long newvolume,double newhigh,double newlow,double newopen){
+	if(Ndays==MAX_DAYS)
+		return false;
+	Ndays++;
+	close[Ndays]=newclose;
+	marketCap[Ndays]=newmarketCap;
+	volume[Ndays]=newvolume;
+	high[Ndays]=newhigh;
+	low[Ndays]=newlow;
+	open[Ndays]=newopen;
+	return true;
+}
 	string Stocks::comparableSTR(){
 		if(comparing=="name")
 			return name;
@@ -16,7 +29,7 @@ using namespace std;
 			return tickerSymbol;
 		return "";
 	}
-	long long Stocks::comparableLL(){
+	unsigned long long Stocks::comparableLL(){
 		if(comparing=="volume")
 			return volume[Ndays-1];
 		if(comparing=="marketCapital")
@@ -182,13 +195,13 @@ using namespace std;
 		ret=open[ind];
 		return true;
 	}
-	bool Stocks::getmarketCap(long long & ret,int ind){
+	bool Stocks::getmarketCap(unsigned long long & ret,int ind){
 		if(ind<0||ind>Ndays)
 			return false;
 		ret=marketCap[ind];
 		return true;
 	}
-	bool Stocks::getVolume(long long & ret,int ind){
+	bool Stocks::getVolume(unsigned long long & ret,int ind){
 		if(ind<0||ind>Ndays)
 			return false;
 		ret=volume[ind];
@@ -219,13 +232,13 @@ using namespace std;
 		open[ind]=set;
 		return true;
 	}
-	bool Stocks::setmarketCap(long long  set,int ind){
+	bool Stocks::setmarketCap(unsigned long long  set,int ind){
 		if(ind<0||ind>Ndays)
 			return false;
 		marketCap[ind]=set;
 		return true;
 	}
-	bool Stocks::setVolume(long long  set,int ind){
+	bool Stocks::setVolume(unsigned long long  set,int ind){
 		if(ind<0||ind>Ndays)
 			return false;
 		volume[ind]=set;
