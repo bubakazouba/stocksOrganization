@@ -59,7 +59,6 @@ public:
 	string gettickerSymbol()const {return tickerSymbol;}
 	string getName()const {return name;}
 	int getNdays() const {return Ndays;}
-	//make sure in the function that the index is in bounds//
 	bool getClose(double & ret,int ind);
 	bool getHigh(double & ret,int ind);
 	bool getLow(double & ret,int ind);
@@ -71,7 +70,6 @@ public:
 ////////////////////SETTERS////////////////////////////
 	void settickerSymbol(string set){tickerSymbol=set;}
 	void setName(string set){name=set;}
-	//make sure in the function that the index is in bounds//
 	bool setClose(double set,int ind);
 	bool setHigh(double set,int ind);
 	bool setLow(double set,int ind);
