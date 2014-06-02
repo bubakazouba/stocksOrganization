@@ -89,6 +89,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		for(int i=0;i<tmp.size();i++)
 			if(tmp[i]==':')
 				Ndays++;
+		if(Ndays>MAX_DAYS)Ndays=MAX_DAYS;
 		//setting the rest of the fields
 		name=getNthField(line,1,",");
 		tickerSymbol=getNthField(line,2,",");
