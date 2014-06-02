@@ -1,4 +1,3 @@
-
 /// ctrl+F for ////
 //read all comments
 //what if the constructor found an error how can it return that
@@ -46,6 +45,7 @@ public:
 
 	string toString();//convert it back to string to the Breadth First Search can use it easily to output to the file
 	bool add(double setclose,unsigned long long setmarketCap,unsigned long long setvolume,double high,double low,double open);
+	bool add(string line);
 // Comparison Operators
 	bool operator ==( Stocks& rhs);
 	bool operator > ( Stocks& rhs);
