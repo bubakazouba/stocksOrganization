@@ -1,12 +1,7 @@
 /*
 these comments are for me:NONE OF YOUR BUSINESS
-put that in the copy constructor:Ndays=rhs.Ndays;
 remove the const comments
-Ndays++; in the add function that should be after the setting not before
-add ind=-1 for all the setters and getters
-change the operator overloaders to const and change comparableStrs to consts too
 in the testing driver test the add(string)
-in all setters and getters check if its >Ndays-1 not >Ndays
 */
 #include<iostream>
 using namespace std;
