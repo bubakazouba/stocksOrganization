@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-use strict;
+
 
 our $prime = 6673;
 
@@ -40,9 +40,14 @@ sub hash{
 
 }
 
+sub collide{
+	my $other = shift;
+	my $probe = shift;
+	return (($other+(2**$probe))%$prime);
+}
+
 #This is the prime number that is used for the length of the array
 my %ticker;
-
 #Open up the file, parse it and get the ticker symbol out along with the company name
 open(FD, "<bigDataDay1.cleaned") or die "Couldn't open the file: $!\n";
 my $count = 0;
@@ -54,12 +59,32 @@ while(<FD>){
 
 # go through each ticker symbol and calculate it's hash value one by one
 our %hashh;
+our @array;
+for(my $i=0; $i < $prime; $i++){
+	$array[$i] = -1;
+}
 foreach my $key (sort keys %ticker){
 	my $hashvalue = hash($key);
+	my $other = $hashvalue;
+	if($array[$hashvalue] == -1){
+		$array[$hashvalue] = 0;
+	}else{
+		my $messy = 1;
+		while($array[$other] != -1){
+			$other = collide($other, $messy);
+			$messy++;
+		}
+		$array[$other] = $messy;
+	}
 	$hashh{$hashvalue}++;
 }
 
 my %hashstats;
+my %morestats;
+foreach (@array){
+$morestats{$_}++;
+}
+
 
 foreach my $key (sort keys %hashh){
 	$hashstats{$hashh{$key}}++;
@@ -75,8 +100,14 @@ print " $key collisions\n";
 
 }
 
+print "\n";
+
+foreach my $kez (sort keys %morestats){
+print "$morestats{$kez} keys with $kez probes \n";
+}
+print "\n";
 my $lengthof = keys(%ticker);
-print "$lengthof : $prime \n";
+print "Number of keys $lengthof\nSize of array: $prime\n";
+print "Ratio: $lengthof : $prime \n";
+
 exit;
-
-
