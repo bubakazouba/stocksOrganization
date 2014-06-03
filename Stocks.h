@@ -1,6 +1,7 @@
 /// ctrl+F for ////
 //read all comments
 //what if the constructor found an error how can it return that
+
 //Name: Abdulrahman Sahmoud
 
 #ifndef _STOCKS_H_
@@ -47,7 +48,7 @@ public:
 	bool add(double setclose,unsigned long long setmarketCap,unsigned long long setvolume,double high,double low,double open);
 	bool add(string line);
 // Comparison Operators
-	bool operator ==(const Stocks& rhs);
+	bool operator ==(const Stocks& rhs) const;
 	bool operator > ( Stocks& rhs);
 	bool operator < (Stocks& rhs);
 	bool operator <= (Stocks& rhs);

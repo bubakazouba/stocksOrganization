@@ -29,11 +29,12 @@
 #include "Stocks.h"
 #include <fstream>
 
+using namespace std;
 
 
-	Queue<Stocks*>& Controller::readFile(string file){
+Queue<Stocks*>& Controller::readFile(string file){
 		 string line;
-		 ifstream myfile(file);
+		 ifstream myfile(file.c_str() );
 		 if (myfile.is_open())
 		 {
 			 while ( getline (myfile,line) )

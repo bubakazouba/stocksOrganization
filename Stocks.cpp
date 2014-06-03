@@ -5,8 +5,12 @@
 #define _STOCKS
 #include<iostream>
 #include<sstream>
+#include "Stocks.h"
+
 using namespace std;
-#include "stocks.h"
+
+string Stocks::comparing;
+
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
@@ -22,21 +26,21 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	open[Ndays]=newopen;
 	return true;
 }
-	string Stocks::comparableSTR(){
+	string Stocks::comparableSTR() const{
 		if(comparing=="name")
 			return name;
 		if(comparing=="tickerSymbol")
 			return tickerSymbol;
 		return "";
 	}
-	unsigned long long Stocks::comparableLL(){
+	unsigned long long Stocks::comparableLL() const{
 		if(comparing=="volume")
 			return volume[Ndays-1];
 		if(comparing=="marketCapital")
 			return marketCap[Ndays-1];
 		return -1;
 	}
-	double Stocks::comparableD(){
+	double Stocks::comparableD() const{
 		if(comparing=="close")
 			return close[Ndays-1];
 		if(comparing=="open")
@@ -124,7 +128,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	}//convert it back to string to the Breadth First Search can use it easily to output to the file
 
 // Comparison Operators
-	bool Stocks::operator ==( Stocks& rhs){
+	bool Stocks::operator ==(const Stocks& rhs) const{
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()==rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
