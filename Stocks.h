@@ -29,9 +29,9 @@ private:
 	
 	Stocks& copy(const Stocks&);//should it be constant?
 
-	string comparableSTR();
-	unsigned long long comparableLL();
-	double comparableD();
+	string comparableSTR() const;
+	unsigned long long comparableLL() const;
+	double comparableD() const;
 
 	template<typename T>
 	void setArrayField(T data[],string str);
@@ -47,7 +47,7 @@ public:
 	bool add(double setclose,unsigned long long setmarketCap,unsigned long long setvolume,double high,double low,double open);
 	bool add(string line);
 // Comparison Operators
-	bool operator ==( Stocks& rhs);
+	bool operator ==(const Stocks& rhs);
 	bool operator > ( Stocks& rhs);
 	bool operator < (Stocks& rhs);
 	bool operator <= (Stocks& rhs);
@@ -59,12 +59,14 @@ public:
 	string gettickerSymbol()const {return tickerSymbol;}
 	string getName()const {return name;}
 	int getNdays() const {return Ndays;}
-	bool getClose(double & ret,int ind);
-	bool getHigh(double & ret,int ind);
-	bool getLow(double & ret,int ind);
-	bool getOpen(double & ret,int ind);
-	bool getmarketCap(unsigned long long & ret,int ind);
-	bool getVolume(unsigned long long & ret,int ind);
+
+	bool getClose(double & ret,int ind=-1);
+	bool getHigh(double & ret,int ind=-1);
+	bool getLow(double & ret,int ind=-1);
+	bool getOpen(double & ret,int ind=-1);
+	bool getmarketCap(unsigned long long & ret,int ind=-1);
+	bool getVolume(unsigned long long & ret,int ind=-1);
+
 
 
 ////////////////////SETTERS////////////////////////////
