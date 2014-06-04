@@ -20,6 +20,7 @@ void List();
 void Remove(){}
 void Search(){}
 void Update(){}
+void Quit(){}
 
 };
 #endif

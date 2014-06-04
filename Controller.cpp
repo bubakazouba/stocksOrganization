@@ -106,7 +106,22 @@ int main(){
 		controller.Update();
 	}
 	else if (response=="q"){
-		success=true;
+		bool sure=false;
+		while(!sure){//while not sure
+			cout<<"Are you sure? (yn): ";
+			getline(cin,response);
+			if (response=="y"){
+				sure=true;
+				success=true;
+				controller.Quit();
+			}
+			else if (response=="n"){
+				sure=true;
+				success=false;
+			}
+		}
+		
+		
 	}
 	else{
 		cout<<"l, d, u, s or q only"<<endl;
