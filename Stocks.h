@@ -1,7 +1,6 @@
 /// ctrl+F for ////
 //read all comments
 //what if the constructor found an error how can it return that
-
 //Name: Abdulrahman Sahmoud
 
 #ifndef _STOCKS_H_
@@ -48,11 +47,11 @@ public:
 	bool add(double setclose,unsigned long long setmarketCap,unsigned long long setvolume,double high,double low,double open);
 	bool add(string line);
 // Comparison Operators
-	bool operator ==(const Stocks& rhs) const;
-	bool operator > ( Stocks& rhs);
-	bool operator < (Stocks& rhs);
-	bool operator <= (Stocks& rhs);
-	bool operator != (Stocks& rhs);
+	bool operator == (const Stocks& rhs);
+	bool operator >  (const Stocks& rhs);
+	bool operator <  (const Stocks& rhs);
+	bool operator <= (const Stocks& rhs);
+	bool operator != (const Stocks& rhs);
 
 
 //--------------GETTERS----------------------//
@@ -60,7 +59,7 @@ public:
 	string gettickerSymbol()const {return tickerSymbol;}
 	string getName()const {return name;}
 	int getNdays() const {return Ndays;}
-
+	//make sure in the function that the index is in bounds//
 	bool getClose(double & ret,int ind=-1);
 	bool getHigh(double & ret,int ind=-1);
 	bool getLow(double & ret,int ind=-1);
@@ -69,16 +68,16 @@ public:
 	bool getVolume(unsigned long long & ret,int ind=-1);
 
 
-
 ////////////////////SETTERS////////////////////////////
 	void settickerSymbol(string set){tickerSymbol=set;}
 	void setName(string set){name=set;}
-	bool setClose(double set,int ind);
-	bool setHigh(double set,int ind);
-	bool setLow(double set,int ind);
-	bool setOpen(double set,int ind);
-	bool setmarketCap(unsigned long long  set,int ind);
-	bool setVolume(unsigned long long  set,int ind);
+	//make sure in the function that the index is in bounds//
+	bool setClose(double set,int ind=-1);
+	bool setHigh(double set,int ind=-1);
+	bool setLow(double set,int ind=-1);
+	bool setOpen(double set,int ind=-1);
+	bool setmarketCap(unsigned long long  set,int ind=-1);
+	bool setVolume(unsigned long long  set,int ind=-1);
 
 };
 #endif
