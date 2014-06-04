@@ -26,20 +26,18 @@
 #include <iostream>
 #include <stdio.h>
 #include "Controller.h"
-#include "Stocks.h"
 #include <fstream>
 
-using namespace std;
+string Stocks::comparing;
 
-
-Queue<Stocks*>& Controller::readFile(string file){
+	Queue<Stocks*>& Controller::readFile(string file){
 		 string line;
-		 ifstream myfile(file.c_str() );
+		 ifstream myfile(file.c_str());
 		 if (myfile.is_open())
 		 {
 			 while ( getline (myfile,line) )
 			 {
-				StockQueue.enqueue((new Stocks(line)));
+				StockQueue.enqueue(new Stocks(line));
 			 }
 			 myfile.close();
 		 }//end of if
@@ -62,7 +60,7 @@ Queue<Stocks*>& Controller::readFile(string file){
 		for (int i=0;i<StockQueue.size();i++){
 			Stocks* temp;
 			StockQueue.peek(temp);
-			cout<<temp<<endl;
+			cout<<temp->toString()<<endl;
 			StockQueue.dequeue();
 			StockQueue.enqueue(temp);
 		}
