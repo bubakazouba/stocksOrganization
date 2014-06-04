@@ -5,25 +5,40 @@
 #define _STOCKS
 #include<iostream>
 #include<sstream>
-#include "Stocks.h"
-
 using namespace std;
-
-string Stocks::comparing;
-
+#include "stocks.h"
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
+bool Stocks::add(string line){
+	if(Ndays==MAX_DAYS)
+		return false;
+	
+	stringstream ss;
+	for(int i=1;i<=6;i++)
+		ss<<getNthField(line,i,",")<<" ";
+
+	ss>>close[Ndays];
+	ss>>marketCap[Ndays];
+	ss>>volume[Ndays];
+	ss>>high[Ndays];
+	ss>>low[Ndays];
+	ss>>open[Ndays];
+	Ndays++;
+	return true;
+}
+
 bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long long newvolume,double newhigh,double newlow,double newopen){
 	if(Ndays==MAX_DAYS)
 		return false;
-	Ndays++;
+	cout<<"Ndays="<<Ndays<<endl;
 	close[Ndays]=newclose;
 	marketCap[Ndays]=newmarketCap;
 	volume[Ndays]=newvolume;
 	high[Ndays]=newhigh;
 	low[Ndays]=newlow;
 	open[Ndays]=newopen;
+	Ndays++;
 	return true;
 }
 	string Stocks::comparableSTR() const{
@@ -68,6 +83,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	}
 //----------------------------------------------------------------------//
 	Stocks& Stocks::copy(const Stocks & rhs){
+		Ndays=rhs.Ndays;
 		name=rhs.name;
 		tickerSymbol=rhs.tickerSymbol;
 		setArrayField(close,arrToString(rhs.close));
@@ -128,7 +144,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	}//convert it back to string to the Breadth First Search can use it easily to output to the file
 
 // Comparison Operators
-	bool Stocks::operator ==(const Stocks& rhs) const{
+	bool Stocks::operator ==(const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()==rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
@@ -137,7 +153,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			return comparableLL()==rhs.comparableLL();
 		return false;
 	}
-	bool Stocks::operator > ( Stocks& rhs){
+	bool Stocks::operator > (const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()>rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
@@ -146,7 +162,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			return comparableLL()>rhs.comparableLL();
 		return false;	
 	}
-	bool Stocks::operator <= ( Stocks& rhs){
+	bool Stocks::operator <= (const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()<=rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
@@ -155,7 +171,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			return comparableLL()<=rhs.comparableLL();
 		return false;
 	}
-	bool Stocks::operator < ( Stocks& rhs){
+	bool Stocks::operator < (const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()<rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
@@ -164,7 +180,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			return comparableLL()<rhs.comparableLL();
 		return false;
 	}
-	bool Stocks::operator != ( Stocks& rhs){
+	bool Stocks::operator != (const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()!=rhs.comparableSTR();
 		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
@@ -177,74 +193,98 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 
 //---------------------GETTERS-----------------------------//
 	bool Stocks::getClose(double & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=close[ind];
 		return true;
 	}
 	bool Stocks::getHigh(double & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=high[ind];
 		return true;
 	}
 	bool Stocks::getLow(double & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=low[ind];
 		return true;
 	}
 	bool Stocks::getOpen(double & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=open[ind];
 		return true;
 	}
 	bool Stocks::getmarketCap(unsigned long long & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=marketCap[ind];
 		return true;
 	}
 	bool Stocks::getVolume(unsigned long long & ret,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		ret=volume[ind];
 		return true;
 	}
 //-----------------SETTERS---------------------------------//
 	bool Stocks::setClose(double set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		close[ind]=set;
 		return true;
 	}
 	bool Stocks::setHigh(double set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		high[ind]=set;
 		return true;
 	}
 	bool Stocks::setLow(double set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		low[ind]=set;
 		return true;
 	}
 	bool Stocks::setOpen(double set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		open[ind]=set;
 		return true;
 	}
 	bool Stocks::setmarketCap(unsigned long long  set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		marketCap[ind]=set;
 		return true;
 	}
 	bool Stocks::setVolume(unsigned long long  set,int ind){
-		if(ind<0||ind>Ndays)
+		if(ind==-1)
+			ind=Ndays-1;
+		if(ind<0||ind>Ndays-1)
 			return false;
 		volume[ind]=set;
 		return true;
