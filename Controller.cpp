@@ -30,11 +30,12 @@
 
 string Stocks::comparing;
 
-	Queue<Stocks*>& Controller::readFile(string file){
+	void Controller::readFile(string file,Queue<Stocks*>& StockQueue){
 		 string line;
 		 ifstream myfile(file.c_str());
 		 if (myfile.is_open())
 		 {
+			
 			 while ( getline (myfile,line) )
 			 {
 				StockQueue.enqueue(new Stocks(line));
@@ -45,87 +46,144 @@ string Stocks::comparing;
 			 cout<<"Error reading file"<<endl;
 		 }//end of else
 		 
-		 return StockQueue;
 	 }//end of function readFile()
 	 
 	//Constructor 
-	Controller::Controller(string file){
-	readFile(file);
-		//Tree tree();
-		//HashTable table();
+	Controller::Controller(string file,HashFunction& table){
+	//Controller::Controller(string file,Tree& tree, HashTable& table){
+	//readFile(file);
+	Queue<Stocks*> queue;
+	readFile(file,queue);
+		//for (int i=0;i<StockQueue.size();i++){
+			//Stocks* temp;
+			//queue.peek(temp);
+			//tree.insert(temp);
+			//table.add(temp);
+			//queue.dequeue();
+			//queue.enqueue(temp);
+		//}
+		
 		
 	}
 	void Controller::List(){
 		cout<<"Listing"<<endl;
-		for (int i=0;i<StockQueue.size();i++){
-			Stocks* temp;
-			StockQueue.peek(temp);
-			cout<<temp->toString()<<endl;
-			StockQueue.dequeue();
-			StockQueue.enqueue(temp);
-		}
 		
 	}
+	void Controller::Search(string mode,string key,HashFunction& table){
+		if (mode=="Ticker"){
+			if(table.find(key))
+			{
+				cout<<"Found Stock"<<endl;
+			}
+			else{
+				cout<<"Could not find Stock"<<endl;
+			}
+		}
+		else if (mode=="Value"){
+			Stocks* temp;
+			
+			//if(tree.getEntry(new Stocks(key),temp)){
+				//cout<<"Found Stock"<<endl;
+				//cout<<temp->toString()<<endl;
+			//}
+			//else{
+				//cout<<"Could not find Stock"<<endl;
+			//}
+		}
+	}
+	void Controller::Add(){
+		
+		
+	}	
+		
+	
 	Controller::~Controller(){
 		cout<<"destructor"<<endl;
-		for (int i=0;i<StockQueue.size();i++){
-			Stocks* temp;
-			StockQueue.peek(temp);
-			StockQueue.dequeue();
-			delete temp;
-		}
+		//for (int i=0;i<StockQueue.size();i++){
+			//Stocks* temp;
+			//StockQueue.peek(temp);
+			//StockQueue.dequeue();
+			//delete temp;
+		//}
 		
 	}
 	
 
 
 int main(){
-	
-	Controller controller("bigDataDay1.cleaned");	
+	//Tree tree;
+	HashFunction table;
+	//Controller controller("bigDataDay1.cleaned");
+	//Controller controller("bigDataDay1.cleaned",tree,table);	
+	Controller controller("bigDataDay1.cleaned",table);	
 	bool success=false;
 	string response="";
 	while(!success){
-	cout<<endl;
-	cout<<"l. list stocks"<<endl;
-	cout<<"d. delete stocks"<<endl;
-	cout<<"s. search stocks"<<endl;
-	cout<<"u. update stocks"<<endl;
-	cout<<"q. quit"<<endl;
-	cout<<"Choice: ";
-	getline(cin,response);
-	if(response=="l"){
-		controller.List();
-	}
-	else if (response=="d"){
-		controller.Remove();
-	}
-	else if (response=="s"){
-		controller.Search();
-	}
-	else if (response=="u"){
-		controller.Update();
-	}
-	else if (response=="q"){
-		bool sure=false;
-		while(!sure){//while not sure
-			cout<<"Are you sure? (yn): ";
-			getline(cin,response);
-			if (response=="y"){
-				sure=true;
-				success=true;
-				controller.Quit();
-			}
-			else if (response=="n"){
-				sure=true;
-				success=false;
+		cout<<"a. add stocks"<<endl;
+		cout<<"l. list stocks"<<endl;
+		cout<<"d. delete stocks"<<endl;
+		cout<<"s. search stocks"<<endl;
+		cout<<"u. update stocks"<<endl;
+		cout<<"q. quit"<<endl;
+		cout<<"Choice: ";
+		getline(cin,response);
+		if(response=="l"){
+			controller.List();
+		}
+		else if (response=="d"){
+			controller.Remove();
+		}
+		else if (response=="a"){
+			controller.Add();
+		}
+		else if (response=="s"){
+			bool valid=false;
+			while(!valid){//while not sure
+				cout<<"Search by:"<<endl;
+				cout<<"t. Ticker Symbol"<<endl;
+				cout<<"p. Current Price"<<endl;
+				cout<<"Choice: ";
+				getline(cin,response);
+				if (response=="t"){
+					valid=true;
+					cout<<"Enter Ticker Symbol:";
+					getline(cin,response);
+					controller.Search("Ticker",response,table);
+				}
+				else if (response=="p"){
+					valid=true;
+					cout<<"l. least in value"<<endl;
+					cout<<"g. greater in value"<<endl;
+					cout<<"Choice: ";
+					getline(cin,response);
+					controller.Search("Value",response,table);
+				}
 			}
 		}
-		
-		
-	}
-	else{
-		cout<<"l, d, u, s or q only"<<endl;
-	}
+		else if (response=="u"){
+			controller.Update();
+		}
+		else if (response=="q"){
+			bool sure=false;
+			while(!sure){//while not sure
+				cout<<"Are you sure? (y/n): ";
+				getline(cin,response);
+				if (response=="y"){
+					sure=true;
+					success=true;
+					controller.Quit();
+				}
+				else if (response=="n"){
+					sure=true;
+					success=false;
+				}
+			}
+			
+			
+		}
+		else{
+			cout<<"l, d, u, s or q only"<<endl;
+		}
 		
 	}
 	 return 0;

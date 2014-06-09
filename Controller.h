@@ -5,20 +5,23 @@
 #include <string>
 #include "Stocks.h"
 #include "Queue.h"
+#include "hashHeader.h"
   
 using namespace std;
 class Controller{
 private:
-Queue<Stocks*>& readFile(string file);
-Queue<Stocks*> StockQueue;
+void readFile(string file,Queue<Stocks*>& StockQueue);
+
 
 
 public:
-Controller(string file);
+//Controller(string file);
+Controller(string file,HashFunction& table);
 ~Controller();
 void List();
+void Add();
 void Remove(){}
-void Search(){}
+void Search(string mode,string key,HashFunction& table);
 void Update(){}
 void Quit(){}
 
