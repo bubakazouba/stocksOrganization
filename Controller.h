@@ -6,6 +6,7 @@
 #include "Stocks.h"
 #include "Queue.h"
 #include "hashHeader.h"
+
   
 using namespace std;
 class Controller{
@@ -19,9 +20,10 @@ public:
 Controller(string file,HashFunction& table);
 ~Controller();
 void List();
-void Add();
-void Remove(){}
-void Search(string mode,string key,HashFunction& table);
+void Add(string key,HashFunction& table);
+void Remove(string key,HashFunction& table);
+void SearchByTicker(string key,HashFunction& table);
+void SearchByValue(string key,HashFunction& table);
 void Update(){}
 void Quit(){}
 

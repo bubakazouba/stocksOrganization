@@ -69,32 +69,65 @@ string Stocks::comparing;
 		cout<<"Listing"<<endl;
 		
 	}
-	void Controller::Search(string mode,string key,HashFunction& table){
-		if (mode=="Ticker"){
-			if(table.find(key))
-			{
-				cout<<"Found Stock"<<endl;
-			}
-			else{
-				cout<<"Could not find Stock"<<endl;
-			}
+	void Controller::SearchByTicker(string key,HashFunction& table){
+		Stocks temp;
+		temp.settickerSymbol(key);
+		if(table.find(temp))
+		{
+			cout<<"Found Stock"<<endl;
+			cout<<temp.toString()<<endl;
 		}
-		else if (mode=="Value"){
-			Stocks* temp;
-			
-			//if(tree.getEntry(new Stocks(key),temp)){
-				//cout<<"Found Stock"<<endl;
-				//cout<<temp->toString()<<endl;
-			//}
-			//else{
-				//cout<<"Could not find Stock"<<endl;
-			//}
+		else{
+			cout<<"Could not find Stock"<<endl;
 		}
 	}
-	void Controller::Add(){
+	void Controller::SearchByValue(string key,HashFunction& table){
+		
+		Stocks* temp;
+		
+		//if(tree.getEntry(new Stocks(key),temp)){
+			//cout<<"Found Stock"<<endl;
+			//cout<<temp->toString()<<endl;
+		//}
+		//else{
+			//cout<<"Could not find Stock"<<endl;
+		//}
+		
+	}
+	
+	
+	
+	
+	void Controller::Add(string key,HashFunction& table){
+		cout<<"Adding"<<endl;
+		Stocks temp;
+		temp.settickerSymbol(key);
+		if(!table.find(temp))
+		{
+			//table.addObj(&temp); //insert the addreass right?
+			//tree.insert(&temp);	//insert the addreass right?
+		}
+		else{
+			cout<<"Ups, the stock you are inserting already exists"<<endl;
+		}
 		
 		
 	}	
+	void Controller::Remove(string key,HashFunction& table){
+		cout<<"Removing"<<endl;
+		Stocks temp;
+		temp.settickerSymbol(key);
+		if(table.find(temp))
+		{
+			//table.deleteRecord(&temp); //insert the addreass right?
+			//tree.remove(&temp);	//insert the addreass right?
+		}
+		else{
+			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
+		}
+		
+		
+	}
 		
 	
 	Controller::~Controller(){
@@ -111,7 +144,7 @@ string Stocks::comparing;
 
 
 int main(){
-	//Tree tree;
+	//BinarySearchTree tree;  //Should i mke the tree and table private to the controller?
 	HashFunction table;
 	//Controller controller("bigDataDay1.cleaned");
 	//Controller controller("bigDataDay1.cleaned",tree,table);	
@@ -131,10 +164,14 @@ int main(){
 			controller.List();
 		}
 		else if (response=="d"){
-			controller.Remove();
+			cout<<"Enter Ticker Symbol: ";
+			getline(cin,response);
+			controller.Remove(response,table);
 		}
 		else if (response=="a"){
-			controller.Add();
+			cout<<"Enter Ticker Symbol: ";
+			getline(cin,response);
+			controller.Add(response,table);
 		}
 		else if (response=="s"){
 			bool valid=false;
@@ -148,7 +185,7 @@ int main(){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
-					controller.Search("Ticker",response,table);
+					controller.SearchByTicker(response,table);
 				}
 				else if (response=="p"){
 					valid=true;
@@ -156,7 +193,7 @@ int main(){
 					cout<<"g. greater in value"<<endl;
 					cout<<"Choice: ";
 					getline(cin,response);
-					controller.Search("Value",response,table);
+					controller.SearchByValue(response,table);
 				}
 			}
 		}
