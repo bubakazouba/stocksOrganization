@@ -54,14 +54,14 @@ string Stocks::comparing;
 	//readFile(file);
 	Queue<Stocks*> queue;
 	readFile(file,queue);
-		//for (int i=0;i<StockQueue.size();i++){
-			//Stocks* temp;
-			//queue.peek(temp);
+		for (int i=0;i<queue.size();i++){
+			Stocks* temp;
+			queue.peek(temp);
 			//tree.insert(temp);
-			//table.add(temp);
-			//queue.dequeue();
-			//queue.enqueue(temp);
-		//}
+			table.add(temp);
+			queue.dequeue();
+			queue.enqueue(temp);
+		}
 		
 		
 	}
@@ -75,7 +75,7 @@ string Stocks::comparing;
 		if(table.find(temp))
 		{
 			cout<<"Found Stock"<<endl;
-			cout<<temp.toString()<<endl;
+			cout<<temp.toString()<<endl;// may throw seg error if find doesnt modify key properly
 		}
 		else{
 			cout<<"Could not find Stock"<<endl;
@@ -83,7 +83,7 @@ string Stocks::comparing;
 	}
 	void Controller::SearchByValue(string key,HashFunction& table){
 		
-		Stocks* temp;
+		//Stocks* temp;
 		
 		//if(tree.getEntry(new Stocks(key),temp)){
 			//cout<<"Found Stock"<<endl;
@@ -119,8 +119,8 @@ string Stocks::comparing;
 		temp.settickerSymbol(key);
 		if(table.find(temp))
 		{
-			//table.deleteRecord(&temp); //insert the addreass right?
-			//tree.remove(&temp);	//insert the addreass right?
+			//table.deleteRecord(&temp); //insert the address right?
+			//tree.remove(&temp);	//insert the address right?
 		}
 		else{
 			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
