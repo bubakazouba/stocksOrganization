@@ -12,7 +12,7 @@ using namespace std;
 class Controller{
 private:
 
-void readFile(string file,Queue<Stocks*>& StockQueue);
+int readFile(string file,Queue<Stocks*>& StockQueue);
 HashFunction* table;
 
 
