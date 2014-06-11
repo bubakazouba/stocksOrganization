@@ -54,7 +54,7 @@ bool Queue<ItemType>::clear(){
 		delete nodePtr;
 		nodePtr = Queue::first;
 	}
-
+	return true;
 }
 
 template<class ItemType>
