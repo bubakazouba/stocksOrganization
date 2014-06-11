@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include "Controller.h"
 #include <fstream>
+//#include "Memtracker.h"
+//it leaks because the serialize function is not implemented yet.
 
 string Stocks::comparing;
 
@@ -35,7 +37,6 @@ string Stocks::comparing;
 		 ifstream myfile(file.c_str());
 		 if (myfile.is_open())
 		 {
-			
 			 while ( getline (myfile,line) )
 			 {
 				StockQueue.enqueue(new Stocks(line));
@@ -49,16 +50,17 @@ string Stocks::comparing;
 	 }//end of function readFile()
 	 
 	//Constructor 
-	Controller::Controller(string file,HashFunction& table){
+	Controller::Controller(string file){
 	//Controller::Controller(string file,Tree& tree, HashTable& table){
 	//readFile(file);
 	Queue<Stocks*> queue;
 	readFile(file,queue);
+	table=new HashFunction();
 		for (int i=0;i<queue.size();i++){
 			Stocks* temp;
 			queue.peek(temp);
 			//tree.insert(temp);
-			table.add(temp);
+			table->add(temp);
 			queue.dequeue();
 			queue.enqueue(temp);
 		}
@@ -69,10 +71,10 @@ string Stocks::comparing;
 		cout<<"Listing"<<endl;
 		
 	}
-	void Controller::SearchByTicker(string key,HashFunction& table){
+	void Controller::SearchByTicker(string key){
 		Stocks temp;
 		temp.settickerSymbol(key);
-		if(table.find(temp))
+		if(table->find(temp))
 		{
 			cout<<"Found Stock"<<endl;
 			cout<<temp.toString()<<endl;// may throw seg error if find doesnt modify key properly
@@ -81,7 +83,7 @@ string Stocks::comparing;
 			cout<<"Could not find Stock"<<endl;
 		}
 	}
-	void Controller::SearchByValue(string key,HashFunction& table){
+	void Controller::SearchByValue(string key){
 		
 		//Stocks* temp;
 		
@@ -95,14 +97,11 @@ string Stocks::comparing;
 		
 	}
 	
-	
-	
-	
-	void Controller::Add(string key,HashFunction& table){
+	void Controller::Add(string key){
 		cout<<"Adding"<<endl;
 		Stocks temp;
 		temp.settickerSymbol(key);
-		if(!table.find(temp))
+		if(!table->find(temp))
 		{
 			//table.addObj(&temp); //insert the addreass right?
 			//tree.insert(&temp);	//insert the addreass right?
@@ -113,11 +112,11 @@ string Stocks::comparing;
 		
 		
 	}	
-	void Controller::Remove(string key,HashFunction& table){
+	void Controller::Remove(string key){
 		cout<<"Removing"<<endl;
 		Stocks temp;
 		temp.settickerSymbol(key);
-		if(table.find(temp))
+		if(table->find(temp))
 		{
 			//table.deleteRecord(&temp); //insert the address right?
 			//tree.remove(&temp);	//insert the address right?
@@ -138,6 +137,7 @@ string Stocks::comparing;
 			//StockQueue.dequeue();
 			//delete temp;
 		//}
+		delete table;
 		
 	}
 	
@@ -145,10 +145,10 @@ string Stocks::comparing;
 
 int main(){
 	//BinarySearchTree tree;  //Should i mke the tree and table private to the controller?
-	HashFunction table;
+
 	//Controller controller("bigDataDay1.cleaned");
 	//Controller controller("bigDataDay1.cleaned",tree,table);	
-	Controller controller("bigDataDay1.cleaned",table);	
+	Controller controller("bigDataDay1.cleaned");	
 	bool success=false;
 	string response="";
 	while(!success){
@@ -166,12 +166,12 @@ int main(){
 		else if (response=="d"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
-			controller.Remove(response,table);
+			controller.Remove(response);
 		}
 		else if (response=="a"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
-			controller.Add(response,table);
+			controller.Add(response);
 		}
 		else if (response=="s"){
 			bool valid=false;
@@ -185,7 +185,7 @@ int main(){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
-					controller.SearchByTicker(response,table);
+					controller.SearchByTicker(response);
 				}
 				else if (response=="p"){
 					valid=true;
@@ -193,7 +193,7 @@ int main(){
 					cout<<"g. greater in value"<<endl;
 					cout<<"Choice: ";
 					getline(cin,response);
-					controller.SearchByValue(response,table);
+					controller.SearchByValue(response);
 				}
 			}
 		}

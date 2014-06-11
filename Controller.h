@@ -11,19 +11,20 @@
 using namespace std;
 class Controller{
 private:
-void readFile(string file,Queue<Stocks*>& StockQueue);
 
+void readFile(string file,Queue<Stocks*>& StockQueue);
+HashFunction* table;
 
 
 public:
 //Controller(string file);
-Controller(string file,HashFunction& table);
+Controller(string file);
 ~Controller();
 void List();
-void Add(string key,HashFunction& table);
-void Remove(string key,HashFunction& table);
-void SearchByTicker(string key,HashFunction& table);
-void SearchByValue(string key,HashFunction& table);
+void Add(string key);
+void Remove(string key);
+void SearchByTicker(string key);
+void SearchByValue(string key);
 void Update(){}
 void Quit(){}
 
