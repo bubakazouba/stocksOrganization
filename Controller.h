@@ -6,6 +6,7 @@
 #include "Stocks.h"
 #include "Queue.h"
 #include "hashHeader.h"
+#include "AVL.h"
 
   
 using namespace std;
@@ -14,6 +15,7 @@ private:
 
 int readFile(string file,Queue<Stocks*>& StockQueue);
 HashFunction* table;
+AVL<Stocks*>* tree;
 
 
 public:

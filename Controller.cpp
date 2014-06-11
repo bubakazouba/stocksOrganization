@@ -32,13 +32,15 @@
 
 string Stocks::comparing;
 
-	void Controller::readFile(string file,Queue<Stocks*>& StockQueue){
+	int Controller::readFile(string file,Queue<Stocks*>& StockQueue){
 		 string line;
+		int counter=0;
 		 ifstream myfile(file.c_str());
 		 if (myfile.is_open())
 		 {
 			 while ( getline (myfile,line) )
 			 {
+				counter++;
 				StockQueue.enqueue(new Stocks(line));
 			 }
 			 myfile.close();
@@ -46,84 +48,93 @@ string Stocks::comparing;
 		 else{ 
 			 cout<<"Error reading file"<<endl;
 		 }//end of else
-		 
+		 return counter;
 	 }//end of function readFile()
 	 
 	//Constructor 
 	Controller::Controller(string file){
-	//Controller::Controller(string file,Tree& tree, HashTable& table){
-	//readFile(file);
 	Queue<Stocks*> queue;
-	readFile(file,queue);
-	table=new HashFunction();
+	int numberOfRecords=readFile(file,queue);
+	int size=numberOfRecords*1.5+17;
+	cout<<"size= "<<size<<endl;
+	table=new HashFunction(size);
+	tree=new AVL<Stocks*>();
 		for (int i=0;i<queue.size();i++){
 			Stocks* temp;
 			queue.peek(temp);
-			//tree.insert(temp);
+			tree->insert(temp);
 			table->add(temp);
 			queue.dequeue();
 			queue.enqueue(temp);
 		}
-		
-		
 	}
 	void Controller::List(){
 		cout<<"Listing"<<endl;
-		
 	}
 	void Controller::SearchByTicker(string key){
-		Stocks temp;
-		temp.settickerSymbol(key);
-		if(table->find(temp))
+		Stocks* target=new Stocks;
+		target->settickerSymbol(key);
+		Stocks* returned;
+		if(table->find(target,returned))
 		{
 			cout<<"Found Stock"<<endl;
-			cout<<temp.toString()<<endl;// may throw seg error if find doesnt modify key properly
+			cout<<returned->toString()<<endl;// may throw seg error if find doesnt modify key properly
 		}
 		else{
 			cout<<"Could not find Stock"<<endl;
 		}
+		delete target;
 	}
-	void Controller::SearchByValue(string key){
+	void Controller::SearchByValue(string price){
 		
-		//Stocks* temp;
-		
-		//if(tree.getEntry(new Stocks(key),temp)){
+		Stocks* returned;
+		Stocks* target=new Stocks();// needs some work , because of the staks
+		//if(tree->getEntry(target,returned)){
 			//cout<<"Found Stock"<<endl;
-			//cout<<temp->toString()<<endl;
+			//cout<<returned->toString()<<endl;
 		//}
 		//else{
 			//cout<<"Could not find Stock"<<endl;
 		//}
+		delete target;
 		
 	}
 	
 	void Controller::Add(string key){
 		cout<<"Adding"<<endl;
-		Stocks temp;
-		temp.settickerSymbol(key);
-		if(!table->find(temp))
+		Stocks* newStock=new Stocks;
+		newStock->settickerSymbol(key);
+		Stocks* returned;
+		if(!table->find(newStock,returned))
 		{
-			//table.addObj(&temp); //insert the addreass right?
-			//tree.insert(&temp);	//insert the addreass right?
+			cout<<"Enter Company Name:";
+			string response="";
+			getline(cin,response);
+			table->add(newStock); 
+			tree->insert(newStock);	
 		}
 		else{
 			cout<<"Ups, the stock you are inserting already exists"<<endl;
+			delete newStock;
 		}
 		
 		
 	}	
 	void Controller::Remove(string key){
 		cout<<"Removing"<<endl;
-		Stocks temp;
-		temp.settickerSymbol(key);
-		if(table->find(temp))
+		Stocks* target=new Stocks;
+		Stocks* returned;
+		target->settickerSymbol(key);
+		if(table->find(target,returned))
 		{
-			//table.deleteRecord(&temp); //insert the address right?
-			//tree.remove(&temp);	//insert the address right?
+			table->remove(returned); 
+			tree->remove(returned);	
+			delete returned;
 		}
 		else{
 			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
 		}
+		delete target;
 		
 		
 	}
@@ -131,23 +142,14 @@ string Stocks::comparing;
 	
 	Controller::~Controller(){
 		cout<<"destructor"<<endl;
-		//for (int i=0;i<StockQueue.size();i++){
-			//Stocks* temp;
-			//StockQueue.peek(temp);
-			//StockQueue.dequeue();
-			//delete temp;
-		//}
 		delete table;
+		delete tree;
 		
 	}
 	
 
 
 int main(){
-	//BinarySearchTree tree;  //Should i mke the tree and table private to the controller?
-
-	//Controller controller("bigDataDay1.cleaned");
-	//Controller controller("bigDataDay1.cleaned",tree,table);	
 	Controller controller("bigDataDay1.cleaned");	
 	bool success=false;
 	string response="";
@@ -209,15 +211,13 @@ int main(){
 					sure=true;
 					success=true;
 					controller.Quit();
-				}
+				}//end of if
 				else if (response=="n"){
 					sure=true;
 					success=false;
-				}
-			}
-			
-			
-		}
+				}//end of else if
+			}	//end of while
+		}//end of else if
 		else{
 			cout<<"l, d, u, s or q only"<<endl;
 		}
