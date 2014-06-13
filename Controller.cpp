@@ -56,9 +56,7 @@ string Stocks::comparing;
 	Controller::Controller(string file){
 	Queue<Stocks*> queue;
 	int numberOfRecords=readFile(file,queue);
-	int size=numberOfRecords*1.5+17;
-	cout<<"size= "<<size<<endl;
-	table=new HashFunction(size);
+	table=new HashFunction(numberOfRecords);
 	tree=new AVL<Stocks*>();
 		for (int i=0;i<queue.size();i++){
 			Stocks* temp;
@@ -78,14 +76,13 @@ string Stocks::comparing;
 		temp->getClose(price);
 		cout<<", Price: $"<<price<<endl;
 		unsigned long long market;
-		temp->getmarketCap(market,temp->getNdays()-1);
+		temp->getmarketCap(market);
 		cout<<"Market Cap: "<<market;
 		unsigned long long volume;
-		temp->getVolume(volume,temp->getNdays()-1);
+		temp->getVolume(volume);
 		cout<<", Volume: "<<volume<<endl;
 		double max=0,min=12344445556677;
 		double prices[temp->getNdays()];
-	//	cout<<"ndays"<<temp->getNdays()<<endl;
 		for(int i=0;i<temp->getNdays();i++){
 			temp->getClose(price,i);
 			if (max<price)
@@ -94,7 +91,6 @@ string Stocks::comparing;
 				min=price;
 			prices[i]=price;
 		}
-	//	cout<<"MAX: "<<max<<"  MIN: "<<min<<endl;
 		int heightOfGraph=13;
 		double distribution=(max-min)/(heightOfGraph-1);
 		int heights[temp->getNdays()];
@@ -103,11 +99,10 @@ string Stocks::comparing;
 		}
 		for (int i=heightOfGraph;i>-1;i--){
 			if(i==heightOfGraph){
-				
 				cout<<max<<" \u2227";//uparrow
 			}		
 			else{
-			cout<<"      "<<"|";//vertical bar
+			cout<<"      "<<"\u2502";//vertical bar
 			}
 			for(int a=0;a<temp->getNdays();a++){
 				cout<<"   ";
