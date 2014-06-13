@@ -6,7 +6,7 @@
 #include<iostream>
 #include<sstream>
 using namespace std;
-#include "stocks.h"
+#include "Stocks.h"
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
