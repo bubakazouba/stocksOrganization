@@ -22,13 +22,16 @@ public:
 //Controller(string file);
 Controller(string file);
 ~Controller();
-void List();
-void Add(string key);
-void Remove(string key);
-void SearchByTicker(string key);
-void SearchByValue(string key);
-void Update(){}
-void Quit(){}
+void listHash();
+void listTree();
+void printTree();
+void display(Stocks* temp);
+void add(string key);
+void remove(string key);
+void searchByTicker(string key);
+void searchByValue(string key);
+void update(string key);
+void quit(){}
 
 };
 #endif

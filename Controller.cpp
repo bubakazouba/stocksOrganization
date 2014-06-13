@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include "Controller.h"
 #include <fstream>
+#include <iomanip>
 //#include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
@@ -68,10 +69,74 @@ string Stocks::comparing;
 			queue.enqueue(temp);
 		}
 	}
-	void Controller::List(){
-		cout<<"Listing"<<endl;
+	void Controller::display(Stocks* temp){
+		cout << fixed;
+		cout << std::setprecision(2);
+		cout<<"Company Name: "<<temp->getName();
+		cout<<", Ticker: "<<temp->gettickerSymbol();
+		double price;
+		temp->getClose(price);
+		cout<<", Price: $"<<price<<endl;
+		unsigned long long market;
+		temp->getmarketCap(market,temp->getNdays()-1);
+		cout<<"Market Cap: "<<market;
+		unsigned long long volume;
+		temp->getVolume(volume,temp->getNdays()-1);
+		cout<<", Volume: "<<volume<<endl;
+		double max=0,min=12344445556677;
+		double prices[temp->getNdays()];
+	//	cout<<"ndays"<<temp->getNdays()<<endl;
+		for(int i=0;i<temp->getNdays();i++){
+			temp->getClose(price,i);
+			if (max<price)
+				max=price;
+			if (min>price)
+				min=price;
+			prices[i]=price;
+		}
+	//	cout<<"MAX: "<<max<<"  MIN: "<<min<<endl;
+		int heightOfGraph=13;
+		double distribution=(max-min)/(heightOfGraph-1);
+		int heights[temp->getNdays()];
+		for(int i=0;i<temp->getNdays();i++){
+			heights[i]=((prices[i]-min)/distribution);	
+		}
+		for (int i=heightOfGraph;i>-1;i--){
+			if(i==heightOfGraph){
+				
+				cout<<max<<" \u2227";//uparrow
+			}		
+			else{
+			cout<<"      "<<"|";//vertical bar
+			}
+			for(int a=0;a<temp->getNdays();a++){
+				cout<<"   ";
+				if(heights[a]>=i){
+					cout<<"\u2593";//graybox
+				}
+				else{
+					cout<<" ";//so that the days dont phase put
+				}
+				
+			}
+			cout<<endl;
+			
+			
+		}
+		cout<<min<<"  ";
+		for(int a=0;a<temp->getNdays();a++){
+				if(a!=(temp->getNdays()/2)-1){
+					cout<<"\u2015\u2015\u2015\u2015";//full width horizontal lines
+				}
+				else{
+					cout<<"days";
+				}
+		}
+		cout<<"\u2015\u2015>"<<endl;
+		
+		
 	}
-	void Controller::SearchByTicker(string key){
+	void Controller::searchByTicker(string key){
 		Stocks* target=new Stocks;
 		target->settickerSymbol(key);
 		Stocks* returned;
@@ -85,7 +150,7 @@ string Stocks::comparing;
 		}
 		delete target;
 	}
-	void Controller::SearchByValue(string price){
+	void Controller::searchByValue(string price){
 		
 		Stocks* returned;
 		Stocks* target=new Stocks();// needs some work , because of the staks
@@ -99,14 +164,26 @@ string Stocks::comparing;
 		delete target;
 		
 	}
+	void Controller::listHash(){
+		cout<<"Listing Hash"<<endl;
+	}
+	void Controller::listTree(){//inOrder
+		cout<<"Listing tree"<<endl;
+		
+		} 
+	void Controller::printTree(){ //breath first
+		cout<<"printing tree"<<endl;
+		
+	}
 	
-	void Controller::Add(string key){
+	void Controller::add(string key){
 		cout<<"Adding"<<endl;
 		Stocks* newStock=new Stocks;
 		newStock->settickerSymbol(key);
 		Stocks* returned;
 		if(!table->find(newStock,returned))
 		{
+			/////////////////////////////////////needs work
 			cout<<"Enter Company Name:";
 			string response="";
 			getline(cin,response);
@@ -117,10 +194,8 @@ string Stocks::comparing;
 			cout<<"Ups, the stock you are inserting already exists"<<endl;
 			delete newStock;
 		}
-		
-		
 	}	
-	void Controller::Remove(string key){
+	void Controller::remove(string key){
 		cout<<"Removing"<<endl;
 		Stocks* target=new Stocks;
 		Stocks* returned;
@@ -138,6 +213,30 @@ string Stocks::comparing;
 		
 		
 	}
+	
+	void Controller::update(string key){
+		cout<<"Updating"<<endl;
+		Stocks* target=new Stocks;
+		Stocks* returned;
+		target->settickerSymbol(key);
+		if(table->find(target,returned))
+		{
+			cout<<"Enter Company Name:";
+			string response="";
+			getline(cin,response);
+			/////////////////////////////////////needs work
+			table->remove(returned); 
+			tree->remove(returned);	
+			delete returned;
+		}
+		else{
+			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
+		}
+		delete target;
+		
+		
+	}
+	
 		
 	
 	Controller::~Controller(){
@@ -151,6 +250,15 @@ string Stocks::comparing;
 
 int main(){
 	Controller controller("bigDataDay1.cleaned");	
+	//// delete this crap
+			Stocks* tempy=new Stocks("Aaron's Inc,AAN,33.00:32.90:32.81:32.76:32.69:32.90:32.60:32.65:32.78:32.69:32.90:32.69:32.73:32.78,2369931920,42333,32.84,32.48,32.49");
+			controller.display(tempy);
+			delete tempy;
+			
+			////
+	
+	
+	
 	bool success=false;
 	string response="";
 	while(!success){
@@ -163,17 +271,32 @@ int main(){
 		cout<<"Choice: ";
 		getline(cin,response);
 		if(response=="l"){
-			controller.List();
+			bool valid=false;
+			while(!valid){//while not sure
+				cout<<"List by:"<<endl;
+				cout<<"t. Ticker Symbol"<<endl;
+				cout<<"p. Current Price"<<endl;
+				cout<<"Choice: ";
+				getline(cin,response);
+				if (response=="t"){
+					valid=true;
+					controller.listHash();
+				}
+				else if (response=="p"){
+					valid=true;
+					controller.listTree();
+				}
+			}
 		}
 		else if (response=="d"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
-			controller.Remove(response);
+			controller.remove(response);
 		}
 		else if (response=="a"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
-			controller.Add(response);
+			controller.add(response);
 		}
 		else if (response=="s"){
 			bool valid=false;
@@ -187,7 +310,7 @@ int main(){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
-					controller.SearchByTicker(response);
+					controller.searchByTicker(response);
 				}
 				else if (response=="p"){
 					valid=true;
@@ -195,12 +318,14 @@ int main(){
 					cout<<"g. greater in value"<<endl;
 					cout<<"Choice: ";
 					getline(cin,response);
-					controller.SearchByValue(response);
+					controller.searchByValue(response);
 				}
 			}
 		}
 		else if (response=="u"){
-			controller.Update();
+			cout<<"Enter Ticker Symbol: ";
+			getline(cin,response);
+			controller.update(response);
 		}
 		else if (response=="q"){
 			bool sure=false;
@@ -210,7 +335,7 @@ int main(){
 				if (response=="y"){
 					sure=true;
 					success=true;
-					controller.Quit();
+					controller.quit();
 				}//end of if
 				else if (response=="n"){
 					sure=true;
