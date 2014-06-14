@@ -6,7 +6,7 @@
 #include<iostream>
 #include<sstream>
 using namespace std;
-#include "Stocks.h"
+#include "stocks.h"
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
@@ -147,8 +147,10 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	bool Stocks::operator ==(const Stocks& rhs){
 		if(comparing=="name" || comparing=="tickerSymbol")
 			return comparableSTR()==rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
+		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low"){
+			cout<<comparableD()<<" "<<rhs.comparableD()<<endl;
 			return comparableD()==rhs.comparableD();
+		}
 		if(comparing=="volume"||comparing=="marketCapital")
 			return comparableLL()==rhs.comparableLL();
 		return false;
@@ -193,6 +195,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 
 //---------------------GETTERS-----------------------------//
 	bool Stocks::getClose(double & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -201,6 +205,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::getHigh(double & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -209,6 +215,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::getLow(double & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -217,6 +225,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::getOpen(double & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -225,6 +235,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::getmarketCap(unsigned long long & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -233,6 +245,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::getVolume(unsigned long long & ret,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -242,6 +256,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	}
 //-----------------SETTERS---------------------------------//
 	bool Stocks::setClose(double set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -250,6 +266,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::setHigh(double set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -258,6 +276,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::setLow(double set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -266,6 +286,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::setOpen(double set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -274,6 +296,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::setmarketCap(unsigned long long  set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
@@ -282,6 +306,8 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 	bool Stocks::setVolume(unsigned long long  set,int ind){
+		if(Ndays==0)
+			return false;
 		if(ind==-1)
 			ind=Ndays-1;
 		if(ind<0||ind>Ndays-1)
