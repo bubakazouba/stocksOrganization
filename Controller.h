@@ -19,7 +19,6 @@ AVL<Stocks*>* tree;
 
 
 public:
-//Controller(string file);
 Controller(string file);
 ~Controller();
 void listHash();
@@ -30,8 +29,9 @@ void add(string key);
 void remove(string key);
 void searchByTicker(string key);
 void searchByValue(string key);
+void printStatistics();
 void update(string key);
-void quit(){}
+void quit();
 
 };
 #endif

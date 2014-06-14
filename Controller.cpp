@@ -28,7 +28,7 @@
 #include "Controller.h"
 #include <fstream>
 #include <iomanip>
-//#include "Memtracker.h"
+#include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
 string Stocks::comparing;
@@ -148,7 +148,7 @@ string Stocks::comparing;
 		Stocks* returned;
 		if(table->find(target,returned))
 		{
-			cout<<"Found Stock"<<endl;
+			//cout<<"Found Stock"<<endl;
 			//cout<<returned->toString()<<endl;// may throw seg error if find doesnt modify key properly
 			display(returned);
 		}
@@ -162,31 +162,53 @@ string Stocks::comparing;
 		
 		Stocks* returned;
 		Stocks* target=new Stocks();// needs some work , because of the staks
-		//if(tree->getEntry(target,returned)){
+		target->setClose(20);
+		target->settickerSymbol("AAPL");
+		target->comparing="tickerSymbol";
+		if(tree->getEntry(target,returned)){
 			//cout<<"Found Stock"<<endl;
 			//cout<<returned->toString()<<endl;
-			//display(returned);
-		//}
-		//else{
-			//cout<<"Could not find Stock"<<endl;
-		//}
+			display(returned);
+		}
+		else{
+			cout<<"Could not find Stock"<<endl;
+		}
 		delete target;
 		
 	}
 	void Controller::listHash(){
-		cout<<"Listing Hash"<<endl;
+	//	cout<<"Listing Hash"<<endl;
+		table->print();
 	}
 	void Controller::listTree(){//inOrder
-		cout<<"Listing tree"<<endl;
+		//cout<<"Listing tree"<<endl;
+		tree->printInOrder();
 		
 		} 
 	void Controller::printTree(){ //breath first
-		cout<<"printing tree"<<endl;
+	//	cout<<"printing tree"<<endl;
+		tree->printIndented();
+	}
+	void Controller::printStatistics(){ //print hashtables statistics
+	//	cout<<"Hashing Statistics"<<endl;
+		table->printStatistics();
 		
 	}
 	
+	void getInput(int n,string& args, string output){
+		cout<<output<<"(Day "<<n+1<<"): ";
+		string response="";
+		getline(cin,response);
+		if(n==0){
+			args=response;
+		}
+		else{
+			args+=":"+response;
+		}
+	}
+	
 	void Controller::add(string key){
-		cout<<"Adding"<<endl;
+		//cout<<"Adding"<<endl;
 		string args="";
 		Stocks* target=new Stocks;
 		target->settickerSymbol(key);
@@ -199,35 +221,45 @@ string Stocks::comparing;
 			string response="";
 			getline(cin,response);
 			args+=response;
-			args+=":"+key;
+			args+=","+key;
 			cout<<"Enter how many days of data:";
 			int days=0;
-			cin>>days;
-			getline(cin,response);//gets garbage
-			for (int n=0;n<days;n++){
-				cout<<"Enter Closing Price:";
-				getline(cin,response);
-				args+=":"+response;
+			bool ok = false;
+			while (!ok)
+			{ 
+				cin >> days;
+				if(!cin.fail() && (cin.peek()==EOF || cin.peek()=='\n'))
+				{
+					ok = true;
+				}
+				else
+				{
+					cout<<"Enter how many days of data:";
+				}
+				cin.clear();
+				cin.ignore(256,'\n');
 			}
-			cout<<"Enter Market Capital:";
-			getline(cin,response);
-			args+=":"+response;
-			
-			cout<<"Enter Volume:";
-			getline(cin,response);
-			args+=":"+response;
-			
-			cout<<"Enter High:";
-			getline(cin,response);
-			args+=":"+response;
-			
-			cout<<"Enter Low:";
-			getline(cin,response);
-			args+=":"+response;
-			
-			cout<<"Enter Open:";
-			getline(cin,response);
-			args+=":"+response;
+			string prices="";
+			string marketCap="";
+			string volumes="";
+			string highs="";
+			string lows="";
+			string opens="";
+			for (int n=0;n<days;n++){
+				getInput(n,prices, "Enter Closing Price");
+				getInput(n,marketCap, "Enter Market Capital");
+				getInput(n,volumes, "Enter Volume");
+				getInput(n,highs, "Enter High");
+				getInput(n,lows, "Enter Low");
+				getInput(n,opens, "Enter Open");
+				
+			}
+			args+=","+prices;
+			args+=","+marketCap;
+			args+=","+volumes;
+			args+=","+highs;
+			args+=","+lows;
+			args+=","+opens;
 			
 			cout<<args<<endl;
 			Stocks* newStock=new Stocks(args);
@@ -240,7 +272,7 @@ string Stocks::comparing;
 		delete target;
 	}	
 	void Controller::remove(string key){
-		cout<<"Removing"<<endl;
+//		cout<<"Removing"<<endl;
 		Stocks* target=new Stocks;
 		Stocks* returned;
 		target->settickerSymbol(key);
@@ -280,14 +312,24 @@ string Stocks::comparing;
 		
 		
 	}
-	
+	void Controller::quit(){
+	//	cout<<"Quiting"<<endl;
+		Queue<Stocks*> queue;
+		queue=tree->serialize();
+		while(queue.size()!=0){
+			Stocks* temp;
+			queue.peek(temp);
+			delete temp;
+			queue.dequeue();
+		}
+		
+	}
 		
 	
 	Controller::~Controller(){
-		cout<<"destructor"<<endl;
+	//	cout<<"destructor"<<endl;
 		delete table;
 		delete tree;
-		
 	}
 	
 
@@ -297,11 +339,11 @@ int main(){
 	bool success=false;
 	string response="";
 	while(!success){
-		cout<<"a. add stocks"<<endl;
+		cout<<"a. add stock"<<endl;
+		cout<<"d. delete stock"<<endl;
 		cout<<"l. list stocks"<<endl;
-		cout<<"d. delete stocks"<<endl;
-		cout<<"s. search stocks"<<endl;
-		cout<<"u. update stocks"<<endl;
+		cout<<"s. search stock"<<endl;
+		cout<<"h. print hash statistics"<<endl;
 		cout<<"q. quit"<<endl;
 		cout<<"Choice: ";
 		getline(cin,response);
@@ -309,8 +351,9 @@ int main(){
 			bool valid=false;
 			while(!valid){//while not sure
 				cout<<"List by:"<<endl;
-				cout<<"t. Ticker Symbol"<<endl;
-				cout<<"p. Current Price"<<endl;
+				cout<<"t. Ticker Symbol(Hash order)"<<endl;
+				cout<<"p. Current Price(Tree in order)"<<endl;
+				cout<<"s. Tree shape"<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
 				if (response=="t"){
@@ -320,6 +363,10 @@ int main(){
 				else if (response=="p"){
 					valid=true;
 					controller.listTree();
+				}
+				else if (response=="s"){
+					valid=true;
+					controller.printTree();
 				}
 			}
 		}
@@ -362,6 +409,9 @@ int main(){
 			getline(cin,response);
 			
 			controller.update(response);
+		}
+		else if (response=="h"){
+			controller.printStatistics();
 		}
 		else if (response=="q"){
 			bool sure=false;
