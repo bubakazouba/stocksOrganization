@@ -37,7 +37,7 @@ private:
 	void setArrayField(T data[],string str);
 //--------------------public functions declarations--------------------//
 public:
-	Stocks(){}//do I really need this? its never going to get used
+	Stocks(){Ndays=0;}//do I really need this? its never going to get used
 	Stocks(const Stocks&);///should it be constant?
 	Stocks& operator = (const Stocks& rhs);///should it return const?
 	Stocks(string line);//line read from file passed to this constructor to construct an object

@@ -5,15 +5,13 @@
 #ifndef _BINARY_SEARCH_TREE
 #define _BINARY_SEARCH_TREE
 
-#include <algorithm>
 #include "BinaryNode.h"
 #include "BinaryTree.h"
 
 template<class ItemType>
 class BinarySearchTree : public BinaryTree<ItemType>
 {   
-private:
-
+protected:
 	// internal insert node: insert newNode in nodePtr subtree
 	BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);
    
@@ -29,13 +27,14 @@ private:
 	// search for target node
 	// returns a 0 pointer if it didn't find it
 	BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const ItemType & target) const;
+   
 public:  
 	// insert a node at the correct location
-    bool insert(const ItemType & newEntry);
+    virtual bool insert(const ItemType & newEntry);
 	// remove a node if found
-	bool remove(const ItemType & anEntry);
+	virtual bool remove(const ItemType & anEntry);
 	// find a target node
-	bool getEntry(const ItemType & target, ItemType & returnedItem) const;
+	virtual bool getEntry(const ItemType & target, ItemType & returnedItem) const;
  
 };
 
@@ -54,7 +53,8 @@ template<class ItemType>
 bool BinarySearchTree<ItemType>::remove(const ItemType & target){
 	bool isSuccessful = false;
 	rootPtr = _remove(rootPtr, target, isSuccessful);
-	count--;
+	if(isSuccessful)
+		count--;
 	return isSuccessful; 
 }  
 
@@ -69,25 +69,29 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & re
 }  
 
 
-/////////////////////////////end of public functions///////////////////////////////////////
+//////////////////////////// end of public functions///////////////////////////////////////
 
 //////////////////////////// private functions ////////////////////////////////////////////
+
 template<class ItemType>
-BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* nodePtr,BinaryNode<ItemType>* newNodePtr){
-
-	if (nodePtr == 0)
-		return newNodePtr; 
-
-	if (newNodePtr->getItem() < nodePtr->getItem()){ //if item less than the current node 
-		nodePtr->setLeftPtr(_insert (nodePtr->getLeftPtr(), newNodePtr));
-	}
-
-	else{ 
-		nodePtr->setRightPtr(_insert (nodePtr->getRightPtr(), newNodePtr));
-	}//end of else going right
-	return nodePtr;  //return original root
+BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNodePtr){
+	if(nodePtr==0)
+		return newNodePtr;
+	if(newNodePtr->getItem()<nodePtr->getItem()){//if item we are going to insert is < current item
+		if(nodePtr->getLeftPtr()==0)
+			nodePtr->setLeftPtr(newNodePtr);
+		else
+			_insert(nodePtr->getLeftPtr(),newNodePtr);
+	}//end if we are going left
+	else {// if(newNodePtr->getItem()>=nodePtr->getItem()) //if item we are going to insert is >= current item
+		if(nodePtr->getRightPtr()==0)
+			nodePtr->setRightPtr(newNodePtr);
+		else
+			_insert(nodePtr->getRightPtr(),newNodePtr);
+	}//end if we are going right
+	return nodePtr;
 }  
-//////////////////////////////////////////////////////////////////////////////////
+
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* nodePtr, const ItemType target, bool & success){
 	if (nodePtr == 0) {
@@ -101,7 +105,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* 
 	else{
 		nodePtr = deleteNode(nodePtr);
 		success = true;
-	}
+	}      
 	return nodePtr;   
 }  
 
