@@ -80,7 +80,13 @@ string Stocks::comparing;
 		cout<<"Market Cap: "<<market;
 		unsigned long long volume;
 		temp->getVolume(volume);
-		cout<<", Volume: "<<volume<<endl;
+		cout<<", Volume: "<<volume;
+		double open;
+		temp->getOpen(open);
+		cout<<", Open: "<<open;
+		double close;
+		temp->getClose(close);
+		cout<<", Close: "<<close<<endl;
 		double max=0,min=12344445556677;
 		double prices[temp->getNdays()];
 		for(int i=0;i<temp->getNdays();i++){
@@ -92,6 +98,7 @@ string Stocks::comparing;
 			prices[i]=price;
 		}
 		int heightOfGraph=13;
+		int maxDigits=9;
 		double distribution=(max-min)/(heightOfGraph-1);
 		int heights[temp->getNdays()];
 		for(int i=0;i<temp->getNdays();i++){
@@ -99,10 +106,15 @@ string Stocks::comparing;
 		}
 		for (int i=heightOfGraph;i>-1;i--){
 			if(i==heightOfGraph){
+				cout << setfill (' ') <<setw(maxDigits);
 				cout<<max<<" \u2227";//uparrow
+				
+			}
+			else if(i==((heightOfGraph)/2)){//print price halfway in the graph
+				cout<<"    price "<<"\u2502";//vertical bar
 			}		
 			else{
-			cout<<"      "<<"\u2502";//vertical bar
+				cout<<"          "<<"\u2502";//vertical bar
 			}
 			for(int a=0;a<temp->getNdays();a++){
 				cout<<"   ";
@@ -112,19 +124,18 @@ string Stocks::comparing;
 				else{
 					cout<<" ";//so that the days dont phase put
 				}
-				
 			}
 			cout<<endl;
-			
-			
 		}
-		cout<<min<<"  ";
+		cout << setfill (' ') <<setw(maxDigits);
+		cout<<min<<" \u2514";//corner
 		for(int a=0;a<temp->getNdays();a++){
-				if(a!=(temp->getNdays()/2)-1){
-					cout<<"\u2015\u2015\u2015\u2015";//full width horizontal lines
+				if(a==(temp->getNdays()/2)-1){
+					cout<<"days";
 				}
 				else{
-					cout<<"days";
+					cout<<"\u2015\u2015\u2015\u2015";//full width horizontal lines
+					
 				}
 		}
 		cout<<"\u2015\u2015>"<<endl;
@@ -138,10 +149,12 @@ string Stocks::comparing;
 		if(table->find(target,returned))
 		{
 			cout<<"Found Stock"<<endl;
-			cout<<returned->toString()<<endl;// may throw seg error if find doesnt modify key properly
+			//cout<<returned->toString()<<endl;// may throw seg error if find doesnt modify key properly
+			display(returned);
 		}
 		else{
 			cout<<"Could not find Stock"<<endl;
+			
 		}
 		delete target;
 	}
@@ -152,6 +165,7 @@ string Stocks::comparing;
 		//if(tree->getEntry(target,returned)){
 			//cout<<"Found Stock"<<endl;
 			//cout<<returned->toString()<<endl;
+			//display(returned);
 		//}
 		//else{
 			//cout<<"Could not find Stock"<<endl;
@@ -173,22 +187,57 @@ string Stocks::comparing;
 	
 	void Controller::add(string key){
 		cout<<"Adding"<<endl;
-		Stocks* newStock=new Stocks;
-		newStock->settickerSymbol(key);
+		string args="";
+		Stocks* target=new Stocks;
+		target->settickerSymbol(key);
 		Stocks* returned;
-		if(!table->find(newStock,returned))
+		if(!table->find(target,returned))
 		{
 			/////////////////////////////////////needs work
+			
 			cout<<"Enter Company Name:";
 			string response="";
 			getline(cin,response);
+			args+=response;
+			args+=":"+key;
+			cout<<"Enter how many days of data:";
+			int days=0;
+			cin>>days;
+			getline(cin,response);//gets garbage
+			for (int n=0;n<days;n++){
+				cout<<"Enter Closing Price:";
+				getline(cin,response);
+				args+=":"+response;
+			}
+			cout<<"Enter Market Capital:";
+			getline(cin,response);
+			args+=":"+response;
+			
+			cout<<"Enter Volume:";
+			getline(cin,response);
+			args+=":"+response;
+			
+			cout<<"Enter High:";
+			getline(cin,response);
+			args+=":"+response;
+			
+			cout<<"Enter Low:";
+			getline(cin,response);
+			args+=":"+response;
+			
+			cout<<"Enter Open:";
+			getline(cin,response);
+			args+=":"+response;
+			
+			cout<<args<<endl;
+			Stocks* newStock=new Stocks(args);
 			table->add(newStock); 
 			tree->insert(newStock);	
 		}
 		else{
 			cout<<"Ups, the stock you are inserting already exists"<<endl;
-			delete newStock;
 		}
+		delete target;
 	}	
 	void Controller::remove(string key){
 		cout<<"Removing"<<endl;
@@ -245,15 +294,6 @@ string Stocks::comparing;
 
 int main(){
 	Controller controller("bigDataDay1.cleaned");	
-	//// delete this crap
-			Stocks* tempy=new Stocks("Aaron's Inc,AAN,33.00:32.90:32.81:32.76:32.69:32.90:32.60:32.65:32.78:32.69:32.90:32.69:32.73:32.78,2369931920,42333,32.84,32.48,32.49");
-			controller.display(tempy);
-			delete tempy;
-			
-			////
-	
-	
-	
 	bool success=false;
 	string response="";
 	while(!success){
@@ -320,6 +360,7 @@ int main(){
 		else if (response=="u"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
+			
 			controller.update(response);
 		}
 		else if (response=="q"){
