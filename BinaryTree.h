@@ -4,7 +4,7 @@
  
 #ifndef _BINARY_TREE
 #define _BINARY_TREE
-
+#include <vector>
 #include "BinaryNode.h"
 
 template<class ItemType>
@@ -31,10 +31,16 @@ public:
  	bool isEmpty() const				{return count == 0;}
 	int size() const					{return count;}
 	void clear()						{destroyTree(rootPtr); rootPtr = 0; count = 0;}
+	void preOrder(void visit(vector<ItemType> &)) const		{_preorder(visit, rootPtr);}
+	void inOrder(void visit(vector<ItemType> &)) const		{_inorder(visit, rootPtr);}
+	void postOrder(void visit(vector<ItemType> &)) const	    {_postorder(visit, rootPtr);}	
+	void reverseOrder(void visit(vector<ItemType> &)) const	{_reverseOrder(visit, rootPtr);}	
+
 	void preOrder(void visit(ItemType &)) const		{_preorder(visit, rootPtr);}
 	void inOrder(void visit(ItemType &)) const		{_inorder(visit, rootPtr);}
-	void postOrder(void visit(ItemType &)) const	{_postorder(visit, rootPtr);}	
+	void postOrder(void visit(ItemType &)) const	    {_postorder(visit, rootPtr);}	
 	void reverseOrder(void visit(ItemType &)) const	{_reverseOrder(visit, rootPtr);}	
+
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType & newData) = 0; 
 	virtual bool remove(const ItemType & data) = 0; 
@@ -93,8 +99,7 @@ void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType
 	if (nodePtr == 0)
 		return;
 
-	ItemType item = nodePtr->getItem();
-	visit(item);
+	visit(nodePtr->getItem());
 	_preorder(visit, nodePtr->getLeftPtr());
 	_preorder(visit, nodePtr->getRightPtr()); 
 }  
@@ -104,9 +109,8 @@ void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>
 	if(nodePtr==0)
 		return;
 	
-	ItemType item = nodePtr->getItem();
 	_inorder(visit, nodePtr->getLeftPtr());
-	visit(item);
+	visit(nodePtr->getItem());
 	_inorder(visit, nodePtr->getRightPtr());
 }  
 
@@ -114,11 +118,10 @@ template<class ItemType>
 void BinaryTree<ItemType>::_postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const{
 	if(nodePtr==0)
 		return;
-	
-	ItemType item = nodePtr->getItem();
+
 	_postorder(visit, nodePtr->getLeftPtr());
 	_postorder(visit, nodePtr->getRightPtr());
-	visit(item);
+	visit(nodePtr->getItem());
 }  
 
 template<class ItemType>
