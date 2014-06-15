@@ -42,27 +42,27 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	return true;
 }
 	string Stocks::comparableSTR() const{
-		if(comparing=="name")
+		if(comparing=="Company Name")
 			return name;
-		if(comparing=="tickerSymbol")
+		if(comparing=="Ticker Symbol")
 			return tickerSymbol;
 		return "";
 	}
 	unsigned long long Stocks::comparableLL() const{
-		if(comparing=="volume")
+		if(comparing=="Volume")
 			return volume[Ndays-1];
-		if(comparing=="marketCapital")
+		if(comparing=="Market Capital")
 			return marketCap[Ndays-1];
 		return -1;
 	}
 	double Stocks::comparableD() const{
-		if(comparing=="close")
+		if(comparing=="Price")
 			return close[Ndays-1];
-		if(comparing=="open")
+		if(comparing=="Opening Price")
 			return open[Ndays-1];
-		if(comparing=="high")
+		if(comparing=="High")
 			return high[Ndays-1];
-		if(comparing=="low")
+		if(comparing=="Low")
 			return low[Ndays-1];
 		return -1;
 	}
@@ -145,49 +145,49 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 
 // Comparison Operators
 	bool Stocks::operator ==(const Stocks& rhs){
-		if(comparing=="name" || comparing=="tickerSymbol")
+		if(comparing=="Company Name" || comparing=="Ticker Symbol")
 			return comparableSTR()==rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low"){
+		if(comparing=="Opening Price"||comparing=="Price"||comparing=="High"||comparing=="Low"){
 			cout<<comparableD()<<" "<<rhs.comparableD()<<endl;
 			return comparableD()==rhs.comparableD();
 		}
-		if(comparing=="volume"||comparing=="marketCapital")
+		if(comparing=="Volume"||comparing=="Market Capital")
 			return comparableLL()==rhs.comparableLL();
 		return false;
 	}
 	bool Stocks::operator > (const Stocks& rhs){
-		if(comparing=="name" || comparing=="tickerSymbol")
+		if(comparing=="Company Name" || comparing=="Ticker Symbol")
 			return comparableSTR()>rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
+		if(comparing=="Opening Price"||comparing=="Price"||comparing=="High"||comparing=="Low")
 			return comparableD()>rhs.comparableD();
-		if(comparing=="volume"||comparing=="marketCapital")
+		if(comparing=="Volume"||comparing=="Market Capital")
 			return comparableLL()>rhs.comparableLL();
 		return false;	
 	}
 	bool Stocks::operator <= (const Stocks& rhs){
-		if(comparing=="name" || comparing=="tickerSymbol")
+		if(comparing=="Company Name" || comparing=="Ticker Symbol")
 			return comparableSTR()<=rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
+		if(comparing=="Opening Price"||comparing=="Price"||comparing=="High"||comparing=="Low")
 			return comparableD()<=rhs.comparableD();
-		if(comparing=="volume"||comparing=="marketCapital")
+		if(comparing=="Volume"||comparing=="Market Capital")
 			return comparableLL()<=rhs.comparableLL();
 		return false;
 	}
 	bool Stocks::operator < (const Stocks& rhs){
-		if(comparing=="name" || comparing=="tickerSymbol")
+		if(comparing=="Company Name" || comparing=="Ticker Symbol")
 			return comparableSTR()<rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
+		if(comparing=="Opening Price"||comparing=="Price"||comparing=="High"||comparing=="Low")
 			return comparableD()<rhs.comparableD();
-		if(comparing=="volume"||comparing=="marketCapital")
+		if(comparing=="Volume"||comparing=="Market Capital")
 			return comparableLL()<rhs.comparableLL();
 		return false;
 	}
 	bool Stocks::operator != (const Stocks& rhs){
-		if(comparing=="name" || comparing=="tickerSymbol")
+		if(comparing=="Company Name" || comparing=="Ticker Symbol")
 			return comparableSTR()!=rhs.comparableSTR();
-		if(comparing=="open"||comparing=="close"||comparing=="high"||comparing=="low")
+		if(comparing=="Opening Price"||comparing=="Price"||comparing=="High"||comparing=="Low")
 			return comparableD()!=rhs.comparableD();
-		if(comparing=="volume"||comparing=="marketCapital")
+		if(comparing=="Volume"||comparing=="Market Capital")
 			return comparableLL()!=rhs.comparableLL();
 		return false;
 	}
