@@ -33,6 +33,8 @@ void searchByValue(string key);
 void printStatistics();
 void update(string key);
 void quit();
+void printMaxInTree();
+void printMinInTree();
 
 
 };

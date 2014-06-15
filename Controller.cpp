@@ -28,7 +28,7 @@
 #include "Controller.h"
 #include <fstream>
 #include <iomanip>
-//#include "Memtracker.h"
+#include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
 string Stocks::comparing;
@@ -146,7 +146,7 @@ string Stocks::comparing;
 					
 				}
 		}
-		cout<<"\u2015\u2015>"<<endl;
+		cout<<"\u2015\u2015>"<<endl;//full width horizontal lines
 		delete [] heights;
 		delete [] prices;
 	}
@@ -156,13 +156,10 @@ string Stocks::comparing;
 		Stocks* returned;
 		if(table->find(target,returned))
 		{
-			//cout<<"Found Stock"<<endl;
-			//cout<<returned->toString()<<endl;// may throw seg error if find doesnt modify key properly
 			display(returned);
 		}
 		else{
-			cout<<"Could not find Stock"<<endl;
-			
+			cout<<"Could not find Stock"<<endl;		
 		}
 		delete target;
 	}
@@ -181,25 +178,25 @@ string Stocks::comparing;
 			cout<<"Could not find Stock"<<endl;
 		}
 		delete target;
-		
 	}
 	void Controller::listHash(){
-	
 		table->print();
 	}
 	void Controller::listTree(){//inOrder
-		
 		//tree->printInOrder();
-		
 		} 
 	void Controller::printTree(){ //breath first
-	
 		//tree->printIndented();
 	}
 	void Controller::printStatistics(){ //print hashtables statistics
-	//	cout<<"Hashing Statistics"<<endl;
 		table->printStatistics();
 		
+	}
+	void printMaxInTree(){
+		//display(tree->getMax());
+	}
+	void printMinInTree(){
+		//display(tree->getMin());
 	}
 	
 	void getInput(int n,string& args, string output){
@@ -215,14 +212,12 @@ string Stocks::comparing;
 	}
 	
 	void Controller::add(string key){
-		//cout<<"Adding"<<endl;
 		string args="";
 		Stocks* target=new Stocks;
 		target->settickerSymbol(key);
 		Stocks* returned;
 		if(!table->find(target,returned))
 		{
-			
 			cout<<"Enter Company Name:";
 			string response="";
 			getline(cin,response);
@@ -258,7 +253,6 @@ string Stocks::comparing;
 				getInput(n,highs, "Enter High");
 				getInput(n,lows, "Enter Low");
 				getInput(n,opens, "Enter Open");
-				
 			}
 			args+=","+prices;
 			args+=","+marketCap;
@@ -266,7 +260,6 @@ string Stocks::comparing;
 			args+=","+highs;
 			args+=","+lows;
 			args+=","+opens;
-			
 			cout<<args<<endl;
 			Stocks* newStock=new Stocks(args);
 			table->add(newStock); 
@@ -278,7 +271,6 @@ string Stocks::comparing;
 		delete target;
 	}	
 	void Controller::remove(string key){
-//		cout<<"Removing"<<endl;
 		Stocks* target=new Stocks;
 		Stocks* returned;
 		target->settickerSymbol(key);
@@ -292,56 +284,21 @@ string Stocks::comparing;
 			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
 		}
 		delete target;
-		
-		
-	}
-	
-	void Controller::update(string key){
-		cout<<"Updating"<<endl;
-		Stocks* target=new Stocks;
-		Stocks* returned;
-		target->settickerSymbol(key);
-		if(table->find(target,returned))
-		{
-			cout<<"Enter Company Name:";
-			string response="";
-			getline(cin,response);
-			/////////////////////////////////////needs work
-			table->remove(returned); 
-			tree->remove(returned);	
-			delete returned;
-		}
-		else{
-			cout<<"Ups,the Stock you are trying to delete doesnt exist"<<endl;
-		}
-		delete target;
-		
-		
 	}
 	void Controller::quit(){
-	//	cout<<"Quiting"<<endl;
 		Queue<Stocks*> queue;
-		//queue=tree->serialize();
+		queue=tree->serialize();
 		while(queue.size()!=0){
 			Stocks* temp;
 			queue.peek(temp);
 			delete temp;
 			queue.dequeue();
-		}
-		
+		}	
 	}
-		
-	
 	Controller::~Controller(){
-	//	cout<<"destructor"<<endl;
 		delete table;
 		delete tree;
 	}
-	
-
-    
-    	
-
     template<class ItemType>
     bool operator<( vector<ItemType> v1,vector<ItemType> v2){
             return v1[0]<v2[0];
@@ -362,17 +319,14 @@ string Stocks::comparing;
     bool operator!=(const vector<ItemType> v1,const vector<ItemType> v2){
             return v1[0]!=v2[0];
     }
-
-
 int main(){
-	
-		
 	bool success=false;
 	string response="";
 	string comparing;
 	cout<<"Welcome to this awesome program..."<<endl;
+	
 	while(!success){
-		
+			
 		cout<<"Enter a field to sort the tree"<<endl;
 		cout<<"n. Company Name"<<endl;
 		cout<<"s. Ticker Symbol"<<endl;
@@ -385,21 +339,17 @@ int main(){
 		cout<<"Choice: ";
 		getline(cin,response);
 		
-	
-		
 		if(response=="n"){
 			Stocks temp;
 			comparing="Company Name";
 			temp.compareBy(comparing);
 			success=true;
-			
 		}
 		else if (response=="s"){
 			Stocks temp;
 			comparing="Ticker Symbol";
 			temp.compareBy(comparing);
 			success=true;
-			
 		}
 		else if (response=="p"){
 			Stocks temp;
@@ -412,14 +362,12 @@ int main(){
 			comparing="Volume";
 			temp.compareBy(comparing);
 			success=true;
-			
 		}
 		else if (response=="c"){
 			Stocks temp;
 			comparing="Market Capital";
 			temp.compareBy(comparing);
-			success=true;
-			
+			success=true;	
 		}
 		else if (response=="o"){
 			Stocks temp;
@@ -431,18 +379,14 @@ int main(){
 			Stocks temp;
 			comparing="High";
 			temp.compareBy(comparing);
-			
 			success=true;
-			
 		}
 		else if (response=="l"){
 			Stocks temp;
 			comparing="Low";
 			temp.compareBy(comparing);
-			
 			success=true;
 		}
-		
 	}
 	success=false;
 	Controller controller("inputfile.txt",comparing);
@@ -518,25 +462,20 @@ int main(){
 							valid=true;
 						}
 						else if(response=="l"){
+							controller.printMinInTree();
 							valid=true;
 							
 						}
 						else if(response=="g"){
+							controller.printMaxInTree();
 							valid=true;
 							
 						}
-						
-						
-					}	
-				}
-			}
+					}//end of while	
+				}//end of else if (response=="p")
+			}//end of while valid
 		}
-		else if (response=="u"){
-			cout<<"Enter Ticker Symbol: ";
-			getline(cin,response);
-			
-			controller.update(response);
-		}
+		
 		else if (response=="h"){
 			controller.printStatistics();
 		}
@@ -559,8 +498,6 @@ int main(){
 		else{
 			cout<<"l, d, u, s or q only"<<endl;
 		}
-		
 	}
 	 return 0;
  }
-
