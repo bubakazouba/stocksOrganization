@@ -25,25 +25,6 @@ private:
 public: 
     int height; 
 	void pushback(ItemType & obj){vec.push_back(obj);} 
-    string getState(){ 
-        int leftHeight,rightHeight; 
-        leftHeight=rightHeight=-1; 
-        if(leftPtr!=0) 
-            leftHeight=leftPtr->height; 
-        if(rightPtr!=0) 
-            rightHeight=rightPtr->height; 
-        if(leftHeight-rightHeight==0) 
-            return "EH"; 
-        if(leftHeight-rightHeight==1) 
-            return "LH"; 
-        if(rightHeight-leftHeight==1) 
-            return "RH"; 
-        if(leftHeight-rightHeight==2) 
-            return "LLH"; 
-        if(rightHeight-leftHeight==2) 
-            return "RRH"; 
-        return "ERROR"; 
-    } 
     // constructors 
     BinaryNode(const vector<ItemType> & aVec)        {vec = aVec; leftPtr = 0; rightPtr = 0;height=0;} 
 	BinaryNode(const ItemType & anItem)               {item = anItem; leftPtr = 0; rightPtr = 0;height=0;} 
