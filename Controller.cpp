@@ -160,15 +160,14 @@ string Stocks::comparing;
 	}
 	void Controller::searchByValue(string price){
 		
-		Stocks* returned;
+		vector<Stocks*> returned;
 		Stocks* target=new Stocks();// needs some work , because of the staks
-		target->setClose(20);
-		target->settickerSymbol("AAPL");
-		target->comparing="tickerSymbol";
+		target->settickerSymbol(price);
+		target->compareBy("tickerSymbol");
 		if(tree->getEntry(target,returned)){
-			//cout<<"Found Stock"<<endl;
-			//cout<<returned->toString()<<endl;
-			display(returned);
+			if(returned.size()>0){
+				display(returned[0]);
+			}
 		}
 		else{
 			cout<<"Could not find Stock"<<endl;
@@ -177,17 +176,17 @@ string Stocks::comparing;
 		
 	}
 	void Controller::listHash(){
-	//	cout<<"Listing Hash"<<endl;
+	
 		table->print();
 	}
 	void Controller::listTree(){//inOrder
-		//cout<<"Listing tree"<<endl;
-		tree->printInOrder();
+		
+		//tree->printInOrder();
 		
 		} 
 	void Controller::printTree(){ //breath first
-	//	cout<<"printing tree"<<endl;
-		tree->printIndented();
+	
+		//tree->printIndented();
 	}
 	void Controller::printStatistics(){ //print hashtables statistics
 	//	cout<<"Hashing Statistics"<<endl;
@@ -315,7 +314,7 @@ string Stocks::comparing;
 	void Controller::quit(){
 	//	cout<<"Quiting"<<endl;
 		Queue<Stocks*> queue;
-		queue=tree->serialize();
+		//queue=tree->serialize();
 		while(queue.size()!=0){
 			Stocks* temp;
 			queue.peek(temp);
@@ -333,9 +332,40 @@ string Stocks::comparing;
 	}
 	
 
+    
+    	
+
+    template<class ItemType>
+    bool operator<( vector<ItemType> v1,vector<ItemType> v2){
+            return v1[0]<v2[0];
+    }
+    template<class ItemType>
+    bool operator==(const vector<ItemType> v1,const vector<ItemType> v2){
+            return v1[0]==v2[0];
+    }
+    template<class ItemType>
+    bool operator>(const vector<ItemType> v1,const vector<ItemType> v2){
+            return v1[0]>v2[0];
+    }
+    template<class ItemType>
+    bool operator<=(const vector<ItemType> v1,const vector<ItemType> v2){
+            return v1[0]<=v2[0];
+    }
+    template<class ItemType>
+    bool operator!=(const vector<ItemType> v1,const vector<ItemType> v2){
+            return v1[0]!=v2[0];
+    }
+
+
+
+
+	
+
 
 int main(){
-	Controller controller("bigDataDay1.cleaned");	
+	Stocks temp;
+	temp.compareBy("tickerSymbol");
+	Controller controller("fatfile");	
 	bool success=false;
 	string response="";
 	while(!success){
