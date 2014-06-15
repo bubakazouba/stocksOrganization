@@ -28,7 +28,7 @@
 #include "Controller.h"
 #include <fstream>
 #include <iomanip>
-#include "Memtracker.h"
+//#include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
 string Stocks::comparing;
@@ -96,7 +96,7 @@ string Stocks::comparing;
 		temp->getClose(close);
 		cout<<", Close: "<<close<<endl;
 		double max=0,min=12344445556677;
-		double prices[temp->getNdays()];
+		double* prices=new double[temp->getNdays()];
 		for(int i=0;i<temp->getNdays();i++){
 			temp->getClose(price,i);
 			if (max<price)
@@ -108,7 +108,7 @@ string Stocks::comparing;
 		int heightOfGraph=13;
 		int maxDigits=9;
 		double distribution=(max-min)/(heightOfGraph-1);
-		int heights[temp->getNdays()];
+		int* heights=new int[temp->getNdays()];
 		for(int i=0;i<temp->getNdays();i++){
 			heights[i]=((prices[i]-min)/distribution);	
 		}
@@ -147,8 +147,8 @@ string Stocks::comparing;
 				}
 		}
 		cout<<"\u2015\u2015>"<<endl;
-		
-		
+		delete [] heights;
+		delete [] prices;
 	}
 	void Controller::searchByTicker(string key){
 		Stocks* target=new Stocks;
