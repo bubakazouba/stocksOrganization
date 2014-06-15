@@ -38,9 +38,21 @@ string Stocks::comparing;
 		 string line;
 		 bool done=false;
 		int counter=0;
+		ifstream myfile2("inputFile");
 		while(!done){
 			 ifstream myfile(file.c_str());
-			 if (myfile.is_open())
+			
+			 if (myfile2.is_open())
+			 {
+				 while ( getline (myfile2,line) )
+				 {
+					counter++;
+					StockQueue.enqueue(new Stocks(line));
+				 }
+				 
+				 done=true;
+			 }//end of if
+			 else if (myfile.is_open())
 			 {
 				 while ( getline (myfile,line) )
 				 {
@@ -57,6 +69,7 @@ string Stocks::comparing;
 				 
 			 }//end of else
 		}//end while
+		myfile2.close();
 		 return counter;
 	 }//end of function readFile()
 	 
@@ -274,7 +287,7 @@ string Stocks::comparing;
 			args+=","+highs;
 			args+=","+lows;
 			args+=","+opens;
-			cout<<args<<endl;
+			//cout<<args<<endl;
 			Stocks* newStock=new Stocks(args);
 			table->add(newStock); 
 			tree->insert(newStock);	
@@ -291,7 +304,14 @@ string Stocks::comparing;
 		if(table->find(target,returned))
 		{
 			table->remove(returned); 
-			tree->remove(returned);	
+			vector<Stocks*> vec;
+			 tree->replace(returned,vec); 
+			 for (int i=0;i<vec.size();i++){
+				 if(vec[i]->gettickerSymbol()==returned->gettickerSymbol()){
+					 vec.erase(vec.begin()+i);
+				 }
+			 }
+			cout<<key<<" was removed"<<endl;
 			delete returned;
 		}
 		else{
@@ -301,13 +321,20 @@ string Stocks::comparing;
 	}
 	void Controller::quit(){
 		Queue<Stocks*> queue;
-		queue=tree->serialize();
+		//tree->serialize(queue);
+		table->List(queue);
+		ofstream outfile("inputFile");
 		while(queue.size()!=0){
 			Stocks* temp;
 			queue.peek(temp);
+			if (outfile)
+			{
+				outfile<<temp->toString()<<endl;
+			}
 			delete temp;
 			queue.dequeue();
 		}	
+		outfile.close();
 	}
 	Controller::~Controller(){
 		delete table;
