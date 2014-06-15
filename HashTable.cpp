@@ -177,7 +177,7 @@ bool HashFunction:: add(Stocks* temp){
 void HashFunction::List(Queue<Stocks*>& StockQueue){
 
 	for(int i=0; i<arrSize; i++){
-			if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="DELETED" ){
+			if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="deleted" ){
 			   // cout<<hashArray[i]->toString()<<endl;
 			   StockQueue.enqueue(hashArray[i]);
 
