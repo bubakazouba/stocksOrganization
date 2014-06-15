@@ -16,10 +16,11 @@ private:
 int readFile(string file,Queue<Stocks*>& StockQueue);
 HashFunction* table;
 AVL<Stocks*>* tree;
+string comparing;
 
 
 public:
-Controller(string file);
+Controller(string file,string comp);
 ~Controller();
 void listHash();
 void listTree();
@@ -32,6 +33,7 @@ void searchByValue(string key);
 void printStatistics();
 void update(string key);
 void quit();
+
 
 };
 #endif

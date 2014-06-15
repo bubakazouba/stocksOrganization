@@ -35,25 +35,33 @@ string Stocks::comparing;
 
 	int Controller::readFile(string file,Queue<Stocks*>& StockQueue){
 		 string line;
+		 bool done=false;
 		int counter=0;
-		 ifstream myfile(file.c_str());
-		 if (myfile.is_open())
-		 {
-			 while ( getline (myfile,line) )
+		while(!done){
+			 ifstream myfile(file.c_str());
+			 if (myfile.is_open())
 			 {
-				counter++;
-				StockQueue.enqueue(new Stocks(line));
-			 }
-			 myfile.close();
-		 }//end of if
-		 else{ 
-			 cout<<"Error reading file"<<endl;
-		 }//end of else
+				 while ( getline (myfile,line) )
+				 {
+					counter++;
+					StockQueue.enqueue(new Stocks(line));
+				 }
+				 myfile.close();
+				 done=true;
+			 }//end of if
+			 else{ 
+				 cout<<"Error reading file"<<endl;
+				 cout<<"Enter new file:";
+				 getline(cin,file);
+				 
+			 }//end of else
+		}//end while
 		 return counter;
 	 }//end of function readFile()
 	 
 	//Constructor 
-	Controller::Controller(string file){
+	Controller::Controller(string file,string comp){
+	comparing=comp;
 	Queue<Stocks*> queue;
 	int numberOfRecords=readFile(file,queue);
 	table=new HashFunction(numberOfRecords);
@@ -163,7 +171,7 @@ string Stocks::comparing;
 		vector<Stocks*> returned;
 		Stocks* target=new Stocks();// needs some work , because of the staks
 		target->settickerSymbol(price);
-		target->compareBy("tickerSymbol");
+		target->compareBy(comparing);
 		if(tree->getEntry(target,returned)){
 			if(returned.size()>0){
 				display(returned[0]);
@@ -214,7 +222,6 @@ string Stocks::comparing;
 		Stocks* returned;
 		if(!table->find(target,returned))
 		{
-			/////////////////////////////////////needs work
 			
 			cout<<"Enter Company Name:";
 			string response="";
@@ -357,17 +364,89 @@ string Stocks::comparing;
     }
 
 
-
-
-	
-
-
 int main(){
-	Stocks temp;
-	temp.compareBy("tickerSymbol");
-	Controller controller("fatfile");	
+	
+		
 	bool success=false;
 	string response="";
+	string comparing;
+	cout<<"Welcome to this awesome program..."<<endl;
+	while(!success){
+		
+		cout<<"Enter a field to sort the tree"<<endl;
+		cout<<"n. Company Name"<<endl;
+		cout<<"s. Ticker Symbol"<<endl;
+		cout<<"p. Price"<<endl;
+		cout<<"v. Volume"<<endl;
+		cout<<"c. Market Capital"<<endl;
+		cout<<"o. Opening Price"<<endl;
+		cout<<"h. High"<<endl;
+		cout<<"l. Low"<<endl;
+		cout<<"Choice: ";
+		getline(cin,response);
+		
+	
+		
+		if(response=="n"){
+			Stocks temp;
+			comparing="Company Name";
+			temp.compareBy(comparing);
+			success=true;
+			
+		}
+		else if (response=="s"){
+			Stocks temp;
+			comparing="Ticker Symbol";
+			temp.compareBy(comparing);
+			success=true;
+			
+		}
+		else if (response=="p"){
+			Stocks temp;
+			comparing="Price";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="v"){
+			Stocks temp;
+			comparing="Volume";
+			temp.compareBy(comparing);
+			success=true;
+			
+		}
+		else if (response=="c"){
+			Stocks temp;
+			comparing="Market Capital";
+			temp.compareBy(comparing);
+			success=true;
+			
+		}
+		else if (response=="o"){
+			Stocks temp;
+			comparing="Opening Price";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="h"){
+			Stocks temp;
+			comparing="High";
+			temp.compareBy(comparing);
+			
+			success=true;
+			
+		}
+		else if (response=="l"){
+			Stocks temp;
+			comparing="Low";
+			temp.compareBy(comparing);
+			
+			success=true;
+		}
+		
+	}
+	success=false;
+	Controller controller("inputfile.txt",comparing);
+	
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
@@ -382,7 +461,7 @@ int main(){
 			while(!valid){//while not sure
 				cout<<"List by:"<<endl;
 				cout<<"t. Ticker Symbol(Hash order)"<<endl;
-				cout<<"p. Current Price(Tree in order)"<<endl;
+				cout<<"p. "<<comparing<<"(Tree in order)"<<endl;
 				cout<<"s. Tree shape"<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
@@ -415,7 +494,7 @@ int main(){
 			while(!valid){//while not sure
 				cout<<"Search by:"<<endl;
 				cout<<"t. Ticker Symbol"<<endl;
-				cout<<"p. Current Price"<<endl;
+				cout<<"p. "<<comparing<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
 				if (response=="t"){
@@ -425,12 +504,30 @@ int main(){
 					controller.searchByTicker(response);
 				}
 				else if (response=="p"){
-					valid=true;
-					cout<<"l. least in value"<<endl;
-					cout<<"g. greater in value"<<endl;
-					cout<<"Choice: ";
-					getline(cin,response);
-					controller.searchByValue(response);
+					
+					while(!valid){//while not sure
+						cout<<"l. least in value"<<endl;
+						cout<<"g. greater in value"<<endl;
+						cout<<"c. custom value"<<endl;
+						cout<<"Choice: ";
+						getline(cin,response);
+						if(response=="c"){
+							cout<<"Enter custom value: ";
+							getline(cin,response);
+							controller.searchByValue(response);
+							valid=true;
+						}
+						else if(response=="l"){
+							valid=true;
+							
+						}
+						else if(response=="g"){
+							valid=true;
+							
+						}
+						
+						
+					}	
 				}
 			}
 		}
