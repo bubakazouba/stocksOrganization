@@ -82,34 +82,40 @@ string Stocks::comparing;
 		cout<<", Ticker: "<<temp->gettickerSymbol();
 		double price;
 		temp->getClose(price);
-		cout<<", Price: $"<<price<<endl;
+		cout<<", Price: $"<<price;
+		double open;
+		temp->getOpen(open);
+		cout<<", Open: "<<open<<endl;
 		unsigned long long market;
 		temp->getmarketCap(market);
 		cout<<"Market Cap: "<<market;
 		unsigned long long volume;
 		temp->getVolume(volume);
 		cout<<", Volume: "<<volume;
-		double open;
-		temp->getOpen(open);
-		cout<<", Open: "<<open;
-		double close;
-		temp->getClose(close);
-		cout<<", Close: "<<close<<endl;
+		double high;
+		temp->getHigh(high);
+		cout<<", High: "<<high;
+		double low;
+		temp->getLow(low);
+		cout<<", Low: "<<low<<endl;
 		double max=0,min=12344445556677;
-		double* prices=new double[temp->getNdays()];
+		//double* prices=new double[temp->getNdays()];
+		vector<double> prices;
 		for(int i=0;i<temp->getNdays();i++){
 			temp->getClose(price,i);
-			if (max<price)
-				max=price;
-			if (min>price)
-				min=price;
-			prices[i]=price;
+			if(price!=0){
+				if (max<price)
+					max=price;
+				if (min>price)
+					min=price;
+				prices.push_back(price);
+			}
 		}
 		int heightOfGraph=13;
 		int maxDigits=9;
 		double distribution=(max-min)/(heightOfGraph-1);
-		int* heights=new int[temp->getNdays()];
-		for(int i=0;i<temp->getNdays();i++){
+		int* heights=new int[prices.size()];
+		for(int i=0;i<prices.size();i++){
 			heights[i]=((prices[i]-min)/distribution);	
 		}
 		for (int i=heightOfGraph;i>-1;i--){
@@ -124,7 +130,7 @@ string Stocks::comparing;
 			else{
 				cout<<"          "<<"\u2502";//vertical bar
 			}
-			for(int a=0;a<temp->getNdays();a++){
+			for(int a=0;a<prices.size();a++){
 				cout<<"   ";
 				if(heights[a]>=i){
 					cout<<"\u2593";//graybox
@@ -137,8 +143,8 @@ string Stocks::comparing;
 		}
 		cout << setfill (' ') <<setw(maxDigits);
 		cout<<min<<" \u2514";//corner
-		for(int a=0;a<temp->getNdays();a++){
-				if(a==(temp->getNdays()/2)-1){
+		for(int a=0;a<prices.size();a++){
+				if(a==(prices.size()/2)-1){
 					cout<<"days";
 				}
 				else{
@@ -148,7 +154,6 @@ string Stocks::comparing;
 		}
 		cout<<"\u2015\u2015>"<<endl;//full width horizontal lines
 		delete [] heights;
-		delete [] prices;
 	}
 	void Controller::searchByTicker(string key){
 		Stocks* target=new Stocks;
@@ -166,7 +171,7 @@ string Stocks::comparing;
 	void Controller::searchByValue(string price){
 		
 		vector<Stocks*> returned;
-		Stocks* target=new Stocks();// needs some work , because of the staks
+		Stocks* target=new Stocks();
 		target->settickerSymbol(price);
 		target->compareBy(comparing);
 		if(tree->getEntry(target,returned)){
@@ -299,25 +304,20 @@ string Stocks::comparing;
 		delete table;
 		delete tree;
 	}
-    template<class ItemType>
-    bool operator<( vector<ItemType> v1,vector<ItemType> v2){
-            return v1[0]<v2[0];
+     bool operator<( vector<Stocks*> v1,vector<Stocks*> v2){
+            return *v1[0]<*v2[0];
     }
-    template<class ItemType>
-    bool operator==(const vector<ItemType> v1,const vector<ItemType> v2){
-            return v1[0]==v2[0];
+    bool operator==( vector<Stocks*> v1,vector<Stocks*> v2){
+            return *v1[0]==*v2[0];
     }
-    template<class ItemType>
-    bool operator>(const vector<ItemType> v1,const vector<ItemType> v2){
-            return v1[0]>v2[0];
+    bool operator>( vector<Stocks*> v1,vector<Stocks*> v2){
+            return *v1[0]>*v2[0];
     }
-    template<class ItemType>
-    bool operator<=(const vector<ItemType> v1,const vector<ItemType> v2){
-            return v1[0]<=v2[0];
+    bool operator<=( vector<Stocks*> v1,vector<Stocks*> v2){
+            return *v1[0]<=*v2[0];
     }
-    template<class ItemType>
-    bool operator!=(const vector<ItemType> v1,const vector<ItemType> v2){
-            return v1[0]!=v2[0];
+    bool operator!=( vector<Stocks*> v1,vector<Stocks*> v2){
+            return *v1[0]!=*v2[0];
     }
 int main(){
 	bool success=false;
@@ -390,7 +390,7 @@ int main(){
 	}
 	success=false;
 	Controller controller("inputfile.txt",comparing);
-	
+	//Controller controller("fatfile",comparing);
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
@@ -462,12 +462,12 @@ int main(){
 							valid=true;
 						}
 						else if(response=="l"){
-							controller.printMinInTree();
+							//controller.printMinInTree();
 							valid=true;
 							
 						}
 						else if(response=="g"){
-							controller.printMaxInTree();
+							//controller.printMaxInTree();
 							valid=true;
 							
 						}
