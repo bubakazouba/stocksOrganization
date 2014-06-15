@@ -13,6 +13,9 @@ template<class ItemType>
 class AVL : public BinarySearchTree<ItemType>
 {   
 private:
+	void _greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
+	void _lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
+	string getState(BinaryNode<ItemType>* nodePtr);
 	BinaryNode<ItemType>* rotateRight(BinaryNode<ItemType>* nodePtr);
 	BinaryNode<ItemType>* rotateLeft (BinaryNode<ItemType>* nodePtr);
 	void AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr);
@@ -32,6 +35,8 @@ private:
     // returns a 0 pointer if it didn't find it 
     BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const vector<ItemType> & target) const; 
 public:
+	void greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
+	void lessThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
     // insert a node at the correct location 
     bool insert(const ItemType & newEntry); 
 
@@ -43,6 +48,18 @@ public:
    
 };
 ///////////////////////// public function definitions /////////////////////////// 
+template<class ItemType> 
+void AVL<ItemType>::greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const		{
+		vector<ItemType>vec;
+		vec.push_back(val);
+		_greaterThanOrEq(visit, rootPtr,vec);
+}
+template<class ItemType> 
+void AVL<ItemType>::lessThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const		{
+		vector<ItemType>vec;
+		vec.push_back(val);
+		_lessThanOrEq(visit, rootPtr,vec);
+}
   
 template<class ItemType> 
 bool AVL<ItemType>::insert(const ItemType & newEntry){ 
@@ -77,6 +94,61 @@ bool AVL<ItemType>::getEntry(const ItemType& anEntry, vector<ItemType> & returne
 }   
     
 //////////////////////////// private functions ////////////////////////////////////////////
+template<class ItemType> 
+void AVL<ItemType>::_greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const{
+		if(nodePtr==0)
+			return;
+		if(nodePtr->getVector()==var){
+			visit(nodePtr->getVector());
+			_greaterThanOrEq(visit,nodePtr->getRightPtr(),var);
+		}
+		else if(nodePtr->getVector()>var){
+			visit(nodePtr->getVector());
+			_greaterThanOrEq(visit,nodePtr->getRightPtr(),var);
+			_greaterThanOrEq(visit,nodePtr->getLeftPtr(),var);
+		}
+		else {
+			_greaterThanOrEq(visit,nodePtr->getRightPtr(),var);
+		}
+	}
+template<class ItemType> 
+void AVL<ItemType>::_lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const{
+		if(nodePtr==0)
+			return;
+		if(nodePtr->getVector()==var){
+			visit(nodePtr->getVector());
+			_lessThanOrEq(visit,nodePtr->getRightPtr(),var);
+		}
+		else if(nodePtr->getVector()<var){
+			visit(nodePtr->getVector());
+			_lessThanOrEq(visit,nodePtr->getRightPtr(),var);
+			_lessThanOrEq(visit,nodePtr->getLeftPtr(),var);
+		}
+		else {
+			_lessThanOrEq(visit,nodePtr->getLeftPtr(),var);
+		}
+	}
+
+template<class ItemType> 
+string AVL<ItemType>::getState(BinaryNode<ItemType>* nodePtr){ 
+        int leftHeight,rightHeight; 
+        leftHeight=rightHeight=-1; 
+		if(nodePtr->getLeftPtr()!=0) 
+			leftHeight=nodePtr->getLeftPtr()->height; 
+		if(nodePtr->getRightPtr()!=0) 
+			rightHeight=nodePtr->getRightPtr()->height; 
+        if(leftHeight-rightHeight==0) 
+            return "EH"; 
+        if(leftHeight-rightHeight==1) 
+            return "LH"; 
+        if(rightHeight-leftHeight==1) 
+            return "RH"; 
+        if(leftHeight-rightHeight==2) 
+            return "LLH"; 
+        if(rightHeight-leftHeight==2) 
+            return "RRH"; 
+        return "ERROR"; 
+    } 
 template<class ItemType>
 int  AVL<ItemType>::getHeight(BinaryNode<ItemType>*  nodePtr){//if im rotating
 		int initialHeight=nodePtr->height;
@@ -106,9 +178,9 @@ BinaryNode<ItemType>* AVL<ItemType>::rotateLeft (BinaryNode<ItemType>* nodePtr){
 
 template<class ItemType>
 void AVL<ItemType>::AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
-	if(nodePtr->getState()=="LLH"){
+	if(getState(nodePtr)=="LLH"){
 	//the state of the child(the max child, the one making the porblem) cant be EH if it was an insert
-			if(childPtr->getState()=="LH"){
+			if(getState(childPtr)=="LH"){
 				nodePtr=rotateRight(nodePtr);
 				nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
 			}
@@ -120,8 +192,8 @@ void AVL<ItemType>::AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 				nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
 			}
 	}//end of if nodePtr->getState=="LLH"
-	if(nodePtr->getState()=="RRH"){
-		if(childPtr->getState()=="RH"){
+	if(getState(nodePtr)=="RRH"){
+		if(getState(childPtr)=="RH"){
 			nodePtr=rotateLeft(nodePtr);
 			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
 		}
@@ -136,9 +208,9 @@ void AVL<ItemType>::AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 
 template<class ItemType>
 void AVL<ItemType>::AnalyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
-	if(nodePtr->getState()=="LLH"){
+	if(getState(nodePtr)=="LLH"){
 		//if it's LLH then it's (left of left) or (right of left)
-		if(childPtr->getState()=="LH"||childPtr->getState()=="EH"){
+		if(getState(childPtr)=="LH"||getState(childPtr)=="EH"){
 			nodePtr=rotateRight(nodePtr);
 			nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
 		}
@@ -150,8 +222,8 @@ void AVL<ItemType>::AnalyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 			nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
 		}
 	}//end of if nodePtr->getState=="LLH"
-	if(nodePtr->getState()=="RRH"){
-		if(childPtr->getState()=="RH"||childPtr->getState()=="EH"){
+	if(getState(nodePtr)=="RRH"){
+		if(getState(childPtr)=="RH"||getState(childPtr)=="EH"){
 			nodePtr=rotateLeft(nodePtr);
 			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
 		}
@@ -223,7 +295,7 @@ bool AVL<ItemType>::OOB(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& ma
 		maxChild=nodePtr->getRightPtr();
 	
 	nodePtr->height=max(leftHeight,rightHeight)+1;
-	if(nodePtr->getState()=="RRH"||nodePtr->getState()=="LLH")
+	if(getState(nodePtr)=="RRH"||getState(nodePtr)=="LLH")
 		return true;
 	
 	return false;
