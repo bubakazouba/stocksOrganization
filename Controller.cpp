@@ -28,6 +28,7 @@
 #include "Controller.h"
 #include <fstream>
 #include <iomanip>
+#include <vector>
 #include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
@@ -185,7 +186,15 @@ string Stocks::comparing;
 		delete target;
 	}
 	void Controller::listHash(){
-		table->print();
+		Queue<Stocks*> queue; 
+		table->List(queue);
+		while(queue.size()!=0){
+			Stocks* temp;
+			queue.peek(temp);
+			display(temp);
+			queue.dequeue();
+		}	
+		
 	}
 	void Controller::listTree(){//inOrder
 		//tree->printInOrder();
@@ -194,7 +203,7 @@ string Stocks::comparing;
 		//tree->printIndented();
 	}
 	void Controller::printStatistics(){ //print hashtables statistics
-		table->printStatistics();
+		table->hashStats();
 		
 	}
 	void printMaxInTree(){

@@ -5,7 +5,7 @@
 #include <string>
 #include "Stocks.h"
 #include "Queue.h"
-#include "hashHeader.h"
+#include "HashTable.h"
 #include "AVL.h"
 
   
