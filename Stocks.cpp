@@ -6,7 +6,7 @@
 #include<iostream>
 #include<sstream>
 using namespace std;
-#include "stocks.h"
+#include "Stocks.h"
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
@@ -76,9 +76,14 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 //----------------------------------------------------------------------//
 	template<typename T>
 	void Stocks::setArrayField(T data[],string str){
-		for(int i=1;i<=Ndays;i++){
-			stringstream ss( getNthField(str,i,":") );
-			ss>>data[i-1];
+		int ind=0;
+		for(int i=0;i<str.size();i++){
+			stringstream ss;
+			while(i!=str.size()&&str[i]!=':'){
+				ss<<str[i++];
+			}
+			ss>>data[ind++];
+			
 		}
 	}
 //----------------------------------------------------------------------//
@@ -105,20 +110,20 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	Stocks::Stocks(string line){
 		//set Ndays first
 		Ndays=1;
-		string tmp=getNthField(line,3,",");
-		for(int i=0;i<tmp.size();i++)
-			if(tmp[i]==':')
-				Ndays++;
+		//string tmp=getNthField(line,3,",");
+		//for(int i=0;i<tmp.size();i++)
+			//if(tmp[i]==':')
+				//Ndays++;
 		if(Ndays>MAX_DAYS)Ndays=MAX_DAYS;
 		//setting the rest of the fields
-		name=getNthField(line,1,",");
-		tickerSymbol=getNthField(line,2,",");
-		setArrayField( close, getNthField(line,3,",") );///remember this returns false
-		setArrayField( marketCap, getNthField(line,4,",") );///remember this returns false
-		setArrayField( volume, getNthField(line,5,",") );///remember this returns false
-		setArrayField( high, getNthField(line,6,",") );///remember this returns false
-		setArrayField( low, getNthField(line,7,",") );///remember this returns false
-		setArrayField( open, getNthField(line,8,",") );///remember this returns false
+		//name=getNthField(line,1,",");
+		//tickerSymbol=getNthField(line,2,",");
+		//setArrayField( close, getNthField(line,3,",") );///remember this returns false
+		//setArrayField( marketCap, getNthField(line,4,",") );///remember this returns false
+		//setArrayField( volume, getNthField(line,5,",") );///remember this returns false
+		//setArrayField( high, getNthField(line,6,",") );///remember this returns false
+		//setArrayField( low, getNthField(line,7,",") );///remember this returns false
+		//setArrayField( open, getNthField(line,8,",") );///remember this returns false
 	}//end of Stocks(line)
 	template<typename T>
 	string Stocks::arrToString(T data[]){
@@ -255,6 +260,39 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 //-----------------SETTERS---------------------------------//
+	bool Stocks::setBy(string field,string key){
+		stringstream ss(key);
+		if(field=="Company Name"){
+			name=key;
+			return true;
+		}
+		if(field=="Ticker Symbol"){
+			tickerSymbol=key;
+			return true;
+		}
+		if(Ndays==0)
+			return false;
+
+		if(field=="Volume"){
+			ss>>volume[Ndays-1];
+		}
+		if(field=="Market Capital"){
+			ss>>marketCap[Ndays-1];
+		}
+		if(field=="Price"){
+			ss>>close[Ndays-1];
+		}
+		if(field=="Opening Price"){
+			ss>>open[Ndays-1];
+		}
+		if(field=="High"){
+			ss>>high[Ndays-1];
+		}
+		if(field=="Low"){
+			ss>>low[Ndays-1];
+		}
+	}
+	}
 	bool Stocks::setClose(double set,int ind){
 		if(Ndays==0)
 			return false;
