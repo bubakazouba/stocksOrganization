@@ -86,7 +86,7 @@ bool AVL<ItemType>::insert(const ItemType & newEntry){
     newvector.push_back(newEntry); 
     BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newvector); 
     this->rootPtr = _insert(this->rootPtr, newNodePtr);   
-    count++; 
+    this->count++; 
     return true; 
 }   
   
@@ -97,7 +97,7 @@ bool AVL<ItemType>::replace(const ItemType & target,vector<ItemType> newVector){
 	targetVector.push_back(target); 
     this->rootPtr = _replace(this->rootPtr, targetVector, isSuccessful,newVector); 
 	if(isSuccessful)
-		count--; 
+		this->count--; 
     return isSuccessful;  
 }   
   
