@@ -94,9 +94,8 @@ void BinaryTree<ItemType>::_reverseOrder(void visit(vector<ItemType> &), BinaryN
 	if (nodePtr == 0)
 		return;
 
-	ItemType item = nodePtr->getItem();
 	_reverseOrder(visit, nodePtr->getRightPtr()); 
-	visit(item);
+	visit(nodePtr->getVector());
 	_reverseOrder(visit, nodePtr->getLeftPtr());
 	
 }  
@@ -106,7 +105,7 @@ void BinaryTree<ItemType>::_preorder(void visit(vector<ItemType> &), BinaryNode<
 	if (nodePtr == 0)
 		return;
 
-	visit(nodePtr->getItem());
+	visit(nodePtr->getVector());
 	_preorder(visit, nodePtr->getLeftPtr());
 	_preorder(visit, nodePtr->getRightPtr()); 
 }  
@@ -117,7 +116,7 @@ void BinaryTree<ItemType>::_inorder(void visit(vector<ItemType> &), BinaryNode<I
 		return;
 	
 	_inorder(visit, nodePtr->getLeftPtr());
-	visit(nodePtr->getItem());
+	visit(nodePtr->getVector());
 	_inorder(visit, nodePtr->getRightPtr());
 }  
 
@@ -128,7 +127,7 @@ void BinaryTree<ItemType>::_postorder(void visit(vector<ItemType> &), BinaryNode
 
 	_postorder(visit, nodePtr->getLeftPtr());
 	_postorder(visit, nodePtr->getRightPtr());
-	visit(nodePtr->getItem());
+	visit(nodePtr->getVector());
 }  
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -137,9 +136,8 @@ void BinaryTree<ItemType>::_reverseOrder(void visit(ItemType &), BinaryNode<Item
 	if (nodePtr == 0)
 		return;
 
-	ItemType item = nodePtr->getItem();
 	_reverseOrder(visit, nodePtr->getRightPtr()); 
-	visit(item);
+	visit(nodePtr->getItem());
 	_reverseOrder(visit, nodePtr->getLeftPtr());
 	
 }  
