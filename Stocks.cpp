@@ -331,25 +331,31 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			tickerSymbol=key;
 			return true;
 		}
-
 		if(field=="Volume"){
 			ss>>volume[0];
+			return true;
 		}
 		if(field=="Market Capital"){
 			ss>>marketCap[0];
+			return true;
 		}
 		if(field=="Price"){
 			ss>>close[0];
+			return true;
 		}
 		if(field=="Opening Price"){
 			ss>>open[0];
+			return true;
 		}
 		if(field=="High"){
 			ss>>high[0];
+			return true;
 		}
 		if(field=="Low"){
 			ss>>low[0];
+			return true;
 		}
+		return false;
 	}
 
 #endif
