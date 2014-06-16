@@ -33,8 +33,6 @@ numCollisions=0;
 
 hashArray=new Stocks*[arrSize];
 
-outfile.open("outTest1.txt");
-cout<<"Hash Constructor"<<endl;
 for(int d=0;d<arrSize;d++){
       hashArray[d]=NULL;
   }
@@ -71,12 +69,9 @@ removedStock->settickerSymbol("deleted");
 
 while(!found){
 
-   //if(hashArray[indexToDelete]==NULL){return false;}
-//if(hashArray[indexToDelete]->gettickerSymbol()=="deleted"){return false;}
 if(hashArray[indexToDelete]->gettickerSymbol() == key){
                if(probeCount==0){numZeroProbes--;}else{numCollisions--;}
 hashArray[indexToDelete]=removedStock;
-cout<<"The index "<<indexToDelete<<" has been deleted"<<endl;
 found=true;
 }
 else{
@@ -148,16 +143,12 @@ int num=0;
 
 int index=indexGenerator(key);
 
-outfile<<key<<"  ";
-   outfile<<"probes: ";
-
   while(noSpot){
 
       if( hashArray[index]==NULL ){
            hashArray[index]=temp;
            noSpot=false;
-           outfile<<probes;
-
+    
            if(probes==0){numZeroProbes++;}
       }
           else {
@@ -168,8 +159,6 @@ outfile<<key<<"  ";
           if(maxProbe<probes){maxProbe=probes;}
   }//while
 
-  outfile<<"   hashIndex:"<<index<<endl;
-
 if(success)
 numStocks++;
 return success;
@@ -178,12 +167,12 @@ return success;
 void HashTable::List(Queue<Stocks*>& StockQueue){
 
 for(int i=0; i<arrSize; i++){
-if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="DELETED" ){
-  // cout<<hashArray[i]->toString()<<endl;
-  StockQueue.enqueue(hashArray[i]);
+		if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="DELETED" ){
+ 
+		  StockQueue.enqueue(hashArray[i]);
 
-}
-}//for loop
+		}
+	}//for loop
 }
 
 
@@ -202,5 +191,5 @@ cout<<endl;
 
 HashTable::~HashTable(){
 delete [] hashArray;
-outfile.close();
+
 }

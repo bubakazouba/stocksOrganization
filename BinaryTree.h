@@ -93,9 +93,9 @@ template<class ItemType>
 void BinaryTree<ItemType>::_reverseOrder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
 	if (nodePtr == 0)
 		return;
-
+	vector<ItemType> tmpvec=nodePtr->getVector();
 	_reverseOrder(visit, nodePtr->getRightPtr()); 
-	visit(nodePtr->getVector());
+	visit(tmpvec);
 	_reverseOrder(visit, nodePtr->getLeftPtr());
 	
 }  
@@ -104,8 +104,8 @@ template<class ItemType>
 void BinaryTree<ItemType>::_preorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
 	if (nodePtr == 0)
 		return;
-
-	visit(nodePtr->getVector());
+	vector<ItemType> tmpvec=nodePtr->getVector();
+	visit(tmpvec);
 	_preorder(visit, nodePtr->getLeftPtr());
 	_preorder(visit, nodePtr->getRightPtr()); 
 }  
@@ -114,9 +114,9 @@ template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
 	if(nodePtr==0)
 		return;
-	
+	vector<ItemType> tmpvec=nodePtr->getVector();
 	_inorder(visit, nodePtr->getLeftPtr());
-	visit(nodePtr->getVector());
+	visit(tmpvec);
 	_inorder(visit, nodePtr->getRightPtr());
 }  
 
@@ -124,10 +124,10 @@ template<class ItemType>
 void BinaryTree<ItemType>::_postorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
 	if(nodePtr==0)
 		return;
-
+	vector<ItemType> tmpvec=nodePtr->getVector();
 	_postorder(visit, nodePtr->getLeftPtr());
 	_postorder(visit, nodePtr->getRightPtr());
-	visit(nodePtr->getVector());
+	visit(tmpvec);
 }  
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -135,9 +135,9 @@ template<class ItemType>
 void BinaryTree<ItemType>::_reverseOrder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const{
 	if (nodePtr == 0)
 		return;
-
+	ItemType tmp=nodePtr->getItem();
 	_reverseOrder(visit, nodePtr->getRightPtr()); 
-	visit(nodePtr->getItem());
+	visit(tmp);
 	_reverseOrder(visit, nodePtr->getLeftPtr());
 	
 }  
@@ -146,8 +146,8 @@ template<class ItemType>
 void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const{
 	if (nodePtr == 0)
 		return;
-
-	visit(nodePtr->getItem());
+	ItemType tmp=nodePtr->getItem();
+	visit(tmp);
 	_preorder(visit, nodePtr->getLeftPtr());
 	_preorder(visit, nodePtr->getRightPtr()); 
 }  
@@ -156,9 +156,9 @@ template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const{
 	if(nodePtr==0)
 		return;
-	
+	ItemType tmp=nodePtr->getItem();
 	_inorder(visit, nodePtr->getLeftPtr());
-	visit(nodePtr->getItem());
+	visit(tmp);
 	_inorder(visit, nodePtr->getRightPtr());
 }  
 
