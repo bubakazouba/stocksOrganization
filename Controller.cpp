@@ -214,15 +214,14 @@ string Stocks::comparing;
 		}
 	}
 	void Controller::listTree(){//inOrder
-		//tree->printInOrder()
 		tree->inOrder(visit);
 		} 
 	void Controller::printTree(){ //breath first
-		//tree->printIndented();
+		tree->printIndented();
 	}
 	
 	
-	void Controller::printStatistics(){ //print hashtables statistics
+	void Controller::printStatistics(){ //print hashtable statistics
 		table->hashStats();
 		
 	}
@@ -334,8 +333,8 @@ string Stocks::comparing;
 	}
 	void Controller::quit(){
 		Queue<Stocks*> queue;
-		//tree->serialize(queue);
-		table->List(queue);
+		tree->serialize(queue);
+		//table->List(queue);
 		ofstream outfile("inputFile");
 		while(queue.size()!=0){
 			Stocks* temp;
