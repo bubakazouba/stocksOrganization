@@ -13,6 +13,8 @@ template<class ItemType>
 class AVL : public BinarySearchTree<ItemType>
 {   
 private:
+	vector<ItemType> _getMax(BinaryNode<ItemType>* nodePtr) const;
+	vector<ItemType> _getMin(BinaryNode<ItemType>* nodePtr) const;
 	void _greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
 	void _lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
 	string getState(BinaryNode<ItemType>* nodePtr);
@@ -35,6 +37,8 @@ private:
     // returns a 0 pointer if it didn't find it 
     BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const vector<ItemType> & target) const; 
 public:
+	bool getMax(vector<ItemType> & ret) const;
+	bool getMin(vector<ItemType> & ret) const;
 	void greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
 	void lessThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
     // insert a node at the correct location 
@@ -48,6 +52,21 @@ public:
    
 };
 ///////////////////////// public function definitions /////////////////////////// 
+template<class ItemType> 
+bool AVL<ItemType>::getMax(vector<ItemType> & ret) const{
+	ret=_getMax(rootPtr);
+	if(ret.size()==0)
+		return false;
+	return true;
+}
+template<class ItemType> 
+bool AVL<ItemType>::getMin(vector<ItemType> & ret) const{
+	ret=_getMin(rootPtr);
+	if(ret.size()==0)
+		return false;
+	return true;
+}
+
 template<class ItemType> 
 void AVL<ItemType>::greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const		{
 		vector<ItemType>vec;
@@ -94,6 +113,27 @@ bool AVL<ItemType>::getEntry(const ItemType& anEntry, vector<ItemType> & returne
 }   
     
 //////////////////////////// private functions ////////////////////////////////////////////
+template<class ItemType> 
+vector<ItemType> AVL<ItemType>::_getMax(BinaryNode<ItemType>* nodePtr) const{
+	if(nodePtr==0){
+		vector<ItemType> emptyvector;
+		return emptyvector;
+	}
+	if(nodePtr->getRightPtr()==0)
+		return nodePtr->getVector();
+	return _getMax(nodePtr->getRightPtr());
+}
+template<class ItemType> 
+vector<ItemType> AVL<ItemType>::_getMin(BinaryNode<ItemType>* nodePtr) const{
+	if(nodePtr==0){
+		vector<ItemType> emptyvector;
+		return emptyvector;
+	}
+	if(nodePtr->getLeftPtr()==0)
+		return nodePtr->getVector();
+	return _getMin(nodePtr->getLeftPtr());
+}
+
 template<class ItemType> 
 void AVL<ItemType>::_greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const{
 		if(nodePtr==0)
