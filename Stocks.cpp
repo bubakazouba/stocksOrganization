@@ -292,7 +292,6 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 			ss>>low[Ndays-1];
 		}
 	}
-	}
 	bool Stocks::setClose(double set,int ind){
 		if(Ndays==0)
 			return false;
