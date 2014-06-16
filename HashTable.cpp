@@ -10,9 +10,9 @@ using namespace std;
 bool HashTable::isPrime(int arrSize){ //given an arrSize that could be prime or non prime
 
    int sqrtSize = sqrt ((double)arrSize);
-    for(int j=2; j<sqrtSize;j++){
-           if ( arrSize%j == 0 && j != arrSize)// determines if the number is not prime
-           return false;
+    for(int j=2; j<= sqrtSize;j++){
+           if ( arrSize%j == 0 )// determines if the number is not prime
+				return false;
        }
 
        return true;
@@ -46,14 +46,14 @@ return indexRes;
 }
 
 int HashTable::indexGenerator( string ticker){
-      unsigned int b    = 13;// trial and error with prime numbers
-      unsigned int a    = 11;// trial and error with prime numbers
-  int num=0;
-  for( int i = 0; i < ticker.length(); i++){
-      a  = a * b;
-     num = ( (num + a) * (ticker[i]) )% arrSize;
-  }
-  return num;
+    unsigned int b = 13;// trial and error with prime numbers
+    unsigned int a = 11;// trial and error with prime numbers
+	int num=0;
+	for( int i = 0; i < ticker.length(); i++){
+		a *= b;
+		num = ( (num + a) * (ticker[i]) );
+	}
+  return num% arrSize;
 }
 
 bool HashTable::myFind(string key  ){
@@ -107,7 +107,6 @@ bool HashTable::find(Stocks* temp, Stocks*& returnTemp){
 
 int probes=0;
 bool found=false;
- cout<<endl;
 
  int somethingNew;
  string key=temp->gettickerSymbol();
@@ -133,34 +132,34 @@ return found;
 }
 
 bool HashTable:: add(Stocks* temp){
-bool success=true;
-string key=temp->gettickerSymbol();
-
-bool noSpot=true;
-int probes=0;
-int num=0;
-
-int index=indexGenerator(key);
-
-  while(noSpot){
-
-      if( hashArray[index]==NULL ){
-           hashArray[index]=temp;
-           noSpot=false;
-    
-           if(probes==0){numZeroProbes++;}
-      }
-          else {
-              probes++;
-              index=collRes(index,probes);
-				numCollisions++;
-          }
-          if(maxProbe<probes){maxProbe=probes;} // maxProbe is getting modified
-  }//while
-
-if(success)
-numStocks++;
-return success;
+	if(numStocks==arrSize)
+		return false;
+	string key=temp->gettickerSymbol();
+	
+	bool noSpot=true;
+	int probes=0;
+	int num=0;
+	
+	int index=indexGenerator(key);
+	
+	  while(noSpot){
+	
+	      if( hashArray[index]==NULL ){
+	           hashArray[index]=temp;
+	           noSpot=false;
+	    
+	           if(probes==0){numZeroProbes++;}
+	      }
+	          else {
+	              probes++;
+	              index=collRes(index,probes);
+					numCollisions++;
+	          }
+	          if(maxProbe<probes){maxProbe=probes;} // maxProbe is getting modified
+	  }//while
+	
+	numStocks++;
+	return true;
 }
 
 void HashTable::List(Queue<Stocks*>& StockQueue){
