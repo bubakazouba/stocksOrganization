@@ -59,6 +59,12 @@ private:
 	void _inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
     void _reverseOrder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
+	// vector traverses
+	void _preorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
+	void _inorder(void visit(vecotr<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
+	void _postorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
+    void _reverseOrder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
+
 }; 
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,6 +88,50 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr){
 	destroyTree(nodePtr->getLeftPtr());
 	delete nodePtr;
 }  
+///////////////////////////vector traverses/////////////////////////////////////////////////////////
+template<class ItemType>
+void BinaryTree<ItemType>::_reverseOrder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
+	if (nodePtr == 0)
+		return;
+
+	ItemType item = nodePtr->getItem();
+	_reverseOrder(visit, nodePtr->getRightPtr()); 
+	visit(item);
+	_reverseOrder(visit, nodePtr->getLeftPtr());
+	
+}  
+
+template<class ItemType>
+void BinaryTree<ItemType>::_preorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
+	if (nodePtr == 0)
+		return;
+
+	visit(nodePtr->getItem());
+	_preorder(visit, nodePtr->getLeftPtr());
+	_preorder(visit, nodePtr->getRightPtr()); 
+}  
+
+template<class ItemType>
+void BinaryTree<ItemType>::_inorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
+	if(nodePtr==0)
+		return;
+	
+	_inorder(visit, nodePtr->getLeftPtr());
+	visit(nodePtr->getItem());
+	_inorder(visit, nodePtr->getRightPtr());
+}  
+
+template<class ItemType>
+void BinaryTree<ItemType>::_postorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const{
+	if(nodePtr==0)
+		return;
+
+	_postorder(visit, nodePtr->getLeftPtr());
+	_postorder(visit, nodePtr->getRightPtr());
+	visit(nodePtr->getItem());
+}  
+
+///////////////////////////////////////////////////////////////////////////////////////
 template<class ItemType>
 void BinaryTree<ItemType>::_reverseOrder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const{
 	if (nodePtr == 0)
