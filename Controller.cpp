@@ -282,7 +282,7 @@ Return Value: void
 
 
 */
-	void visit(const vector<Stocks*>& vec){
+	void visit(vector<Stocks*>& vec){
 		for (int i=0;i<vec.size();i++){
 			display(vec[i]);
 		}
@@ -309,7 +309,7 @@ Return Value: void
 
 */
 	void Controller::printTree()const{ //breath first
-		//tree->printIndented();
+		tree->printIndented();
 	}
 
 /*
@@ -322,6 +322,36 @@ Return Value: void
 */	
 	void Controller::printStatistics()const{ //print hashtable statistics
 		table->hashStats();
+	}
+	
+	/*
+Controller::greaterThanOrEq: displays to screen Stocks that are greater then key
+
+Parameters: string that represents the key
+* 
+Return Value: void
+
+*/	
+	void Controller::greaterThanOrEq(string response)const{
+		Stocks* temp=new Stocks();
+		temp->addFirstDayBy(comparing,response);
+		tree->greaterThanOrEq(visit,temp);
+		delete temp;
+	}
+	
+	/*
+Controller::lessThanOrEq(: displays to screen  Stocks that are less then key
+
+Parameters: string that represents the key
+* 
+Return Value: void
+
+*/	
+	void Controller::lessThanOrEq(string response)const{ //print hashtable statistics
+		Stocks* temp=new Stocks();
+		temp->addFirstDayBy(comparing,response);
+		tree->lessThanOrEq(visit,temp);
+		delete temp;
 	}
 /*
 Controller::printMaxInTree(): displays to screen the list of Stocks whith the highest
@@ -482,8 +512,8 @@ Return Value: void
 */	
 	void Controller::quit(){
 		Queue<Stocks*> queue;
-		//tree->serialize(queue);
-		table->List(queue);
+		tree->serialize(queue);
+		//table->List(queue);
 		ofstream outfile("inputFile");
 		while(queue.size()!=0){
 			Stocks* temp;
@@ -617,6 +647,8 @@ int main(){
 				cout<<"t. Ticker Symbol(Hash order)"<<endl;
 				cout<<"p. "<<comparing<<"(Tree in order)"<<endl;
 				cout<<"s. Tree shape"<<endl;
+				cout<<"g. Greater than or esqual to input("<<comparing<<")"<<endl;
+				cout<<"l. Less than or equal to input("<<comparing<<")"<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
 				if (response=="t"||response=="T"){
@@ -628,6 +660,22 @@ int main(){
 					controller.listTree();
 				}
 				else if (response=="s"||response=="S"){
+					valid=true;
+					controller.printTree();
+				}
+				else if (response=="g"||response=="G"){
+					cout<<"Value: ";
+					getline(cin,response);
+					controller.greaterThanOrEq(response);
+					
+					valid=true;
+					controller.printTree();
+				}
+				else if (response=="l"||response=="L"){
+					cout<<"Value: ";
+					getline(cin,response);
+					controller.lessThanOrEq(response);
+					
 					valid=true;
 					controller.printTree();
 				}

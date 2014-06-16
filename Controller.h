@@ -34,7 +34,8 @@ void printStatistics()const;
 void quit();
 void printMaxInTree()const;
 void printMinInTree()const;
-
+void greaterThanOrEq(string response)const;
+void lessThanOrEq(string response)const;
 
 
 };
