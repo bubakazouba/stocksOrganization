@@ -13,8 +13,25 @@ template<class ItemType>
 class AVL : public BinarySearchTree<ItemType>
 {   
 private:
+	/*
+	_getMax: a private function that gets the maximum node in the tree by recurively going to the right child of the current pointer till it doesn't see a right child, so we become at the right most node, this is the greatest node in the tree
+
+	Paramters: a pointer to a BinaryNode, when its called initially its the rootPtr
+
+	Return Value: it returns the vector from the right most node
+	*/
 	vector<ItemType> _getMax(BinaryNode<ItemType>* nodePtr) const;
+	/*
+	_getMin: a private function that gets the minimum node in the tree by recurively going to the left child of the current pointer till it doesn't see a left child, so we become at the left most node, this is the smallest node in the tree
+
+	Paramters: a pointer to a BinaryNode, when its called initially its the rootPtr
+
+	Return Value: it returns the vector from the left most node
+	*/
 	vector<ItemType> _getMin(BinaryNode<ItemType>* nodePtr) const;
+	/*
+	_greaterThanOrEq
+	*/
 	void _greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
 	void _lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
 	string getState(BinaryNode<ItemType>* nodePtr);
@@ -138,12 +155,13 @@ template<class ItemType>
 void AVL<ItemType>::_greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const{
 		if(nodePtr==0)
 			return;
+		vector<ItemType> tmpVec=nodePtr->getVector();
 		if(nodePtr->getVector()==var){
-			visit(nodePtr->getVector());
+			visit(tmpVec);
 			_greaterThanOrEq(visit,nodePtr->getRightPtr(),var);
 		}
 		else if(nodePtr->getVector()>var){
-			visit(nodePtr->getVector());
+			visit(tmpVec);
 			_greaterThanOrEq(visit,nodePtr->getRightPtr(),var);
 			_greaterThanOrEq(visit,nodePtr->getLeftPtr(),var);
 		}
@@ -155,12 +173,13 @@ template<class ItemType>
 void AVL<ItemType>::_lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const{
 		if(nodePtr==0)
 			return;
+		vector<ItemType> tmpVec=nodePtr->getVector();
 		if(nodePtr->getVector()==var){
-			visit(nodePtr->getVector());
+			visit(tmpVec);
 			_lessThanOrEq(visit,nodePtr->getRightPtr(),var);
 		}
 		else if(nodePtr->getVector()<var){
-			visit(nodePtr->getVector());
+			visit(tmpVec);
 			_lessThanOrEq(visit,nodePtr->getRightPtr(),var);
 			_lessThanOrEq(visit,nodePtr->getLeftPtr(),var);
 		}
