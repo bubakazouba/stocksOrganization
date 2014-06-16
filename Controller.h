@@ -31,7 +31,6 @@ void remove(string key);
 void searchByTicker(string key)const;
 void searchByValue(string key);
 void printStatistics()const;
-void update(string key);
 void quit();
 void printMaxInTree()const;
 void printMinInTree()const;
