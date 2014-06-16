@@ -44,23 +44,23 @@ public:
 template<class ItemType>
 bool BinarySearchTree<ItemType>::insert(const ItemType & newEntry){
 	BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newEntry);
-	rootPtr = _insert(rootPtr, newNodePtr);  
-	count++;
+	this->rootPtr = _insert(this->rootPtr, newNodePtr);  
+	this->count++;
 	return true;
 }  
 
 template<class ItemType>
 bool BinarySearchTree<ItemType>::remove(const ItemType & target){
 	bool isSuccessful = false;
-	rootPtr = _remove(rootPtr, target, isSuccessful);
+	this->rootPtr = _remove(this->rootPtr, target, isSuccessful);
 	if(isSuccessful)
-		count--;
+		this->count--;
 	return isSuccessful; 
 }  
 
 template<class ItemType>
 bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & returnedItem) const{
-	BinaryNode<ItemType>* returnPtr=findNode(rootPtr,anEntry);
+	BinaryNode<ItemType>* returnPtr=findNode(this->rootPtr,anEntry);
 	if(returnPtr==0)//if we didn't find it
 		return false;
 
