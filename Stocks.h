@@ -79,6 +79,6 @@ public:
 	bool setOpen(double set,int ind=-1);
 	bool setmarketCap(unsigned long long  set,int ind=-1);
 	bool setVolume(unsigned long long  set,int ind=-1);
-	bool setBy(string field,string key);
+	bool addFirstDayBy(string field,string key);
 };
 #endif

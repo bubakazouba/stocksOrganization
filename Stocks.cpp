@@ -260,38 +260,6 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		return true;
 	}
 //-----------------SETTERS---------------------------------//
-	bool Stocks::setBy(string field,string key){
-		stringstream ss(key);
-		if(field=="Company Name"){
-			name=key;
-			return true;
-		}
-		if(field=="Ticker Symbol"){
-			tickerSymbol=key;
-			return true;
-		}
-		if(Ndays==0)
-			return false;
-
-		if(field=="Volume"){
-			ss>>volume[Ndays-1];
-		}
-		if(field=="Market Capital"){
-			ss>>marketCap[Ndays-1];
-		}
-		if(field=="Price"){
-			ss>>close[Ndays-1];
-		}
-		if(field=="Opening Price"){
-			ss>>open[Ndays-1];
-		}
-		if(field=="High"){
-			ss>>high[Ndays-1];
-		}
-		if(field=="Low"){
-			ss>>low[Ndays-1];
-		}
-	}
 	bool Stocks::setClose(double set,int ind){
 		if(Ndays==0)
 			return false;
@@ -352,4 +320,36 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		volume[ind]=set;
 		return true;
 	}
+	bool Stocks::addFirstDayBy(string field,string key){
+		Ndays=1;
+		stringstream ss(key);
+		if(field=="Company Name"){
+			name=key;
+			return true;
+		}
+		if(field=="Ticker Symbol"){
+			tickerSymbol=key;
+			return true;
+		}
+
+		if(field=="Volume"){
+			ss>>volume[0];
+		}
+		if(field=="Market Capital"){
+			ss>>marketCap[0];
+		}
+		if(field=="Price"){
+			ss>>close[0];
+		}
+		if(field=="Opening Price"){
+			ss>>open[0];
+		}
+		if(field=="High"){
+			ss>>high[0];
+		}
+		if(field=="Low"){
+			ss>>low[0];
+		}
+	}
+
 #endif
