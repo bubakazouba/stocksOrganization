@@ -23,18 +23,18 @@ string comparing;
 public:
 Controller(string file,string comp);
 ~Controller();
-void listHash();
-void listTree();
-void printTree();
+void listHash()const;
+void listTree()const;
+void printTree()const;
 void add(string key);
 void remove(string key);
-void searchByTicker(string key);
+void searchByTicker(string key)const;
 void searchByValue(string key);
-void printStatistics();
+void printStatistics()const;
 void update(string key);
 void quit();
-void printMaxInTree();
-void printMinInTree();
+void printMaxInTree()const;
+void printMinInTree()const;
 
 
 

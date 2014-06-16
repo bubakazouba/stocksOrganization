@@ -29,9 +29,20 @@
 #include <fstream>
 #include <iomanip>
 #include "Memtracker.h"
-//it leaks because the serialize function is not implemented yet.
-
 string Stocks::comparing;
+
+/*
+readFile: 	This function reads records from a file, creates objects that are dynamically 
+* allocated and stores the pointers in a queue.
+
+
+Parameters: It takes a string as the name of the input file and a queue to temporarily store
+* the stocks pointers.
+
+Return Value: 	Returns a int value, that represents the amount of records in the file.
+
+
+*/
 
 	int Controller::readFile(string file,Queue<Stocks*>& StockQueue){
 		 string line;
@@ -72,6 +83,17 @@ string Stocks::comparing;
 		 return counter;
 	 }//end of function readFile()
 	 
+	 /*
+Controller::Controller:  Reads the input file and initializes the HashTable and the AVL tree.
+
+
+Parameters: It takes a string as the name of the input file and field to sort the AVL by.
+
+Return Value: Its a constructor
+
+
+*/
+	 
 	//Constructor 
 	Controller::Controller(string file,string comp){
 	comparing=comp;
@@ -88,6 +110,18 @@ string Stocks::comparing;
 			queue.enqueue(temp);
 		}
 	}
+/*
+display:  Prinst to screen a graphical representation of the stock.
+
+
+Parameters: It takes a pointer to the Stock you wnat to display
+
+Return Value: void
+
+
+*/
+	
+	
 	void display(Stocks* temp){
 		cout << fixed;
 		cout << std::setprecision(2);
@@ -168,7 +202,17 @@ string Stocks::comparing;
 		cout<<"\u2015\u2015>"<<endl;//full width horizontal lines
 		delete [] heights;
 	}
-	void Controller::searchByTicker(string key){
+/*
+Controller::searchByTicker:  searches the Hash table using a ticker as key and
+* displays the stock to screen. 
+
+Parameters: It takes a string that represents a ticker symbol;
+* 
+Return Value: void
+
+
+*/
+	void Controller::searchByTicker(string key)const{
 		Stocks* target=new Stocks;
 		target->settickerSymbol(key);
 		Stocks* returned;
@@ -181,6 +225,16 @@ string Stocks::comparing;
 		}
 		delete target;
 	}
+/*
+Controller::searchByValue:  searches the AVL tree using the passed parameter as key and
+* displays the stock to screen. 
+
+Parameters: It takes a string that represents the value of the field the tree is sorted by;
+* 
+Return Value: void
+
+
+*/
 	void Controller::searchByValue(string key){
 		
 		vector<Stocks*> returned;
@@ -197,7 +251,18 @@ string Stocks::comparing;
 		}
 		delete target;
 	}
-	void Controller::listHash(){
+	
+/*
+Controller::listHash():  Gets all the stocks pointers from Hashed table int array order 
+* and displays them to screen. 
+
+Parameters: It takes a string that represents the value of the field the tree is sorted by;
+* 
+Return Value: void
+
+
+*/
+	void Controller::listHash()const{
 		Queue<Stocks*> queue; 
 		table->List(queue);
 		while(queue.size()!=0){
@@ -208,36 +273,94 @@ string Stocks::comparing;
 		}	
 		
 	}
-	void visit(vector<Stocks*>& vec){
+/*
+Controller::visit(): displays to screen all the stocks from a vector of stocks
+
+Parameters: It takes a vector of type Stocks pointer
+* 
+Return Value: void
+
+
+*/
+	void visit(vector<Stocks*> vec){
 		for (int i=0;i<vec.size();i++){
 			display(vec[i]);
 		}
 	}
-	void Controller::listTree(){//inOrder
+/*
+Controller::listTree(): displays to screen all the stocks from the 
+* AVL tree in key Order
+
+Parameters: none
+* 
+Return Value: void
+
+*/
+	void Controller::listTree()const{//inOrder
 		tree->inOrder(visit);
 		} 
-	void Controller::printTree(){ //breath first
+/*
+Controller::printTree(): displays to screen all the stocks from the 
+* AVL tree in tree shape
+
+Parameters: none
+* 
+Return Value: void
+
+*/
+	void Controller::printTree()const{ //breath first
 		tree->printIndented();
 	}
-	
-	
-	void Controller::printStatistics(){ //print hashtable statistics
+
+/*
+Controller::printStatistics(): displays to screen the Hash table Statistics
+
+Parameters: none
+* 
+Return Value: void
+
+*/	
+	void Controller::printStatistics()const{ //print hashtable statistics
 		table->hashStats();
-		
 	}
-	void Controller::printMaxInTree(){
+/*
+Controller::printMaxInTree(): displays to screen the list of Stocks whith the highest
+* key value in the AVL tree
+
+Parameters: none
+* 
+Return Value: void
+
+*/	
+	void Controller::printMaxInTree()const{
 		vector<Stocks*> vec;
 		tree->getMax(vec);
 		for (int i=0;i<vec.size();i++)
 			display(vec[i]);
 	}
-	void Controller::printMinInTree(){
+/*
+Controller::printMinInTree(): displays to screen the list of Stocks whith the least
+* key value in the AVL tree
+
+Parameters: none
+* 
+Return Value: void
+
+*/	
+	void Controller::printMinInTree()const{
 		vector<Stocks*> vec;
 		tree->getMin(vec);
 		for (int i=0;i<vec.size();i++)
 			display(vec[i]);
 	}
-	
+/*
+getInput: appends an intput to a string
+
+Parameters: int for number of days, string args ,string output a meesage to user
+* 
+Return Value: void
+
+*/	
 	void getInput(int n,string& args, string output){
 		cout<<output<<"(Day "<<n+1<<"): ";
 		string response="";
@@ -249,7 +372,15 @@ string Stocks::comparing;
 			args+=":"+response;
 		}
 	}
-	
+/*
+Controller::add: wait for user to input , create a Stocks object whith dynamic memory 
+* and a pass a pointer of it to the AVL tree and the hash table
+
+Parameters: a string that represents a ticker symbol
+* 
+Return Value: void
+
+*/		
 	void Controller::add(string key){
 		string args="";
 		Stocks* target=new Stocks;
@@ -308,6 +439,15 @@ string Stocks::comparing;
 		}
 		delete target;
 	}	
+/*
+Controller::remove: remove an an item from the tree and the hashed table
+* and deleting the dynamic memory of the object.
+
+Parameters: a string that represents a ticker symbol
+* 
+Return Value: void
+
+*/	
 	void Controller::remove(string key){
 		Stocks* target=new Stocks;
 		Stocks* returned;
@@ -331,6 +471,15 @@ string Stocks::comparing;
 		}
 		delete target;
 	}
+/*
+Controller::quit: serializes the tree, prints it to a file and deletes the dynamic memory of every 
+* Stocks object
+
+Parameters: none
+* 
+Return Value: void
+
+*/	
 	void Controller::quit(){
 		Queue<Stocks*> queue;
 		tree->serialize(queue);
@@ -348,6 +497,14 @@ string Stocks::comparing;
 		}	
 		outfile.close();
 	}
+	/*
+Controller::~Controller:delete table and tree 
+
+Parameters: none
+* 
+Return Value: void
+
+*/	
 	Controller::~Controller(){
 		delete table;
 		delete tree;
@@ -367,6 +524,11 @@ string Stocks::comparing;
     bool operator!=( vector<Stocks*> v1,vector<Stocks*> v2){
             return *v1[0]!=*v2[0];
     }
+/*
+main:Interfece with the user.
+Parameters: none
+
+*/	
 int main(){
 	bool success=false;
 	string response="";
@@ -437,8 +599,8 @@ int main(){
 		}
 	}
 	success=false;
-	Controller controller("inputfile.txt",comparing);
-	//Controller controller("miniInputFile",comparing);
+	//Controller controller("inputfile.txt",comparing);
+	Controller controller("miniInputFile",comparing);
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
