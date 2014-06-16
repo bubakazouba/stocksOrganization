@@ -15,7 +15,7 @@ class Controller{
 private:
 
 int readFile(string file,Queue<Stocks*>& StockQueue);
-HashFunction* table;
+HashTable* table;
 AVL<Stocks*>* tree;
 string comparing;
 
