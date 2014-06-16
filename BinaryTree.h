@@ -61,7 +61,7 @@ private:
     void _reverseOrder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	// vector traverses
 	void _preorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
-	void _inorder(void visit(vecotr<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
+	void _inorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
 	void _postorder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
     void _reverseOrder(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr) const;
 
