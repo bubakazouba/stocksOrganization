@@ -54,14 +54,14 @@ public:
 ///////////////////////// public function definitions /////////////////////////// 
 template<class ItemType> 
 bool AVL<ItemType>::getMax(vector<ItemType> & ret) const{
-	ret=_getMax(rootPtr);
+	ret=_getMax(this->rootPtr);
 	if(ret.size()==0)
 		return false;
 	return true;
 }
 template<class ItemType> 
 bool AVL<ItemType>::getMin(vector<ItemType> & ret) const{
-	ret=_getMin(rootPtr);
+	ret=_getMin(this->rootPtr);
 	if(ret.size()==0)
 		return false;
 	return true;
@@ -71,13 +71,13 @@ template<class ItemType>
 void AVL<ItemType>::greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const		{
 		vector<ItemType>vec;
 		vec.push_back(val);
-		_greaterThanOrEq(visit, rootPtr,vec);
+		_greaterThanOrEq(visit, this->rootPtr,vec);
 }
 template<class ItemType> 
 void AVL<ItemType>::lessThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const		{
 		vector<ItemType>vec;
 		vec.push_back(val);
-		_lessThanOrEq(visit, rootPtr,vec);
+		_lessThanOrEq(visit, this->rootPtr,vec);
 }
   
 template<class ItemType> 
@@ -85,7 +85,7 @@ bool AVL<ItemType>::insert(const ItemType & newEntry){
     vector<ItemType> newvector; 
     newvector.push_back(newEntry); 
     BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newvector); 
-    rootPtr = _insert(rootPtr, newNodePtr);   
+    this->rootPtr = _insert(this->rootPtr, newNodePtr);   
     count++; 
     return true; 
 }   
@@ -95,7 +95,7 @@ bool AVL<ItemType>::replace(const ItemType & target,vector<ItemType> newVector){
     bool isSuccessful = false; 
     vector<ItemType> targetVector;
 	targetVector.push_back(target); 
-    rootPtr = _replace(rootPtr, targetVector, isSuccessful,newVector); 
+    this->rootPtr = _replace(this->rootPtr, targetVector, isSuccessful,newVector); 
 	if(isSuccessful)
 		count--; 
     return isSuccessful;  
@@ -105,7 +105,7 @@ template<class ItemType>
 bool AVL<ItemType>::getEntry(const ItemType& anEntry, vector<ItemType> & returnedItem) const{ 
     vector<ItemType> targetVector; 
     targetVector.push_back(anEntry); 
-    BinaryNode<ItemType>* returnPtr=findNode(rootPtr,targetVector); 
+    BinaryNode<ItemType>* returnPtr=findNode(this->rootPtr,targetVector); 
     if(returnPtr==0)//if we didn't find it 
         return false; 
 	returnedItem=returnPtr->getVector();
