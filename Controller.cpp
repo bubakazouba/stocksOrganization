@@ -28,7 +28,6 @@
 #include "Controller.h"
 #include <fstream>
 #include <iomanip>
-#include <vector>
 #include "Memtracker.h"
 //it leaks because the serialize function is not implemented yet.
 
@@ -182,15 +181,15 @@ string Stocks::comparing;
 		}
 		delete target;
 	}
-	void Controller::searchByValue(string price){
+	void Controller::searchByValue(string key){
 		
 		vector<Stocks*> returned;
 		Stocks* target=new Stocks();
-		target->settickerSymbol(price);
-		target->compareBy(comparing);
+		target->setBy(comparing,key);
 		if(tree->getEntry(target,returned)){
 			if(returned.size()>0){
-				display(returned[0]);
+				for (int i=0;i<returned.size();i++)
+					display(returned[i]);
 			}
 		}
 		else{
@@ -209,12 +208,21 @@ string Stocks::comparing;
 		}	
 		
 	}
+	void visit(vector<Stocks*>& vec){
+		for (int i=0;i<vec.size();i++){
+			//display(vec[i]);
+		}
+	}
 	void Controller::listTree(){//inOrder
 		//tree->printInOrder();
+		vector<Stocks*> vec;
+		//tree->inOrder(visitt);
 		} 
 	void Controller::printTree(){ //breath first
 		//tree->printIndented();
 	}
+	
+	
 	void Controller::printStatistics(){ //print hashtables statistics
 		table->hashStats();
 		
@@ -287,7 +295,6 @@ string Stocks::comparing;
 			args+=","+highs;
 			args+=","+lows;
 			args+=","+opens;
-			//cout<<args<<endl;
 			Stocks* newStock=new Stocks(args);
 			table->add(newStock); 
 			tree->insert(newStock);	
@@ -426,8 +433,8 @@ int main(){
 		}
 	}
 	success=false;
-	//Controller controller("inputfile.txt",comparing);
-	Controller controller("miniInputFile",comparing);
+	Controller controller("inputfile.txt",comparing);
+	//Controller controller("miniInputFile",comparing);
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
