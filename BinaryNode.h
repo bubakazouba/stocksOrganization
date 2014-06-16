@@ -28,12 +28,14 @@ public:
     // constructors 
     BinaryNode(const vector<ItemType> & aVec)        {vec = aVec; leftPtr = 0; rightPtr = 0;height=0;} 
 	BinaryNode(const ItemType & anItem)               {item = anItem; leftPtr = 0; rightPtr = 0;height=0;} 
-    BinaryNode(const ItemType & anItem,  
+    
+	BinaryNode(const ItemType & anItem,  
                BinaryNode<ItemType>* left,  
-               BinaryNode<ItemType>* right)          {item = anItem; vec=aVec; leftPtr = left; rightPtr = right;}///have to set the height ere 
+               BinaryNode<ItemType>* right)          {item = anItem;  leftPtr = left; rightPtr = right;}///have to set the height ere 
+
     BinaryNode(const vector<ItemType> & aVec,  
                BinaryNode<ItemType>* left,  
-               BinaryNode<ItemType>* right)          {item = anItem; vec=aVec; leftPtr = left; rightPtr = right;}///have to set the height ere 
+               BinaryNode<ItemType>* right)          {vec=aVec; leftPtr = left; rightPtr = right;}///have to set the height ere 
 
     // accessors 
     void setVector(const vector<ItemType> & aVec) {vec = aVec;} 
