@@ -6,6 +6,7 @@
 #ifndef _STOCKS_H_
 #define _STOCKS_H_
 #include <string>
+#include <sstream>
 using namespace std;
 const int MAX_DAYS=30;//where to put that .cpp or .h? in private or outside
 class Stocks{
@@ -78,6 +79,6 @@ public:
 	bool setOpen(double set,int ind=-1);
 	bool setmarketCap(unsigned long long  set,int ind=-1);
 	bool setVolume(unsigned long long  set,int ind=-1);
-
+	bool setBy(string field,string key);
 };
 #endif
