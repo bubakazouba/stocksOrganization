@@ -310,7 +310,7 @@ BinaryNode<ItemType>* AVL<ItemType>::_replace(BinaryNode<ItemType>* nodePtr, con
 	else{
 		nodePtr->setVector(newVector);
 		if(nodePtr->getVector().size()==0)
-			nodePtr = deleteNode(nodePtr); 
+			nodePtr = this->deleteNode(nodePtr); 
 		}
 	////////////////////////////////////////////////////////////////////
 	if(nodePtr==0)//if it was a leafNode
