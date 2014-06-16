@@ -88,7 +88,7 @@ string Stocks::comparing;
 			queue.enqueue(temp);
 		}
 	}
-	void Controller::display(Stocks* temp){
+	void display(Stocks* temp){
 		cout << fixed;
 		cout << std::setprecision(2);
 		cout<<"Company Name: "<<temp->getName();
@@ -128,7 +128,7 @@ string Stocks::comparing;
 		int maxDigits=9;
 		double distribution=(max-min)/(heightOfGraph-1);
 		int* heights=new int[prices.size()];
-		for(int i=0;i<prices.size();i++){
+		for(unsigned int i=0;i<prices.size();i++){
 			heights[i]=((prices[i]-min)/distribution);	
 		}
 		for (int i=heightOfGraph;i>-1;i--){
@@ -143,7 +143,7 @@ string Stocks::comparing;
 			else{
 				cout<<"          "<<"\u2502";//vertical bar
 			}
-			for(int a=0;a<prices.size();a++){
+			for(unsigned int a=0;a<prices.size();a++){
 				cout<<"   ";
 				if(heights[a]>=i){
 					cout<<"\u2593";//graybox
@@ -210,13 +210,12 @@ string Stocks::comparing;
 	}
 	void visit(vector<Stocks*>& vec){
 		for (int i=0;i<vec.size();i++){
-			//display(vec[i]);
+			display(vec[i]);
 		}
 	}
 	void Controller::listTree(){//inOrder
-		//tree->printInOrder();
-		vector<Stocks*> vec;
-		//tree->inOrder(visitt);
+		//tree->printInOrder()
+		tree->inOrder(visit);
 		} 
 	void Controller::printTree(){ //breath first
 		//tree->printIndented();
@@ -227,11 +226,17 @@ string Stocks::comparing;
 		table->hashStats();
 		
 	}
-	void printMaxInTree(){
-		//display(tree->getMax());
+	void Controller::printMaxInTree(){
+		vector<Stocks*> vec;
+		tree->getMax(vec);
+		for (int i=0;i<vec.size();i++)
+			display(vec[i]);
 	}
-	void printMinInTree(){
-		//display(tree->getMin());
+	void Controller::printMinInTree(){
+		vector<Stocks*> vec;
+		tree->getMin(vec);
+		for (int i=0;i<vec.size();i++)
+			display(vec[i]);
 	}
 	
 	void getInput(int n,string& args, string output){
@@ -506,12 +511,12 @@ int main(){
 							valid=true;
 						}
 						else if(response=="l"){
-							//controller.printMinInTree();
+							controller.printMinInTree();
 							valid=true;
 							
 						}
 						else if(response=="g"){
-							//controller.printMaxInTree();
+							controller.printMaxInTree();
 							valid=true;
 							
 						}

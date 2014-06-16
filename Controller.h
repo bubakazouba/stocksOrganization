@@ -7,6 +7,7 @@
 #include "Queue.h"
 #include "HashTable.h"
 #include "AVL.h"
+#include <vector>
 
   
 using namespace std;
@@ -25,7 +26,7 @@ Controller(string file,string comp);
 void listHash();
 void listTree();
 void printTree();
-void display(Stocks* temp);
+//void display(Stocks* temp);
 void add(string key);
 void remove(string key);
 void searchByTicker(string key);
@@ -35,6 +36,7 @@ void update(string key);
 void quit();
 void printMaxInTree();
 void printMinInTree();
+//void visit(vector<Stocks*>& vec);
 
 
 };
