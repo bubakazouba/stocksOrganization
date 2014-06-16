@@ -185,7 +185,7 @@ string Stocks::comparing;
 		
 		vector<Stocks*> returned;
 		Stocks* target=new Stocks();
-		target->setBy(comparing,key);
+		target->addFirstDayBy(comparing,key);
 		if(tree->getEntry(target,returned)){
 			if(returned.size()>0){
 				for (int i=0;i<returned.size();i++)
