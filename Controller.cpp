@@ -99,7 +99,7 @@ Return Value: Its a constructor
 	comparing=comp;
 	Queue<Stocks*> queue;
 	int numberOfRecords=readFile(file,queue);
-	table=new HashFunction(numberOfRecords);
+	table=new HashTable(numberOfRecords);
 	tree=new AVL<Stocks*>();
 		for (int i=0;i<queue.size();i++){
 			Stocks* temp;
@@ -111,7 +111,7 @@ Return Value: Its a constructor
 		}
 	}
 /*
-display:  Prinst to screen a graphical representation of the stock.
+display:  Print to screen a graphical representation of the stock.
 
 
 Parameters: It takes a pointer to the Stock you wnat to display
@@ -282,7 +282,7 @@ Return Value: void
 
 
 */
-	void visit(vector<Stocks*> vec){
+	void visit(const vector<Stocks*>& vec){
 		for (int i=0;i<vec.size();i++){
 			display(vec[i]);
 		}
@@ -298,7 +298,7 @@ Return Value: void
 */
 	void Controller::listTree()const{//inOrder
 		tree->inOrder(visit);
-		} 
+	} 
 /*
 Controller::printTree(): displays to screen all the stocks from the 
 * AVL tree in tree shape
@@ -309,7 +309,7 @@ Return Value: void
 
 */
 	void Controller::printTree()const{ //breath first
-		tree->printIndented();
+		//tree->printIndented();
 	}
 
 /*
@@ -482,8 +482,8 @@ Return Value: void
 */	
 	void Controller::quit(){
 		Queue<Stocks*> queue;
-		tree->serialize(queue);
-		//table->List(queue);
+		//tree->serialize(queue);
+		table->List(queue);
 		ofstream outfile("inputFile");
 		while(queue.size()!=0){
 			Stocks* temp;
@@ -549,49 +549,49 @@ int main(){
 		cout<<"Choice: ";
 		getline(cin,response);
 		
-		if(response=="n"){
+		if(response=="n"||response=="N"){
 			Stocks temp;
 			comparing="Company Name";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="s"){
+		else if (response=="s"||response=="S"){
 			Stocks temp;
 			comparing="Ticker Symbol";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="p"){
+		else if (response=="p"||response=="P"){
 			Stocks temp;
 			comparing="Price";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="v"){
+		else if (response=="v"||response=="V"){
 			Stocks temp;
 			comparing="Volume";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="c"){
+		else if (response=="c"||response=="C"){
 			Stocks temp;
 			comparing="Market Capital";
 			temp.compareBy(comparing);
 			success=true;	
 		}
-		else if (response=="o"){
+		else if (response=="o"||response=="O"){
 			Stocks temp;
 			comparing="Opening Price";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="h"){
+		else if (response=="h"||response=="H"){
 			Stocks temp;
 			comparing="High";
 			temp.compareBy(comparing);
 			success=true;
 		}
-		else if (response=="l"){
+		else if (response=="l"||response=="L"){
 			Stocks temp;
 			comparing="Low";
 			temp.compareBy(comparing);
@@ -619,31 +619,31 @@ int main(){
 				cout<<"s. Tree shape"<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
-				if (response=="t"){
+				if (response=="t"||response=="T"){
 					valid=true;
 					controller.listHash();
 				}
-				else if (response=="p"){
+				else if (response=="p"||response=="P"){
 					valid=true;
 					controller.listTree();
 				}
-				else if (response=="s"){
+				else if (response=="s"||response=="S"){
 					valid=true;
 					controller.printTree();
 				}
 			}
 		}
-		else if (response=="d"){
+		else if (response=="d"||response=="D"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
 			controller.remove(response);
 		}
-		else if (response=="a"){
+		else if (response=="a"||response=="A"){
 			cout<<"Enter Ticker Symbol: ";
 			getline(cin,response);
 			controller.add(response);
 		}
-		else if (response=="s"){
+		else if (response=="s"||response=="S"){
 			bool valid=false;
 			while(!valid){//while not sure
 				cout<<"Search by:"<<endl;
@@ -657,7 +657,7 @@ int main(){
 					getline(cin,response);
 					controller.searchByTicker(response);
 				}
-				else if (response=="p"){
+				else if (response=="p"||response=="P"){
 					
 					while(!valid){//while not sure
 						cout<<"l. least in value"<<endl;
@@ -665,18 +665,18 @@ int main(){
 						cout<<"c. custom value"<<endl;
 						cout<<"Choice: ";
 						getline(cin,response);
-						if(response=="c"){
+						if(response=="c"||response=="C"){
 							cout<<"Enter custom value: ";
 							getline(cin,response);
 							controller.searchByValue(response);
 							valid=true;
 						}
-						else if(response=="l"){
+						else if(response=="l"||response=="L"){
 							controller.printMinInTree();
 							valid=true;
 							
 						}
-						else if(response=="g"){
+						else if(response=="g"||response=="G"){
 							controller.printMaxInTree();
 							valid=true;
 							
@@ -686,20 +686,20 @@ int main(){
 			}//end of while valid
 		}
 		
-		else if (response=="h"){
+		else if (response=="h"||response=="H"){
 			controller.printStatistics();
 		}
-		else if (response=="q"){
+		else if (response=="q"||response=="Q"){
 			bool sure=false;
 			while(!sure){//while not sure
 				cout<<"Are you sure? (y/n): ";
 				getline(cin,response);
-				if (response=="y"){
+				if (response=="y"||response=="Y"){
 					sure=true;
 					success=true;
 					controller.quit();
 				}//end of if
-				else if (response=="n"){
+				else if (response=="n"||response=="N"){
 					sure=true;
 					success=false;
 				}//end of else if
