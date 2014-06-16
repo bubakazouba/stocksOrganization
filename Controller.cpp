@@ -305,12 +305,13 @@ string Stocks::comparing;
 		{
 			table->remove(returned); 
 			vector<Stocks*> vec;
-			 tree->replace(returned,vec); 
+			 tree->getEntry(returned,vec); 
 			 for (int i=0;i<vec.size();i++){
 				 if(vec[i]->gettickerSymbol()==returned->gettickerSymbol()){
 					 vec.erase(vec.begin()+i);
 				 }
 			 }
+			 tree->replace(returned,vec); 
 			cout<<key<<" was removed"<<endl;
 			delete returned;
 		}
@@ -425,8 +426,8 @@ int main(){
 		}
 	}
 	success=false;
-	Controller controller("inputfile.txt",comparing);
-	//Controller controller("fatfile",comparing);
+	//Controller controller("inputfile.txt",comparing);
+	Controller controller("miniInputFile",comparing);
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
