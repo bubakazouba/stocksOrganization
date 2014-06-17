@@ -209,7 +209,7 @@ Return Value: void
 		double low;
 		temp->getLow(low);
 		cout<<", Low: "<<low<<endl;
-		double max=0,min=12344445556677;
+		double max=0,min=9999999;
 		//double* prices=new double[temp->getNdays()];
 		vector<double> prices;
 		for(int i=0;i<temp->getNdays();i++){
@@ -256,9 +256,17 @@ Return Value: void
 			}
 			cout<<endl;
 		}
-		cout << setfill (' ') <<setw(maxDigits);
-		//cout<<min<<" \u2514";//corner
-		cout<<min<<" └";//corner
+		
+		if (min!=9999999){
+			cout << setfill (' ') <<setw(maxDigits);
+			//cout<<min<<" \u2514";//corner
+			cout<<min<<" └";//corner
+		}
+		else{
+			min=0;
+			cout << setfill (' ') <<setw(maxDigits);
+			cout<<min<<" └";//corner
+		}
 		for(int a=0;a<prices.size();a++){
 				if(a==(prices.size()/2)-1){
 					cout<<"days";
@@ -671,7 +679,7 @@ int main(){
 		cout<<"q. quit"<<endl;
 		cout<<"Choice: ";
 		getline(cin,response);
-		if(response=="l"){
+		if(response=="l"||response=="L"){
 			bool valid=false;
 			while(!valid){//while not sure
 				cout<<"List by:"<<endl;
@@ -698,17 +706,15 @@ int main(){
 					cout<<"Value: ";
 					getline(cin,response);
 					controller.greaterThanOrEq(response);
-					
 					valid=true;
-					controller.printTree();
+					
 				}
 				else if (response=="l"||response=="L"){
 					cout<<"Value: ";
 					getline(cin,response);
 					controller.lessThanOrEq(response);
-					
 					valid=true;
-					controller.printTree();
+				
 				}
 			}
 		}
@@ -730,7 +736,7 @@ int main(){
 				cout<<"p. "<<comparing<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
-				if (response=="t"){
+				if (response=="t"||response=="T"){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
