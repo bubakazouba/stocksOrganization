@@ -43,7 +43,7 @@ public:
 	Stocks& operator = (const Stocks& rhs);///should it return const?
 	Stocks(string line);//line read from file passed to this constructor to construct an object
 	static void compareBy(string str){comparing=str;}
-
+	static string getCompareBy(){return comparing;}
 	string toString();//convert it back to string to the Breadth First Search can use it easily to output to the file
 	bool add(double setclose,unsigned long long setmarketCap,unsigned long long setvolume,double high,double low,double open);
 	bool add(string line);
@@ -56,7 +56,7 @@ public:
 
 
 //--------------GETTERS----------------------//
-	///do i need to put const here?
+	bool getBy(string key,string & field);
 	string gettickerSymbol()const {return tickerSymbol;}
 	string getName()const {return name;}
 	int getNdays() const {return Ndays;}
