@@ -295,6 +295,26 @@ Return Value: void
 		}
 	}
 /*
+Controller::printVector(): displays to screen the key of a vector
+
+Parameters: It takes a vector of type Stocks pointer
+* 
+Return Value: void
+
+
+*/
+	void printVector(vector<Stocks*>& vec){
+		
+		if (vec.size()>0){
+			string value;
+			vec[0]->getBy(vec[0]->getCompareBy(),value);
+			cout<<value;
+			
+		}
+		
+		
+	}
+/*
 Controller::listTree(): displays to screen all the stocks from the 
 * AVL tree in key Order
 
@@ -316,7 +336,8 @@ Return Value: void
 
 */
 	void Controller::printTree()const{ //breath first
-		tree->printIndented();
+		tree->printIndented(printVector);
+		cout<<endl;
 	}
 
 /*
