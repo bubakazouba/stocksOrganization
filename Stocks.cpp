@@ -237,7 +237,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		}
 		if(key=="Low"){
 			ss<<low[Ndays-1];
-			ss>>field
+			ss>>field;
 			return true;
 		}
 		return false;
