@@ -1,6 +1,5 @@
 // AVL ADT
 // Created By: Abdulrahman Sahmoud
-
 #ifndef _AVL
 #define _AVL
 
