@@ -671,7 +671,7 @@ int main(){
 		cout<<"q. quit"<<endl;
 		cout<<"Choice: ";
 		getline(cin,response);
-		if(response=="l"){
+		if(response=="l"||response=="L"){
 			bool valid=false;
 			while(!valid){//while not sure
 				cout<<"List by:"<<endl;
@@ -698,17 +698,15 @@ int main(){
 					cout<<"Value: ";
 					getline(cin,response);
 					controller.greaterThanOrEq(response);
-					
 					valid=true;
-					controller.printTree();
+					
 				}
 				else if (response=="l"||response=="L"){
 					cout<<"Value: ";
 					getline(cin,response);
 					controller.lessThanOrEq(response);
-					
 					valid=true;
-					controller.printTree();
+				
 				}
 			}
 		}
@@ -730,7 +728,7 @@ int main(){
 				cout<<"p. "<<comparing<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
-				if (response=="t"){
+				if (response=="t"||response=="t"){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
