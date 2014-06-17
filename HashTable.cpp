@@ -24,7 +24,6 @@ using namespace std;
         while( !isPrime(arrSize) ){
             arrSize++;//keeps incrementing the arrsize until the array size is prime
        }
-
          maxProbe=0;
          numStocks=0;
          numZeroProbes=0;
@@ -122,7 +121,7 @@ using namespace std;
             if(hashArray[somethingNew]==0){return false;} //checks to see if the index is empty
             if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
             if(hashArray[somethingNew]->gettickerSymbol()==key ){
-
+                    if(probes==9){cout<<"This is the Devilish key"<<key<<endl;}
                 found=true;
             }
             else{
@@ -152,19 +151,18 @@ using namespace std;
             if( hashArray[index]==NULL || hashArray[index]->gettickerSymbol()=="deleted" ){
                 hashArray[index]=temp;
                 noSpot=false;
-
                 if(probes==0){numZeroProbes++;}
+                else
+                    numCollisions++;
             }
 
             else {
                 probes++;
                 index=collRes(index,probes);
-                numCollisions++;
             }
             if(maxProbe<probes){
                 maxProbe=probes;
             } // maxProbe is getting modified
-
           }//while
         numStocks++;
         return true;
