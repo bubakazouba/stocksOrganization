@@ -95,10 +95,74 @@ Return Value: Its a constructor
 */
 	 
 	//Constructor 
-	Controller::Controller(string file,string comp){
-	comparing=comp;
+	Controller::Controller(string file){
+	
 	Queue<Stocks*> queue;
 	int numberOfRecords=readFile(file,queue);
+	bool success=false;
+	while(!success){
+		string response="";	
+		cout<<"Enter a field to sort the tree"<<endl;
+		cout<<"n. Company Name"<<endl;
+		cout<<"s. Ticker Symbol"<<endl;
+		cout<<"p. Price"<<endl;
+		cout<<"v. Volume"<<endl;
+		cout<<"c. Market Capital"<<endl;
+		cout<<"o. Opening Price"<<endl;
+		cout<<"h. High"<<endl;
+		cout<<"l. Low"<<endl;
+		cout<<"Choice: ";
+		getline(cin,response);
+		
+		if(response=="n"||response=="N"){
+			Stocks temp;
+			comparing="Company Name";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="s"||response=="S"){
+			Stocks temp;
+			comparing="Ticker Symbol";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="p"||response=="P"){
+			Stocks temp;
+			comparing="Price";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="v"||response=="V"){
+			Stocks temp;
+			comparing="Volume";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="c"||response=="C"){
+			Stocks temp;
+			comparing="Market Capital";
+			temp.compareBy(comparing);
+			success=true;	
+		}
+		else if (response=="o"||response=="O"){
+			Stocks temp;
+			comparing="Opening Price";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="h"||response=="H"){
+			Stocks temp;
+			comparing="High";
+			temp.compareBy(comparing);
+			success=true;
+		}
+		else if (response=="l"||response=="L"){
+			Stocks temp;
+			comparing="Low";
+			temp.compareBy(comparing);
+			success=true;
+		}
+	}
 	table=new HashTable(numberOfRecords);
 	tree=new AVL<Stocks*>();
 		for (int i=0;i<queue.size();i++){
@@ -169,7 +233,7 @@ Return Value: void
 			if(i==heightOfGraph){
 				cout << setfill (' ') <<setw(maxDigits);
 				//cout<<max<<" \u2227";//uparrow
-				cout<<max<<" │";//uparrow
+				cout<<max<<" ∧";//uparrow
 				
 			}
 			else if(i==((heightOfGraph)/2)){//print price halfway in the graph
@@ -588,77 +652,16 @@ Parameters: none
 
 */	
 int main(){
-	bool success=false;
+	
 	string response="";
-	string comparing;
+	
 	cout<<"Welcome to this awesome program..."<<endl;
 	
-	while(!success){
-			
-		cout<<"Enter a field to sort the tree"<<endl;
-		cout<<"n. Company Name"<<endl;
-		cout<<"s. Ticker Symbol"<<endl;
-		cout<<"p. Price"<<endl;
-		cout<<"v. Volume"<<endl;
-		cout<<"c. Market Capital"<<endl;
-		cout<<"o. Opening Price"<<endl;
-		cout<<"h. High"<<endl;
-		cout<<"l. Low"<<endl;
-		cout<<"Choice: ";
-		getline(cin,response);
-		
-		if(response=="n"||response=="N"){
-			Stocks temp;
-			comparing="Company Name";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="s"||response=="S"){
-			Stocks temp;
-			comparing="Ticker Symbol";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="p"||response=="P"){
-			Stocks temp;
-			comparing="Price";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="v"||response=="V"){
-			Stocks temp;
-			comparing="Volume";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="c"||response=="C"){
-			Stocks temp;
-			comparing="Market Capital";
-			temp.compareBy(comparing);
-			success=true;	
-		}
-		else if (response=="o"||response=="O"){
-			Stocks temp;
-			comparing="Opening Price";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="h"||response=="H"){
-			Stocks temp;
-			comparing="High";
-			temp.compareBy(comparing);
-			success=true;
-		}
-		else if (response=="l"||response=="L"){
-			Stocks temp;
-			comparing="Low";
-			temp.compareBy(comparing);
-			success=true;
-		}
-	}
-	success=false;
+	bool success=false;
 	//Controller controller("inputfile.txt",comparing);
-	Controller controller("miniInputFile",comparing);
+	Controller controller("miniInputFile");
+	Stocks temp;
+	string comparing=temp.getCompareBy();
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;

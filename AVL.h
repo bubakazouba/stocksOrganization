@@ -1,5 +1,3 @@
-//check all my functions take consts return consts and pass by reference the vectors
-//change comments
 // AVL ADT
 // Created By: Abdulrahman Sahmoud
 

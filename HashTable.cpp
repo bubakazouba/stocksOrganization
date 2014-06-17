@@ -119,9 +119,8 @@ using namespace std;
          while(!found){
 
             if(hashArray[somethingNew]==0){return false;} //checks to see if the index is empty
-            if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
+           // if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
             if(hashArray[somethingNew]->gettickerSymbol()==key ){
-                    if(probes==9){cout<<"This is the Devilish key"<<key<<endl;}
                 found=true;
             }
             else{
@@ -171,7 +170,7 @@ using namespace std;
     void HashTable::List(Queue<Stocks*>& StockQueue){
 
         for(int i=0; i<arrSize; i++){
-            if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="DELETED" ){
+            if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="deleted" ){
               StockQueue.enqueue(hashArray[i]); //add the indexs with data into a queue
 
             }
