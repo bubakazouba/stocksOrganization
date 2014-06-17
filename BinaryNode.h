@@ -21,9 +21,11 @@ private:
 	ItemType                 item;         // Data portion 
     BinaryNode<ItemType>* leftPtr;        // Pointer to left child 
     BinaryNode<ItemType>* rightPtr;       // Pointer to right child 
-  
+	int height; 
 public: 
-    int height; 
+	void setHeight(int H){height=H;}
+	int getHeight()const{return height;}
+	BinaryNode(){leftPtr=0;rightPtr=0;}
 	void pushback(ItemType & obj){vec.push_back(obj);} 
     // constructors 
     BinaryNode(const vector<ItemType> & aVec)        {vec = aVec; leftPtr = 0; rightPtr = 0;height=0;} 
