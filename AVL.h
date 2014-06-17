@@ -99,6 +99,7 @@ private:
     BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);      
     /*
 	_replace: a private function that replaces the vector the BinaryNode(specified in the paramater) have by the one taken by the function as a paramater
+	if it found that the new vector has a size of 0, it deletes the node using the inherited deleteNode function
 
 	Paramaters: BinaryNode pointer (current node), a vector the function is looking for, a bool success variable to change it if it found it or not, the newvector to replace by
 
@@ -115,27 +116,60 @@ private:
 
 	*/
 	int getHeight(BinaryNode<ItemType>*  nodePtr);
+	
+	/*
+	OOB a function that takes a binary node and its maximum child and returns a bool, indicating if the parent node is out of balance or not
+	*/
 	bool OOB(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& maxChild);
 
-    // search for target node 
-    // returns a 0 pointer if it didn't find it 
-    BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const vector<ItemType> & target) const; 
-
+    /*
+	findNode function, its a private function that takes a BinaryNode pointer (root pointer initially), and recursively calls itself navigating in the tree searching for the given vector
+	it returns the node that has a vector "equal"(depends on operator overloaders for the vector<ItemType>) to the vector given, or returns a 0 if it didn't find it
+	*/
+    BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* nodePtr, const vector<ItemType> & target) const; 
+	
 	void _printIndented(BinaryNode<ItemType>* node, int depth, void printing(vector<ItemType>&) ) const;
 
 	void _serialize(Queue<ItemType>& serial, Queue<BinaryNode<ItemType>*>& tempQ) const;
 public:
+	/*
+	getMax function, a public function that returns the maximum vector in the tree, it calls the private _getMax function, or returns false if the tree is empty
+	*/
 	bool getMax(vector<ItemType> & ret) const;
+	/*
+	getMin function, a public function that returns the minimum vector in the tree, it calls the private _getMin function, or returns false if the tree is empty
+	*/
 	bool getMin(vector<ItemType> & ret) const;
+	/*
+	greaterThanOrEq, a public function that has a void return type,it takes a visit function as a paremeter and an ItemType to compare the vectors in the tree with, it calls the private _greaterThanOrEq function to 
+	traverse the tree.
+	*/
 	void greaterThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
+	/*
+	lessThanOrEq, a public function that has a void return type,it takes a visit function as a paremeter and an ItemType to compare the vectors in the tree with, it calls the private _lessThanOrEq function to 
+	traverse the tree.
+	*/
 	void lessThanOrEq(void visit(vector<ItemType> &),const ItemType & val) const;
-    // insert a node at the correct location 
+    
+	/*
+	public insert function that takes an ItemType type as a paramater and, it creates a vector itself and calls the private _insert function with it.
+	it passes a vector not an ItemType , so the person using the AVL doesn't have to overload the comparison operators for (vector<itemtype>,itemtype) too.
+	*/
     bool insert(const ItemType & newEntry); 
 
-	// replace a node if found 
+	/*
+	public replace function, it takes an ItemType representing whats inside the vector of the node that it's vector need to be replaced
+	it replaces that vector with the newVector passed to it
+	returns true if found
+	false if didn't find
+	*/
     bool replace(const ItemType & anEntry,vector<ItemType> newVector); 
       
-    // find a target node 
+    /*
+	public getEntry function, it takes an ItemType representing whats inside the vector of the node that it's vector need to be retrieved
+	it returns true if it found it, and set the passed vector by reference to the vector inside the node
+	retruns false if didn't find
+	*/
     bool getEntry(const ItemType & target, vector<ItemType> & returnedItem) const; 
    
 	void printIndented( void printing(vector<ItemType>&) ) const;
@@ -187,7 +221,6 @@ bool AVL<ItemType>::insert(const ItemType & newEntry){
     newvector.push_back(newEntry); 
     BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newvector); 
     this->rootPtr = _insert(this->rootPtr, newNodePtr);   
-	this->rootPtr;
     this->count++; 
     return true; 
 }   
