@@ -1,9 +1,7 @@
 //you need that outside the main: string Stocks::comparing= "tickerSymbol";
 //Name: Abdulrahman Sahmoud
-///make sure i need to include which libraries
 #ifndef _STOCKS
 #define _STOCKS
-#include<iostream>
 #include<sstream>
 using namespace std;
 #include "Stocks.h"
@@ -118,12 +116,12 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		//setting the rest of the fields
 		name=getNthField(line,1,",");
 		tickerSymbol=getNthField(line,2,",");
-		setArrayField( close, getNthField(line,3,",") );///remember this returns false
-		setArrayField( marketCap, getNthField(line,4,",") );///remember this returns false
-		setArrayField( volume, getNthField(line,5,",") );///remember this returns false
-		setArrayField( high, getNthField(line,6,",") );///remember this returns false
-		setArrayField( low, getNthField(line,7,",") );///remember this returns false
-		setArrayField( open, getNthField(line,8,",") );///remember this returns false
+		setArrayField( close, getNthField(line,3,",") );
+		setArrayField( marketCap, getNthField(line,4,",") );
+		setArrayField( volume, getNthField(line,5,",") );
+		setArrayField( high, getNthField(line,6,",") );
+		setArrayField( low, getNthField(line,7,",") );
+		setArrayField( open, getNthField(line,8,",") );
 	}//end of Stocks(line)
 	template<typename T>
 	string Stocks::arrToString(T data[]){

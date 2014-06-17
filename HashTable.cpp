@@ -24,7 +24,6 @@ using namespace std;
         while( !isPrime(arrSize) ){
             arrSize++;//keeps incrementing the arrsize until the array size is prime
        }
-
          maxProbe=0;
          numStocks=0;
          numZeroProbes=0;
@@ -120,9 +119,8 @@ using namespace std;
          while(!found){
 
             if(hashArray[somethingNew]==0){return false;} //checks to see if the index is empty
-            if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
+           // if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
             if(hashArray[somethingNew]->gettickerSymbol()==key ){
-
                 found=true;
             }
             else{
@@ -149,21 +147,21 @@ using namespace std;
 
           while(noSpot){
 
-            if( hashArray[index]==NULL ){
+            if( hashArray[index]==NULL || hashArray[index]->gettickerSymbol()=="deleted" ){
                 hashArray[index]=temp;
                 noSpot=false;
-
                 if(probes==0){numZeroProbes++;}
+                else
+                    numCollisions++;
             }
+
             else {
                 probes++;
                 index=collRes(index,probes);
-                numCollisions++;
             }
             if(maxProbe<probes){
                 maxProbe=probes;
             } // maxProbe is getting modified
-
           }//while
         numStocks++;
         return true;
@@ -172,7 +170,7 @@ using namespace std;
     void HashTable::List(Queue<Stocks*>& StockQueue){
 
         for(int i=0; i<arrSize; i++){
-            if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="DELETED" ){
+            if( hashArray[i]!= NULL && hashArray[i]->gettickerSymbol()!="deleted" ){
               StockQueue.enqueue(hashArray[i]); //add the indexs with data into a queue
 
             }
