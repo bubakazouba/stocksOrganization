@@ -144,7 +144,7 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 		str+=arrToString(low)+",";
 		str+=arrToString(open);
 		return str;
-	}//convert it back to string to the Breadth First Search can use it easily to output to the file
+	}
 
 // Comparison Operators
 	bool Stocks::operator ==(const Stocks& rhs){
