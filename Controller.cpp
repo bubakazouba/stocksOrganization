@@ -209,7 +209,7 @@ Return Value: void
 		double low;
 		temp->getLow(low);
 		cout<<", Low: "<<low<<endl;
-		double max=0,min=12344445556677;
+		double max=0,min=9999999;
 		//double* prices=new double[temp->getNdays()];
 		vector<double> prices;
 		for(int i=0;i<temp->getNdays();i++){
@@ -728,7 +728,7 @@ int main(){
 				cout<<"p. "<<comparing<<endl;
 				cout<<"Choice: ";
 				getline(cin,response);
-				if (response=="t"||response=="t"){
+				if (response=="t"||response=="T"){
 					valid=true;
 					cout<<"Enter Ticker Symbol:";
 					getline(cin,response);
