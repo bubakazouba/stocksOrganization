@@ -168,19 +168,23 @@ Return Value: void
 		for (int i=heightOfGraph;i>-1;i--){
 			if(i==heightOfGraph){
 				cout << setfill (' ') <<setw(maxDigits);
-				cout<<max<<" \u2227";//uparrow
+				//cout<<max<<" \u2227";//uparrow
+				cout<<max<<" │";//uparrow
 				
 			}
 			else if(i==((heightOfGraph)/2)){//print price halfway in the graph
-				cout<<"    price "<<"\u2502";//vertical bar
+				//cout<<"    price "<<"\u2502";//vertical bar
+				cout<<"    price │";
 			}		
 			else{
-				cout<<"          "<<"\u2502";//vertical bar
+				//cout<<"          "<<"\u2502";//vertical bar
+				cout<<"          │";
 			}
 			for(unsigned int a=0;a<prices.size();a++){
 				cout<<"   ";
 				if(heights[a]>=i){
-					cout<<"\u2593";//graybox
+					//cout<<"\u2593";//graybox
+					cout<<"▓";
 				}
 				else{
 					cout<<" ";//so that the days dont phase put
@@ -189,17 +193,20 @@ Return Value: void
 			cout<<endl;
 		}
 		cout << setfill (' ') <<setw(maxDigits);
-		cout<<min<<" \u2514";//corner
+		//cout<<min<<" \u2514";//corner
+		cout<<min<<" └";//corner
 		for(int a=0;a<prices.size();a++){
 				if(a==(prices.size()/2)-1){
 					cout<<"days";
 				}
 				else{
-					cout<<"\u2015\u2015\u2015\u2015";//full width horizontal lines
+					//cout<<"\u2015\u2015\u2015\u2015";//full width horizontal lines
+					cout<<"――――";
 					
 				}
 		}
-		cout<<"\u2015\u2015>"<<endl;//full width horizontal lines
+		//cout<<"\u2015\u2015>"<<endl;//full width horizontal lines
+		cout<<"――>"<<endl;//full width horizontal lines
 		delete [] heights;
 	}
 /*
