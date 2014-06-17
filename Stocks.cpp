@@ -199,6 +199,49 @@ bool Stocks::add(double newclose,unsigned long long newmarketCap,unsigned long l
 	
 
 //---------------------GETTERS-----------------------------//
+    bool Stocks::getBy(string key,string & field){
+		if(key=="Company Name"){
+			field=name;
+			return true;
+		}
+		if(key=="Ticker Symbol"){
+			field=tickerSymbol;
+			return true;
+		}
+		if(Ndays==0)return false;
+		stringstream ss;
+		if(key=="Market Capital"){
+			ss<<marketCap[Ndays-1];
+			ss>>field;
+			return true;
+		}
+		if(key=="Volume"){
+			ss<<volume[Ndays-1];
+			ss>>field;
+			return true;
+		}
+		if(key=="Price"){
+			ss<<close[Ndays-1];
+			ss>>field;
+			return true;
+		}
+		if(key=="Opening Price"){
+			ss<<open[Ndays-1];
+			ss>>field;
+			return true;
+		}
+		if(key=="High"){
+			ss<<high[Ndays-1];
+			ss>>field;
+			return true;
+		}
+		if(key=="Low"){
+			ss<<low[Ndays-1];
+			ss>>field
+			return true;
+		}
+		return false;
+	}
 	bool Stocks::getClose(double & ret,int ind){
 		if(Ndays==0)
 			return false;
