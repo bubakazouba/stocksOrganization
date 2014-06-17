@@ -654,12 +654,14 @@ Parameters: none
 int main(){
 	
 	string response="";
-	string comparing;
+	
 	cout<<"Welcome to this awesome program..."<<endl;
 	
 	bool success=false;
 	//Controller controller("inputfile.txt",comparing);
 	Controller controller("miniInputFile");
+	Stocks temp;
+	string comparing=temp.getCompareBy();
 	while(!success){
 		cout<<"a. add stock"<<endl;
 		cout<<"d. delete stock"<<endl;
