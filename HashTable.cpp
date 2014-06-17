@@ -119,7 +119,7 @@ using namespace std;
          while(!found){
 
             if(hashArray[somethingNew]==0){return false;} //checks to see if the index is empty
-            if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
+           // if(hashArray[somethingNew]->gettickerSymbol()=="deleted"){return false;}
             if(hashArray[somethingNew]->gettickerSymbol()==key ){
                 found=true;
             }
