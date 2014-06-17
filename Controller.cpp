@@ -256,9 +256,17 @@ Return Value: void
 			}
 			cout<<endl;
 		}
-		cout << setfill (' ') <<setw(maxDigits);
-		//cout<<min<<" \u2514";//corner
-		cout<<min<<" └";//corner
+		
+		if (min!=9999999){
+			cout << setfill (' ') <<setw(maxDigits);
+			//cout<<min<<" \u2514";//corner
+			cout<<min<<" └";//corner
+		}
+		else{
+			min=0;
+			cout << setfill (' ') <<setw(maxDigits);
+			cout<<min<<" └";//corner
+		}
 		for(int a=0;a<prices.size();a++){
 				if(a==(prices.size()/2)-1){
 					cout<<"days";
