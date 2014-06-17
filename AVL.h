@@ -7,7 +7,9 @@
 #define _AVL
 
 #include <algorithm>
+#include <iostream>
 #include "BinarySearchTree.h"
+#include "Queue.h"
 
 template<class ItemType>
 class AVL : public BinarySearchTree<ItemType>
@@ -146,13 +148,13 @@ public:
 template<class ItemType> 
 void AVL<ItemType>::serialize(Queue<ItemType>& serial ) const{
     Queue<BinaryNode<ItemType>*> tempQ;
-    tempQ.enqueue(rootPtr);
+    tempQ.enqueue(this->rootPtr);
     _serialize(serial, tempQ);
 }
 template<class ItemType> 
 void AVL<ItemType>::printIndented( void printing(vector<ItemType>&) ) const{
     int depth = 0;
-    _printIndented(rootPtr, depth, printing);
+    _printIndented(this->rootPtr, depth, printing);
 }
 template<class ItemType> 
 bool AVL<ItemType>::getMax(vector<ItemType> & ret) const{
@@ -184,8 +186,6 @@ void AVL<ItemType>::lessThanOrEq(void visit(vector<ItemType> &),const ItemType &
   
 template<class ItemType> 
 bool AVL<ItemType>::insert(const ItemType & newEntry){ 
-	BinaryNode<ItemType>* theotherpointer=this->rootPtr;
-	theotherpointer=rootPtr;
     vector<ItemType> newvector; 
     newvector.push_back(newEntry); 
     BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newvector); 
@@ -243,10 +243,12 @@ void AVL<ItemType>::_printIndented(BinaryNode<ItemType>* node, int depth, void p
         return;
 
     _printIndented(node->getRightPtr() , depth+1,printing);
+    
     for(int i =0; i< depth; i++)
         cout<< "\t";
     vector<ItemType> temp = node->getVector();
     printing(temp);
+    cout << endl;
 
     _printIndented(node->getLeftPtr(), depth+1,printing);
 
