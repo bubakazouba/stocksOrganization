@@ -30,29 +30,98 @@ private:
 	*/
 	vector<ItemType> _getMin(BinaryNode<ItemType>* nodePtr) const;
 	/*
-	_greaterThanOrEq
+	_greaterThanOrEq: a private function that uses a visit function on every node in the tree greater than a certain value passed to it
+
+	Paramaters: the visit function, the nodePtr that will be using it to decide which child to use from it to go next, the variable that the function is comparing every node to , if it is greater than it output it
+
+	Return Value: it doesn't return
 	*/
 	void _greaterThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
+	/*
+	_greaterThanOrEq: a private function that uses a visit function on every node in the tree samller than a certain value passed to it
+
+	Paramaters: the visit function, the nodePtr that will be using it to decide which child to use from it to go next, the variable that the function is comparing every node to , if it is greater than it then visit it
+
+	Return Value: none
+	*/
 	void _lessThanOrEq(void visit(vector<ItemType> &), BinaryNode<ItemType>* nodePtr,const vector<ItemType> & var) const;
+	/*
+	getState: a private function that calculates the state of a node
+
+	Paramters: a BinaryNode
+
+	Return Value: a string representing the state of the node
+	*/
 	string getState(BinaryNode<ItemType>* nodePtr);
+	/*
+	rotateRight: a private function that takes a BinaryNode pointer and rotates it right and return it again
+
+	Paramaters: BinaryNode pointer
+
+	Return Value: BinaryNode pointer
+	*/
 	BinaryNode<ItemType>* rotateRight(BinaryNode<ItemType>* nodePtr);
+	/*
+	rotateRight: a private function that takes a BinaryNode pointer and rotates it left and return it again
+
+	Paramaters: BinaryNode pointer
+
+	Return Value: BinaryNode pointer
+	*/
 	BinaryNode<ItemType>* rotateLeft (BinaryNode<ItemType>* nodePtr);
-	void AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr);
-	void AnalyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr);
+	/*
+	analyzeInsert: a private function that takes an out of balance node and the greater of it's 2 childs, because thats the one that will be used to fix the out of balance
+	the analyzeInsert function's goal is to fix the out of balance, it works only when the out of balance node is a result of inserting
+	(there is more explanation how the function works inside the code)
 
-  
-    // internal insert node: insert newNode in nodePtr subtree 
-    BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode); 
-     
-    // internal replace node: locate and delete target node under nodePtr subtree 
+	Parameters: an out of balance node and the greater of it's 2 childs 
+
+	Return Value: none
+	*/
+	void analyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr);
+	/*
+	analyzeDelete: a private function that takes an out of balance node and the greater of it's 2 childs, because thats the one that will be used to fix the out of balance
+	the analyzeDelete function's goal is to fix the out of balance, it works only when the out of balance node is a result of deleting
+	(there is more explanation how the function works inside the code)
+
+	Parameters: an out of balance node and the greater of it's 2 childs 
+
+	Return Value: none
+	*/
+	void analyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr);
+    /*
+	_insert: a private function that inserts a node in the tree, it also checks if the node that is meant to be inserted exists a node like it, if this happends it inserts its value to the vector of the node already there in the tree
+
+	Paramaters: BinaryNode pointer that's the current node, and a BinaryNode pointer to the new node meant to be inserted
+
+	Return Value: it returns a BinaryNode pointer that is the modified child node in each recursive call in the function:
+	 in the code we have: nodePtr->setLeftPtr(_insert(..)), and it returns in rootPtr to the initial call
+	*/
+    BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);      
+    /*
+	_replace: a private function that replaces the vector the BinaryNode(specified in the paramater) have by the one taken by the function as a paramater
+
+	Paramaters: BinaryNode pointer (current node), a vector the function is looking for, a bool success variable to change it if it found it or not, the newvector to replace by
+
+	Return Value: it returns a BinaryNode pointer that is the modified child node in each recursive call in the function:
+	 in the code we have: nodePtr->setLeftPtr(_insert(..)), and it returns in rootPtr to the initial call
+
+	*/
     BinaryNode<ItemType>* _replace(BinaryNode<ItemType>* nodePtr, const vector<ItemType> target, bool & success,vector<ItemType> newVector); 
+	/*
+	getHeight: private function that calculates the height of a node
 
+	Paramaters: BinaryNode pointer
+
+
+	*/
 	int getHeight(BinaryNode<ItemType>*  nodePtr);
 	bool OOB(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& maxChild);
 
     // search for target node 
     // returns a 0 pointer if it didn't find it 
     BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const vector<ItemType> & target) const; 
+
 public:
 	bool getMax(vector<ItemType> & ret) const;
 	bool getMin(vector<ItemType> & ret) const;
@@ -212,8 +281,10 @@ template<class ItemType>
 int  AVL<ItemType>::getHeight(BinaryNode<ItemType>*  nodePtr){//if im rotating
 		int initialHeight=nodePtr->height;
 		int leftHeight=-1,rightHeight=-1;
-		if(nodePtr->getLeftPtr()!=0)leftHeight=nodePtr->getLeftPtr()->height;
-		if(nodePtr->getRightPtr()!=0)rightHeight=nodePtr->getRightPtr()->height;
+		if(nodePtr->getLeftPtr()!=0)
+			leftHeight=nodePtr->getLeftPtr()->height;
+		if(nodePtr->getRightPtr()!=0)
+			rightHeight=nodePtr->getRightPtr()->height;
 		return max(leftHeight,rightHeight)+1;
    }
 
@@ -236,7 +307,7 @@ BinaryNode<ItemType>* AVL<ItemType>::rotateLeft (BinaryNode<ItemType>* nodePtr){
 }
 
 template<class ItemType>
-void AVL<ItemType>::AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
+void AVL<ItemType>::analyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
 	if(getState(nodePtr)=="LLH"){
 	//the state of the child(the max child, the one making the porblem) cant be EH if it was an insert
 			if(getState(childPtr)=="LH"){
@@ -266,7 +337,7 @@ void AVL<ItemType>::AnalyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 }
 
 template<class ItemType>
-void AVL<ItemType>::AnalyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
+void AVL<ItemType>::analyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& childPtr){
 	if(getState(nodePtr)=="LLH"){
 		//if it's LLH then it's (left of left) or (right of left)
 		if(getState(childPtr)=="LH"||getState(childPtr)=="EH"){
@@ -310,7 +381,7 @@ BinaryNode<ItemType>* AVL<ItemType>::_insert(BinaryNode<ItemType>* nodePtr,Binar
 	////////////////////////////////////////////////////////////////////
 	BinaryNode<ItemType>* maxChild;
 	if(OOB(nodePtr,maxChild))
-		AnalyzeInsert(nodePtr,maxChild);
+		analyzeInsert(nodePtr,maxChild);
 
 	nodePtr->height=getHeight(nodePtr);
 	return nodePtr;  //return original root
@@ -336,7 +407,7 @@ BinaryNode<ItemType>* AVL<ItemType>::_replace(BinaryNode<ItemType>* nodePtr, con
 		return nodePtr;//return it,don't go through the checking because it will give an error when trying to dereference the nodePtr 
 	BinaryNode<ItemType>* maxChild;
 	if(OOB(nodePtr,maxChild))
-		AnalyzeDelete(nodePtr,maxChild);
+		analyzeDelete(nodePtr,maxChild);
 	
 	nodePtr->height=getHeight(nodePtr);
 	return nodePtr;   
