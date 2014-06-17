@@ -21,7 +21,7 @@ string comparing;
 
 
 public:
-Controller(string file,string comp);
+Controller(string file);
 ~Controller();
 void listHash()const;
 void listTree()const;
