@@ -2,7 +2,13 @@
  * 
  * Controller.cpp
  * 
- * Copyright 2014 Unknown <tom@panda>
+ * 
+ * This class take care of the interaction between the user and 
+ * the Data structures , (the AVL tree and th Hashed table).
+ * the main here is the menu
+ * 
+ * 
+ * Copyright 2014
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +27,8 @@
  * 
  * 
  */
+ 
+ 
 
 
 #include <iostream>
@@ -187,6 +195,8 @@ Return Value: void
 	
 	
 	void display(Stocks* temp){
+		if (temp<=0)
+			return;
 		cout << fixed;
 		cout << std::setprecision(2);
 		cout<<"Company Name: "<<temp->getName();
@@ -584,7 +594,7 @@ Return Value: void
 		target->settickerSymbol(key);
 		if(table->find(target,returned))
 		{
-			table->remove(returned); 
+			
 			vector<Stocks*> vec;
 			 tree->getEntry(returned,vec); 
 			 for (int i=0;i<vec.size();i++){
@@ -592,7 +602,9 @@ Return Value: void
 					 vec.erase(vec.begin()+i);
 				 }
 			 }
+			 
 			 tree->replace(returned,vec); 
+			 table->remove(returned); 
 			cout<<key<<" was removed"<<endl;
 			delete returned;
 		}
