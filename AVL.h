@@ -122,6 +122,9 @@ private:
     // returns a 0 pointer if it didn't find it 
     BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const vector<ItemType> & target) const; 
 
+	void _printIndented(BinaryNode<ItemType>* node, int depth, void printing(vector<ItemType>&) ) const;
+
+	void _serialize(Queue<ItemType>& serial, Queue<BinaryNode<ItemType>*>& tempQ) const;
 public:
 	bool getMax(vector<ItemType> & ret) const;
 	bool getMin(vector<ItemType> & ret) const;
@@ -136,8 +139,21 @@ public:
     // find a target node 
     bool getEntry(const ItemType & target, vector<ItemType> & returnedItem) const; 
    
+	void printIndented( void printing(vector<ItemType>&) ) const;
+	void serialize(Queue<ItemType>& serial ) const;
 };
 ///////////////////////// public function definitions /////////////////////////// 
+template<class ItemType> 
+void AVL<ItemType>::serialize(Queue<ItemType>& serial ) const{
+    Queue<BinaryNode<ItemType>*> tempQ;
+    tempQ.enqueue(rootPtr);
+    _serialize(serial, tempQ);
+}
+template<class ItemType> 
+void AVL<ItemType>::printIndented( void printing(vector<ItemType>&) ) const{
+    int depth = 0;
+    _printIndented(rootPtr, depth, printing);
+}
 template<class ItemType> 
 bool AVL<ItemType>::getMax(vector<ItemType> & ret) const{
 	ret=_getMax(this->rootPtr);
@@ -168,10 +184,13 @@ void AVL<ItemType>::lessThanOrEq(void visit(vector<ItemType> &),const ItemType &
   
 template<class ItemType> 
 bool AVL<ItemType>::insert(const ItemType & newEntry){ 
+	BinaryNode<ItemType>* theotherpointer=this->rootPtr;
+	theotherpointer=rootPtr;
     vector<ItemType> newvector; 
     newvector.push_back(newEntry); 
     BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newvector); 
     this->rootPtr = _insert(this->rootPtr, newNodePtr);   
+	this->rootPtr;
     this->count++; 
     return true; 
 }   
@@ -199,6 +218,41 @@ bool AVL<ItemType>::getEntry(const ItemType& anEntry, vector<ItemType> & returne
 }   
     
 //////////////////////////// private functions ////////////////////////////////////////////
+template<class ItemType> 
+void AVL<ItemType>::_serialize(Queue<ItemType>& serial, Queue<BinaryNode<ItemType>*>& tempQ) const{
+    
+    BinaryNode<ItemType>* temp;
+    
+    while( ! tempQ.isEmpty() ){
+        tempQ.peek(temp);
+        if(temp->getLeftPtr() != 0)
+            tempQ.enqueue(temp->getLeftPtr() );
+        if( temp->getRightPtr() != 0)
+            tempQ.enqueue(temp->getRightPtr() );
+		tempQ.dequeue();
+        int size = temp->getVector().size();
+        for( int i = 0; i< size ; i++){
+                serial.enqueue( temp->getVector()[i] );
+        }
+    }
+}
+
+template<class ItemType> 
+void AVL<ItemType>::_printIndented(BinaryNode<ItemType>* node, int depth, void printing(vector<ItemType>&) ) const{
+    if (node == 0)
+        return;
+
+    _printIndented(node->getRightPtr() , depth+1,printing);
+    for(int i =0; i< depth; i++)
+        cout<< "\t";
+    vector<ItemType> temp = node->getVector();
+    printing(temp);
+
+    _printIndented(node->getLeftPtr(), depth+1,printing);
+
+    return;
+
+}
 template<class ItemType> 
 vector<ItemType> AVL<ItemType>::_getMax(BinaryNode<ItemType>* nodePtr) const{
 	if(nodePtr==0){
@@ -262,9 +316,9 @@ string AVL<ItemType>::getState(BinaryNode<ItemType>* nodePtr){
         int leftHeight,rightHeight; 
         leftHeight=rightHeight=-1; 
 		if(nodePtr->getLeftPtr()!=0) 
-			leftHeight=nodePtr->getLeftPtr()->height; 
+			leftHeight=nodePtr->getLeftPtr()->getHeight(); 
 		if(nodePtr->getRightPtr()!=0) 
-			rightHeight=nodePtr->getRightPtr()->height; 
+			rightHeight=nodePtr->getRightPtr()->getHeight();
         if(leftHeight-rightHeight==0) 
             return "EH"; 
         if(leftHeight-rightHeight==1) 
@@ -279,12 +333,12 @@ string AVL<ItemType>::getState(BinaryNode<ItemType>* nodePtr){
     } 
 template<class ItemType>
 int  AVL<ItemType>::getHeight(BinaryNode<ItemType>*  nodePtr){//if im rotating
-		int initialHeight=nodePtr->height;
+		int initialHeight=nodePtr->getHeight();
 		int leftHeight=-1,rightHeight=-1;
 		if(nodePtr->getLeftPtr()!=0)
-			leftHeight=nodePtr->getLeftPtr()->height;
+			leftHeight=nodePtr->getLeftPtr()->getHeight();
 		if(nodePtr->getRightPtr()!=0)
-			rightHeight=nodePtr->getRightPtr()->height;
+			rightHeight=nodePtr->getRightPtr()->getHeight();
 		return max(leftHeight,rightHeight)+1;
    }
 
@@ -312,26 +366,26 @@ void AVL<ItemType>::analyzeInsert(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 	//the state of the child(the max child, the one making the porblem) cant be EH if it was an insert
 			if(getState(childPtr)=="LH"){
 				nodePtr=rotateRight(nodePtr);
-				nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
+				nodePtr->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()));
 			}
 		else {//right of left
 				nodePtr->setLeftPtr(rotateLeft(nodePtr->getLeftPtr()));
-				nodePtr->getLeftPtr()->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr()->getLeftPtr());
+				nodePtr->getLeftPtr()->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()->getLeftPtr()));
 	
 				nodePtr=rotateRight(nodePtr);
-				nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
+				nodePtr->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()));
 			}
 	}//end of if nodePtr->getState=="LLH"
 	if(getState(nodePtr)=="RRH"){
 		if(getState(childPtr)=="RH"){
 			nodePtr=rotateLeft(nodePtr);
-			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
+			nodePtr->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()));
 		}
 		else {//left of right
 			nodePtr->setRightPtr(rotateRight(nodePtr->getRightPtr()));
-			nodePtr->getRightPtr()->getRightPtr()->height=getHeight(nodePtr->getRightPtr()->getRightPtr());
+			nodePtr->getRightPtr()->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()->getRightPtr()));
 			nodePtr=rotateLeft(nodePtr);
-			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
+			nodePtr->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()));
 		}
 	}
 }
@@ -342,27 +396,27 @@ void AVL<ItemType>::analyzeDelete(BinaryNode<ItemType>*& nodePtr,BinaryNode<Item
 		//if it's LLH then it's (left of left) or (right of left)
 		if(getState(childPtr)=="LH"||getState(childPtr)=="EH"){
 			nodePtr=rotateRight(nodePtr);
-			nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
+			nodePtr->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()));
 		}
 		else {//right of left
 			nodePtr->setLeftPtr(rotateLeft(nodePtr->getLeftPtr()));
-			nodePtr->getLeftPtr()->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr()->getLeftPtr());
+			nodePtr->getLeftPtr()->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()->getLeftPtr()));
 
 			nodePtr=rotateRight(nodePtr);
-			nodePtr->getRightPtr()->height=getHeight(nodePtr->getRightPtr());
+			nodePtr->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()));
 		}
 	}//end of if nodePtr->getState=="LLH"
 	if(getState(nodePtr)=="RRH"){
 		if(getState(childPtr)=="RH"||getState(childPtr)=="EH"){
 			nodePtr=rotateLeft(nodePtr);
-			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
+			nodePtr->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()));
 		}
 		else {
 			nodePtr->setRightPtr(rotateRight(nodePtr->getRightPtr()));
-			nodePtr->getRightPtr()->getRightPtr()->height=getHeight(nodePtr->getRightPtr()->getRightPtr());
+			nodePtr->getRightPtr()->getRightPtr()->setHeight(getHeight(nodePtr->getRightPtr()->getRightPtr()));
 
 			nodePtr=rotateLeft(nodePtr);
-			nodePtr->getLeftPtr()->height=getHeight(nodePtr->getLeftPtr());
+			nodePtr->getLeftPtr()->setHeight(getHeight(nodePtr->getLeftPtr()));
 		}
 	}
 }
@@ -383,7 +437,7 @@ BinaryNode<ItemType>* AVL<ItemType>::_insert(BinaryNode<ItemType>* nodePtr,Binar
 	if(OOB(nodePtr,maxChild))
 		analyzeInsert(nodePtr,maxChild);
 
-	nodePtr->height=getHeight(nodePtr);
+	nodePtr->setHeight(getHeight(nodePtr));
 	return nodePtr;  //return original root
 }  
 
@@ -409,22 +463,22 @@ BinaryNode<ItemType>* AVL<ItemType>::_replace(BinaryNode<ItemType>* nodePtr, con
 	if(OOB(nodePtr,maxChild))
 		analyzeDelete(nodePtr,maxChild);
 	
-	nodePtr->height=getHeight(nodePtr);
+	nodePtr->setHeight(getHeight(nodePtr));
 	return nodePtr;   
 }  
 template<class ItemType>
 bool AVL<ItemType>::OOB(BinaryNode<ItemType>*& nodePtr,BinaryNode<ItemType>*& maxChild){
 
 	int leftHeight=-1,rightHeight=-1;
-	if(nodePtr->getLeftPtr()!=0)	leftHeight=nodePtr->getLeftPtr()->height;
-	if(nodePtr->getRightPtr()!=0)	rightHeight=nodePtr->getRightPtr()->height;
+	if(nodePtr->getLeftPtr()!=0)	leftHeight=nodePtr->getLeftPtr()->getHeight();
+	if(nodePtr->getRightPtr()!=0)	rightHeight=nodePtr->getRightPtr()->getHeight();
 
 	if(leftHeight>rightHeight)//if left is higher
 		maxChild=nodePtr->getLeftPtr();
 	else 
 		maxChild=nodePtr->getRightPtr();
 	
-	nodePtr->height=max(leftHeight,rightHeight)+1;
+	nodePtr->setHeight(max(leftHeight,rightHeight)+1);
 	if(getState(nodePtr)=="RRH"||getState(nodePtr)=="LLH")
 		return true;
 	
