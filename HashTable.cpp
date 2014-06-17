@@ -149,12 +149,13 @@ using namespace std;
 
           while(noSpot){
 
-            if( hashArray[index]==NULL ){
+            if( hashArray[index]==NULL || hashArray[index]->gettickerSymbol()=="deleted" ){
                 hashArray[index]=temp;
                 noSpot=false;
 
                 if(probes==0){numZeroProbes++;}
             }
+
             else {
                 probes++;
                 index=collRes(index,probes);
