@@ -1,6 +1,4 @@
-/// ctrl+F for ////
-//read all comments
-//what if the constructor found an error how can it return that
+//Header file for Stocks class
 //Name: Abdulrahman Sahmoud
 
 #ifndef _STOCKS_H_
