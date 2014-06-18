@@ -1,3 +1,5 @@
+//Tariq Anees
+
 #include <iostream>
 #include <fstream>
 #include "Stocks.h"
@@ -26,6 +28,8 @@ HashTable(int size); //size is the # data records
 
 private:
 
+
+int* parallelArray;
 int arrSize;//these 5 variables are updatted as remove and add are called
 int maxProbe;
 int numStocks;
@@ -36,9 +40,11 @@ int numCollisions;
 
   bool myFind(string key ); //private find function used only by the remove, it has less error checks
   int collRes(int indexRes, int numProbes);
-  int indexGenerator( string ticker);
+  int indexGenerator( string& ticker);
 
-  bool isPrime(int arrSize);
+  int findNewMaxProbe();
+
+  bool isPrime(int arrLength);
   bool  _remove(string key);
 
 };
