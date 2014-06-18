@@ -43,7 +43,13 @@ public:
 	bool dequeue();
 	bool clear();		
 };
+/*
+clear:			This function deletes all the Qnodes in the Queue
 
+Parameters:		None
+
+Return:			A boolean value whether the function successfuly cleared the Queue
+*/
 template<class ItemType>
 bool Queue<ItemType>::clear(){	
 
@@ -57,6 +63,14 @@ bool Queue<ItemType>::clear(){
 	return true;
 }
 
+/*
+enqueue:		This function takes a const reference to an Item and adds it to
+				the end of the Queue.
+
+Parameters:		A reference to ItemType to add to the end of the queue
+
+Returns:		Boolean, whether the ItemType was successfuly enqueued
+*/
 template<class ItemType>
 bool Queue<ItemType>::enqueue( const ItemType& newEntry){
 	
@@ -103,7 +117,15 @@ bool Queue<ItemType>::peek(ItemType& var) const{
 }
 
 /*
-dequeue:	
+dequeue:		This function removes a node from the end of the Queue
+
+Parameters:		None
+
+Return:			A boolean value whether the Item was successfuly removed
+				from the end of the Queue
+
+NOTE: 		User of the Queue should delete the items that are enqueued on their own
+			if they are dynamically allocated. The Queue will not delete the Item.
 */
 template<class ItemType>
 bool Queue<ItemType>::dequeue(){

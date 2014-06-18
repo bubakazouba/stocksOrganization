@@ -128,8 +128,21 @@ private:
 	*/
     BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* nodePtr, const vector<ItemType> & target) const; 
 	
-	void _printIndented(BinaryNode<ItemType>* node, int depth, void printing(vector<ItemType>&) ) const;
+	/*
+	_printIndented:		This function recursivly goes through the tree and prints it out to the console
 
+	Parameters:			A Pointer to BinaryNode, an integer representing the depth, a function that takes a reference to a vector of ItemType
+
+	Return:				None (void)
+	*/
+	void _printIndented(BinaryNode<ItemType>* node, int depth, void printing(vector<ItemType>&) ) const;
+	/*
+	_serialize:			Enqueues all the items in the tree in a Breadth First Search order into the reference to a Queue named serial
+
+	Parameters:			A reference to a Queue that will eventually hold all the Items, A reference to a Queue of BinaryNode pointers
+
+	Returns:			None (void)
+	*/
 	void _serialize(Queue<ItemType>& serial, Queue<BinaryNode<ItemType>*>& tempQ) const;
 public:
 	/*
@@ -171,8 +184,22 @@ public:
 	retruns false if didn't find
 	*/
     bool getEntry(const ItemType & target, vector<ItemType> & returnedItem) const; 
-   
+    /*
+	printIndented:		Calls the private function which recursively prints an indented tree
+
+	Parameters:			A function that will print the objects
+
+	Returns:			None (void)
+    */
 	void printIndented( void printing(vector<ItemType>&) ) const;
+	/*
+	serialize:			Calls the private _serialize function and sets up the parameters for the function to be called
+
+	Parameters:			A reference to the Queue which the user wants to be filled with the Items in the tree by Breadth
+						First Search order.
+
+	Returns:			None (void)
+	*/
 	void serialize(Queue<ItemType>& serial ) const;
 };
 ///////////////////////// public function definitions /////////////////////////// 
