@@ -33,7 +33,7 @@ private:
 	/*
 	copy constructor
 	*/
-	Stocks& copy(const Stocks&);/
+	Stocks& copy(const Stocks&);
 
 	/*
 	returns the value of the comparing field, there are three function because there are 3 data types for the private fields the class contains

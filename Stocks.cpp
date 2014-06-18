@@ -2,9 +2,12 @@
 //Name: Abdulrahman Sahmoud
 #ifndef _STOCKS
 #define _STOCKS
-#include<sstream>
-using namespace std;
+#include <sstream>
+#include <iostream>
 #include "Stocks.h"
+
+using namespace std;
+
 //string,string,double ,long long,long long,double,double,double
 //Name  ,Symbol,close  ,MarketCap,Volume   ,High   ,Low  ,Open
 //1     , 2    , 3     , 4       , 5       , 6     , 7   , 8  
