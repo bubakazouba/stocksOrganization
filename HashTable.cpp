@@ -1,3 +1,4 @@
+//Tariq Anees
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -7,16 +8,29 @@
 
 using namespace std;
 
-    bool HashTable::isPrime(int arrSize){ //given an arrSize that could be prime or non prime
+		/*
+	isPrime:	This function takes the length and checks if it is prime 
 
-        int sqrtSize = sqrt ((double)arrSize);
+	Parameters:		This takes the initial length of the array
+
+	Returns:		true if the parameter is prime and false if parameter is false
+	*/
+    bool HashTable::isPrime(int arrLength){ //given an arrSize that could be prime or non prime
+
+        int sqrtSize = (int)sqrt((double)arrLength);
         for(int j=2; j<= sqrtSize;j++){
-            if ( arrSize%j == 0 )// determines if the number is not prime
+            if ( arrLength%j == 0 )// determines if the number is not prime
                 return false;
         }
-
         return true;
     }
+		/*
+	Constructor:	This function initialises all the private members 
+
+	Parameters:		This takes the index which is the number of records
+
+	Returns:		nothing
+	*/
 
     HashTable::HashTable(int size){
 
@@ -28,32 +42,72 @@ using namespace std;
          numStocks=0;
          numZeroProbes=0;
          numCollisions=0;
+		 parallelArray = new int[arrSize];
 
         hashArray=new Stocks*[arrSize]; //creating an array of pointers to objects
 
         for(int d=0;d<arrSize;d++){
             hashArray[d]=NULL;
+			parallelArray[d] = 0;
         }
 
     }
+	/*
+	collRes:		This function uses quadratic probe to get a new index
 
+	Parameters:		This takes the index that must be changed and the number of probes
+
+	Returns:		 The new index
+	*/
     int HashTable::collRes(int indexRes, int numProbes){
 
             indexRes=((indexRes +(numProbes*numProbes) )% arrSize); // this a quadratic probes
             return indexRes;
     }
 
-    int HashTable::indexGenerator( string ticker){
-        unsigned int b = 13;// trial and error with prime numbers
-        unsigned int a = 11;// trial and error with prime numbers
+		/*
+		HashFunction:	This function takes a key and hashes it 
+
+		Parameters:		This takes the string which gets hashed
+
+		Returns:		an index
+		*/
+
+    int HashTable::indexGenerator( string& ticker){
+        unsigned long int b = 13;// trial and error with prime numbers
+        unsigned long int a = 11;// trial and error with prime numbers
         int num=0;
             for( int i = 0; i < ticker.length(); i++){
                 a *= b;
                 num = ( (num + a) * (ticker[i]) )%arrSize;
             }
-            return num ;
+            return num;
     }
 
+	/*
+		HashFunction:	
+
+		Parameters:		
+
+		Returns:		
+		*/
+	int HashTable::findNewMaxProbe(){
+		int newMax = 0;
+
+		for (int i=0;i <arrSize;i++){
+			if(parallelArray[i] > newMax)
+				newMax = parallelArray[i];
+		}
+		return newMax;
+	}
+
+	/*
+		private find:	this function searches the key in the array 
+
+		Parameters:		This takes the string which gets hashed
+
+		Returns:		true if the key exists and false if it doesn't
+	*/
     bool HashTable::myFind(string key  ){
 
     int indexToDelete=0;
@@ -67,9 +121,24 @@ using namespace std;
         while(!found){
                 //no need to check if the the index is empty because that check has already been done in controller class
             if(hashArray[indexToDelete]->gettickerSymbol() == key){
-                    if(probeCount==0){numZeroProbes--;}else{numCollisions--;} // if the record to delete did not need a collision resolution to be found than the numZeroProbes is decremented
-                    hashArray[indexToDelete]=removedStock; // now if we want to delete the same object, we will know that it has been removed
-                    found=true;
+
+                    if(probeCount==0){
+						numZeroProbes--;
+					}else{
+						numCollisions--;
+					} // if the record to delete did not need a collision resolution to be found than the numZeroProbes is decremented
+					
+					hashArray[indexToDelete]=removedStock; // now if we want to delete the same object, we will know that it has been removed
+					int isitMax = parallelArray[indexToDelete]; 
+
+					parallelArray[indexToDelete]=0; 
+					//keeps track of all the indexs with the highest probe
+					
+					if(isitMax == maxProbe){
+						maxProbe = findNewMaxProbe();
+					}
+					
+					found=true;
             }
             else{
                 indexToDelete=collRes(indexToDelete, probeCount);
@@ -83,37 +152,58 @@ using namespace std;
     return found;
 }
 
+	/*
+		_remove:	    the public remove calls this private remove
+
+		Parameters:		This takes the string and sends it to the private find function called myFind
+
+		Returns:		true if the key exists and false if it does not
+
+	*/
     bool HashTable::_remove(string key){
 
         if( myFind(key ) )
             return true;
-
         else {
             return false;
         }
 
     }
 
+	/*
+		remove:	    This function  decrements the number of stocks if the key is being removed
+
+		Parameters:	This takes a pointer object by reference
+
+		Returns:	true if the key exists
+		*/
     bool HashTable::remove(Stocks*& returnTemp){
 
         string key=returnTemp->gettickerSymbol();
         if(_remove(key) ){
-            numStocks--;
+            --numStocks;
             return true;
         }
-
         else
         return false;
 
     }
 
+
+	/*
+		Find:	      This function looks for a key 
+
+		Parameters:		This takes a pointer to an object with one field and takes a second object by reference which gets modified
+
+		Returns:		true if the key exists
+		*/
     bool HashTable::find(Stocks* temp, Stocks*& returnTemp){
 
         int probes=0;
         bool found=false;
-
-        int somethingNew;
         string key=temp->gettickerSymbol();
+
+		int somethingNew=0;
         somethingNew = indexGenerator(key);
 
          while(!found){
@@ -128,12 +218,21 @@ using namespace std;
             somethingNew=collRes(somethingNew,probes);
         }
 
-        if(probes>maxProbe){return false;} // stop searching for the key if collision resolution has been called more than the max probe
+        if(probes > maxProbe){return false;} // stop searching for the key if collision resolution has been called more than the max probe
         }
             returnTemp=hashArray[somethingNew];
             return found;
     }
 
+
+	/*
+		Add:	This function checks to see if space is left w/inthe array to add. Also it adds all the keys and updates 
+				private members such as numStocks and numZerOProbes
+
+		Parameters:		This takes the object with all the fields
+
+		Returns:		boolean
+	*/
     bool HashTable:: add(Stocks* temp){
         if(numStocks==arrSize)
             return false;
@@ -142,14 +241,18 @@ using namespace std;
         bool noSpot=true;
         int probes=0;
         int num=0;
+		int index=0;
 
-        int index=indexGenerator(key);
+         index=indexGenerator(key);
 
           while(noSpot){
 
             if( hashArray[index]==NULL || hashArray[index]->gettickerSymbol()=="deleted" ){
                 hashArray[index]=temp;
                 noSpot=false;
+				parallelArray[index]=probes; //keeps track of all the indexs with the highest probe
+				if(probes==maxProbe){
+				}
                 if(probes==0){numZeroProbes++;}
                 else
                     numCollisions++;
@@ -167,6 +270,16 @@ using namespace std;
         return true;
     }
 
+
+	
+	/*
+		List:	This function adds objects to a queue if the hashArray is pointing to an object that is not deleted
+
+		Parameters:		This takes a pointer to a referenced Queue
+
+		returns:		updates the queue/ but is a void function
+	*/
+
     void HashTable::List(Queue<Stocks*>& StockQueue){
 
         for(int i=0; i<arrSize; i++){
@@ -177,7 +290,14 @@ using namespace std;
         }//for loop
     }
 
+	
+	/*
+		STATS:	ThIS FUNction prints all the stats of the program
 
+		Parameters:		uses private data members
+
+		Returns:		void
+	*/
     void HashTable::hashStats(){
         cout<<endl;
         cout<<"Array Size: "<<arrSize<<endl;
@@ -193,5 +313,6 @@ using namespace std;
 
     HashTable::~HashTable(){
         delete [] hashArray;
+		delete [] parallelArray;
 
     }
