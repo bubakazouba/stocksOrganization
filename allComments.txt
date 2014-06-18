@@ -1,0 +1,546 @@
+/* Inaki Gonzalo
+ * 
+ * Controller.cpp
+ * 
+ * 
+ * This class take care of the interaction between the user and 
+ * the Data structures , (the AVL tree and th Hashed table).
+ * the main here is the menu
+ * 
+ * 
+ * Copyright 2014
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * 
+/*
+readFile: 	This function reads records from a file, creates objects that are dynamically 
+* allocated and stores the pointers in a queue.
+
+
+Parameters: It takes a string as the name of the input file and a queue to temporarily store
+* the stocks pointers.
+
+Return Value: 	Returns a int value, that represents the amount of records in the file.
+
+
+	 /*
+Controller::Controller:  Reads the input file and initializes the HashTable and the AVL tree.
+
+
+Parameters: It takes a string as the name of the input file and field to sort the AVL by.
+
+Return Value: Its a constructor
+
+
+/*
+display:  Print to screen a graphical representation of the stock.
+
+
+Parameters: It takes a pointer to the Stock you wnat to display
+
+Return Value: void
+
+
+/*
+Controller::searchByTicker:  searches the Hash table using a ticker as key and
+* displays the stock to screen. 
+
+Parameters: It takes a string that represents a ticker symbol;
+* 
+Return Value: void
+
+
+/*
+Controller::searchByValue:  searches the AVL tree using the passed parameter as key and
+* displays the stock to screen. 
+
+Parameters: It takes a string that represents the value of the field the tree is sorted by;
+* 
+Return Value: void
+
+
+/*
+Controller::listHash():  Gets all the stocks pointers from Hashed table int array order 
+* and displays them to screen. 
+
+Parameters: It takes a string that represents the value of the field the tree is sorted by;
+* 
+Return Value: void
+
+
+/*
+Controller::visit(): displays to screen all the stocks from a vector of stocks
+
+Parameters: It takes a vector of type Stocks pointer
+* 
+Return Value: void
+
+
+/*
+Controller::printVector(): displays to screen the key of a vector
+
+Parameters: It takes a vector of type Stocks pointer
+* 
+Return Value: void
+
+
+/*
+Controller::listTree(): displays to screen all the stocks from the 
+* AVL tree in key Order
+
+Parameters: none
+* 
+Return Value: void
+
+/*
+Controller::printTree(): displays to screen all the stocks from the 
+* AVL tree in tree shape
+
+Parameters: none
+* 
+Return Value: void
+
+/*
+Controller::printStatistics(): displays to screen the Hash table Statistics
+
+Parameters: none
+* 
+Return Value: void
+
+	/*
+Controller::greaterThanOrEq: displays to screen Stocks that are greater then key
+
+Parameters: string that represents the key
+* 
+Return Value: void
+
+	/*
+Controller::lessThanOrEq(: displays to screen  Stocks that are less then key
+
+Parameters: string that represents the key
+* 
+Return Value: void
+
+/*
+Controller::printMaxInTree(): displays to screen the list of Stocks whith the highest
+* key value in the AVL tree
+
+Parameters: none
+* 
+Return Value: void
+
+/*
+Controller::printMinInTree(): displays to screen the list of Stocks whith the least
+* key value in the AVL tree
+
+Parameters: none
+* 
+Return Value: void
+
+/*
+getInput: appends an intput to a string
+
+Parameters: int for number of days, string args ,string output a meesage to user
+* 
+Return Value: void
+
+/*
+Controller::add: wait for user to input , create a Stocks object whith dynamic memory 
+* and a pass a pointer of it to the AVL tree and the hash table
+
+Parameters: a string that represents a ticker symbol
+* 
+Return Value: void
+
+/*
+Controller::remove: remove an an item from the tree and the hashed table
+* and deleting the dynamic memory of the object.
+
+Parameters: a string that represents a ticker symbol
+* 
+Return Value: void
+
+/*
+Controller::quit: serializes the tree, prints it to a file and deletes the dynamic memory of every 
+* Stocks object
+
+Parameters: none
+* 
+Return Value: void
+
+	/*
+Controller::~Controller:delete table and tree 
+
+Parameters: none
+* 
+Return Value: void
+
+/*
+main:Interfece with the user.
+Parameters: none
+
+
+
+		 : HashTable.cpp : 
+		/*
+	isPrime:	This function takes the length and checks if it is prime 
+
+	Parameters:		This takes the initial length of the array
+
+	Returns:		true if the parameter is prime and false if parameter is false
+		/*
+	Constructor:	This function initialises all the private members 
+
+	Parameters:		This takes the index which is the number of records
+
+	Returns:		nothing
+	/*
+	collRes:		This function uses quadratic probe to get a new index
+
+	Parameters:		This takes the index that must be changed and the number of probes
+
+	Returns:		 The new index
+		/*
+		HashFunction:	This function takes a key and hashes it 
+
+		Parameters:		This takes the string which gets hashed
+
+		Returns:		an index	
+	/*
+		private find:	this function searches the key in the array 
+
+		Parameters:		This takes the string which gets hashed
+
+		Returns:		true if the key exists and false if it doesn't
+	/*
+		_remove:	    the public remove calls this private remove
+
+		Parameters:		This takes the string and sends it to the private find function called myFind
+
+		Returns:		true if the key exists and false if it does not
+
+	/*
+		remove:	    This function  decrements the number of stocks if the key is being removed
+
+		Parameters:	This takes a pointer object by reference
+
+		Returns:	true if the key exists
+	/*
+		Find:	      This function looks for a key 
+
+		Parameters:		This takes a pointer to an object with one field and takes a second object by reference which gets modified
+
+		Returns:		true if the key exists
+	/*
+		Add:	This function checks to see if space is left w/inthe array to add. Also it adds all the keys and updates 
+				private members such as numStocks and numZerOProbes
+
+		Parameters:		This takes the object with all the fields
+
+		Returns:		boolean
+	/*
+		List:	This function adds objects to a queue if the hashArray is pointing to an object that is not deleted
+
+		Parameters:		This takes a pointer to a referenced Queue
+
+		returns:		updates the queue/ but is a void function
+	/*
+		STATS:	ThIS FUNction prints all the stats of the program
+
+		Parameters:		uses private data members
+
+		Returns:		void
+
+
+		 : Stocks.cpp : 
+
+
+		 : AVL.h : 
+	/*
+	_getMax: a private function that gets the maximum node in the tree by recurively going to the right child of the current pointer till it doesn't see a right child, so we become at the right most node, this is the greatest node in the tree
+
+	Paramters: a pointer to a BinaryNode, when its called initially its the rootPtr
+
+	Return Value: it returns the vector from the right most node
+	/*
+	_getMin: a private function that gets the minimum node in the tree by recurively going to the left child of the current pointer till it doesn't see a left child, so we become at the left most node, this is the smallest node in the tree
+
+	Paramters: a pointer to a BinaryNode, when its called initially its the rootPtr
+
+	Return Value: it returns the vector from the left most node
+	/*
+	_greaterThanOrEq: a private function that uses a visit function on every node in the tree greater than a certain value passed to it
+
+	Paramaters: the visit function, the nodePtr that will be using it to decide which child to use from it to go next, the variable that the function is comparing every node to , if it is greater than it output it
+
+	Return Value: it doesn't return
+	/*
+	_greaterThanOrEq: a private function that uses a visit function on every node in the tree samller than a certain value passed to it
+
+	Paramaters: the visit function, the nodePtr that will be using it to decide which child to use from it to go next, the variable that the function is comparing every node to , if it is greater than it then visit it
+
+	Return Value: none
+	/*
+	getState: a private function that calculates the state of a node
+
+	Paramters: a BinaryNode
+
+	Return Value: a string representing the state of the node
+	/*
+	rotateRight: a private function that takes a BinaryNode pointer and rotates it right and return it again
+
+	Paramaters: BinaryNode pointer
+
+	Return Value: BinaryNode pointer
+	/*
+	rotateRight: a private function that takes a BinaryNode pointer and rotates it left and return it again
+
+	Paramaters: BinaryNode pointer
+
+	Return Value: BinaryNode pointer
+	/*
+	analyzeInsert: a private function that takes an out of balance node and the greater of it's 2 childs, because thats the one that will be used to fix the out of balance
+	the analyzeInsert function's goal is to fix the out of balance, it works only when the out of balance node is a result of inserting
+	(there is more explanation how the function works inside the code)
+
+	Parameters: an out of balance node and the greater of it's 2 childs 
+
+	Return Value: none
+	/*
+	analyzeDelete: a private function that takes an out of balance node and the greater of it's 2 childs, because thats the one that will be used to fix the out of balance
+	the analyzeDelete function's goal is to fix the out of balance, it works only when the out of balance node is a result of deleting
+	(there is more explanation how the function works inside the code)
+
+	Parameters: an out of balance node and the greater of it's 2 childs 
+
+	Return Value: none
+    /*
+	_insert: a private function that inserts a node in the tree, it also checks if the node that is meant to be inserted exists a node like it, if this happends it inserts its value to the vector of the node already there in the tree
+
+	Paramaters: BinaryNode pointer that's the current node, and a BinaryNode pointer to the new node meant to be inserted
+
+	Return Value: it returns a BinaryNode pointer that is the modified child node in each recursive call in the function:
+	 in the code we have: nodePtr->setLeftPtr(_insert(..)), and it returns in rootPtr to the initial call
+    /*
+	_replace: a private function that replaces the vector the BinaryNode(specified in the paramater) have by the one taken by the function as a paramater
+	if it found that the new vector has a size of 0, it deletes the node using the inherited deleteNode function
+
+	Paramaters: BinaryNode pointer (current node), a vector the function is looking for, a bool success variable to change it if it found it or not, the newvector to replace by
+
+	Return Value: it returns a BinaryNode pointer that is the modified child node in each recursive call in the function:
+	 in the code we have: nodePtr->setLeftPtr(_insert(..)), and it returns in rootPtr to the initial call
+
+	/*
+	getHeight: private function that calculates the height of a node
+
+	Paramaters: BinaryNode pointer
+
+
+	/*
+	OOB a function that takes a binary node and its maximum child and returns a bool, indicating if the parent node is out of balance or not
+    /*
+	findNode function, its a private function that takes a BinaryNode pointer (root pointer initially), and recursively calls itself navigating in the tree searching for the given vector
+	it returns the node that has a vector "equal"(depends on operator overloaders for the vector<ItemType>) to the vector given, or returns a 0 if it didn't find it
+	/*
+	_printIndented:		This function recursivly goes through the tree and prints it out to the console
+
+	Parameters:			A Pointer to BinaryNode, an integer representing the depth, a function that takes a reference to a vector of ItemType
+
+	Return:				None (void)
+	/*
+	_serialize:			Enqueues all the items in the tree in a Breadth First Search order into the reference to a Queue named serial
+
+	Parameters:			A reference to a Queue that will eventually hold all the Items, A reference to a Queue of BinaryNode pointers
+
+	Returns:			None (void)
+	/*
+	getMax function, a public function that returns the maximum vector in the tree, it calls the private _getMax function, or returns false if the tree is empty
+	/*
+	getMin function, a public function that returns the minimum vector in the tree, it calls the private _getMin function, or returns false if the tree is empty
+	/*
+	greaterThanOrEq, a public function that has a void return type,it takes a visit function as a paremeter and an ItemType to compare the vectors in the tree with, it calls the private _greaterThanOrEq function to 
+	traverse the tree.
+	/*
+	lessThanOrEq, a public function that has a void return type,it takes a visit function as a paremeter and an ItemType to compare the vectors in the tree with, it calls the private _lessThanOrEq function to 
+	traverse the tree.
+	/*
+	public insert function that takes an ItemType type as a paramater and, it creates a vector itself and calls the private _insert function with it.
+	it passes a vector not an ItemType , so the person using the AVL doesn't have to overload the comparison operators for (vector<itemtype>,itemtype) too.
+	/*
+	public replace function, it takes an ItemType representing whats inside the vector of the node that it's vector need to be replaced
+	it replaces that vector with the newVector passed to it
+	returns true if found
+	false if didn't find
+    /*
+	public getEntry function, it takes an ItemType representing whats inside the vector of the node that it's vector need to be retrieved
+	it returns true if it found it, and set the passed vector by reference to the vector inside the node
+	retruns false if didn't find
+    /*
+	printIndented:		Calls the private function which recursively prints an indented tree
+
+	Parameters:			A function that will print the objects
+
+	Returns:			None (void)
+	/*
+	serialize:			Calls the private _serialize function and sets up the parameters for the function to be called
+
+	Parameters:			A reference to the Queue which the user wants to be filled with the Items in the tree by Breadth
+						First Search order.
+
+	Returns:			None (void)
+
+
+		 : BinarySearchTree.h : 
+
+
+		 : Controller.h : 
+
+
+		 : Queue.h : 
+/*Created By: Ahmed Faraj Ahmed
+Date: 5/29/2014
+Queue
+/*
+Notes on this Queue:
+***************************NOTICE*************************************
+****The queue does not make copies of the data, it stores a pointer to
+	the data you hare giving it because it takes a reference to the data
+	as a parameter. This means that if you change the data after inserting
+	it into the queue you will be changing that which you inserted, since
+	it is the same data!
+
+	This also allows you to enqueues like this:
+		Queue<Objects> list;
+		list.enqueue( new Objects(parameters) );
+	
+/*
+clear:			This function deletes all the Qnodes in the Queue
+
+Parameters:		None
+
+Return:			A boolean value whether the function successfuly cleared the Queue
+/*
+enqueue:		This function takes a const reference to an Item and adds it to
+				the end of the Queue.
+
+Parameters:		A reference to ItemType to add to the end of the queue
+
+Returns:		Boolean, whether the ItemType was successfuly enqueued
+/*
+peek: 	This function takes a reference to the Templated type of the queue
+	  	and stores the item that is in the front of the queue in the 
+		referenced parameter.
+
+
+Parameters: A reference to a variable of the Templated Type to store the
+			item in the front of the queue in.
+
+Return Value: 	Returns a boolean value, false if the Queue is empty
+				and true otherwise.
+
+
+Dependencies: requires the Templated type to have an overloaded equal.
+
+/*
+dequeue:		This function removes a node from the end of the Queue
+
+Parameters:		None
+
+Return:			A boolean value whether the Item was successfuly removed
+				from the end of the Queue
+
+NOTE: 		User of the Queue should delete the items that are enqueued on their own
+			if they are dynamically allocated. The Queue will not delete the Item.
+
+
+		 : BinaryNode.h : 
+
+
+		 : BinaryTree.h : 
+
+
+		 : HashTable.h : 
+
+
+		 : Qnode.h : 
+/*Created By: Ahmed Faraj Ahmed
+Date: 5/29/2014
+Qnode
+/*
+Default constructor:	Sets the next parameter to null
+/*
+Constructor:	This takes a const reference to an ItemType and sets it
+				as the DataValue of this Qnode. Also Sets the next pointer
+				to null.
+
+Parameters:		Const Reference to a Templated ItemType
+
+/*
+getNext:		This function returns the next item of the node
+
+Parameters:		None
+
+Returns:		A pointer to the next Qnode
+/*
+setNext:		This function takes a pointer to a Qnode and sets it as the next
+				of the current Qnode
+
+Parameters:		A pointer to the Qnode which you'd like to set this object's next
+
+Return:			None (void)
+Side-effect:	The next pointer is set to the pointer which was passed to the object
+/*
+getData:		Returns a copy of the data stored in the Qnode
+
+Parameters:		None
+
+Return:			The Templated ItemType which is stored in the Qnode. 
+/*
+setData:		This takes a Const Reference to a templated ItemType and sets it
+				as the data of this Qnode
+
+Parameters:		A const reference to a templated ItemType
+
+Return:			None (void)
+
+
+		 : Stocks.h : 
+    /*
+    private function thats used by other functions for easier accessibility for arrays
+    it returns a string containing the nth field of a big string passed to the function, it also takes the seperator as a parameter since there are fields seperated by commas
+    and inner fields seperated by colons
+	/*
+	   takes a generic array and the field with its colons
+	   loop through array and set it
+	/*
+	copy constructor
+	/*
+	returns the value of the comparing field, there are three function because there are 3 data types for the private fields the class contains
+	/*
+	the function takes an array and modify it, it takes a string containing the inner fields delimited by colons, it seperates them and insert to the array
+	/*
+	equal operator overloader
+	/*
+	constructor for the class, takes a line from the file and seperates the fields and assign them to the member variables
+	/*
+	setters and getters for the compare by value
+	/*
+	convert it back to string to the Breadth First Search can use it easily to output to the file
+	/*
+	add function that adds one day to the stocks with all the array fields as paramaters
+	/*
+	add function works like the one above but takes a string instead
